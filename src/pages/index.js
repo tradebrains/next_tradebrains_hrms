@@ -14,7 +14,31 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>HRMS</div>
+      <div></div>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  if (req?.cookies?.hrms_access_token) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/dashboard",
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }

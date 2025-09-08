@@ -1,0 +1,172 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Form, Input } from "antd";
+import cookie from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setAuth } from "@/redux/reducer/authSlice";
+import styles from "./login.module.css";
+// import { Turnstile } from "next-turnstile";
+import svgSheet from "../../assets/svgSheets";
+import { useRouter } from "next/router";
+
+function RegisterForm() {
+  const [apiLoader, setApiLoader] = useState(false);
+  const [apiError, setApiError] = useState();
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [Model, setModel] = useState(false);
+  const onSubmit = async (values) => {
+    setApiLoader(true);
+    setApiError(null);
+
+    try {
+      const resp = await postLogin(values);
+
+      if (resp?.status === 200) {
+        cookie.set("hrms_login_session", "true", { expires: 999 });
+        cookie.set("hrms_access_token", resp?.data?.tokens?.access, {
+          expires: 999,
+        });
+        window.location.href = "/dashboard";
+        dispatch(setAuth(resp.data));
+      } else {
+        setApiError("Invalid login credentials.");
+      }
+    } catch (error) {
+      const errorMsg =
+        error?.response?.data?.detail ||
+        error?.message ||
+        "Login failed. Please check your credentials.";
+
+      setApiError(errorMsg);
+    } finally {
+      setApiLoader(false);
+    }
+  };
+
+  return (
+    <div>
+      <div
+        className={`${styles.login_form_container} 
+        `}
+        style={{
+          width: "500px",
+          textAlign: "center",
+          margin: "auto",
+          padding: "20px",
+          borderRadius: "10px",
+          backgroundColor: "#1e1e1e",
+        }}
+      >
+        <div className="">
+          {svgSheet.trade_brains_Logo}
+          <p className={styles.header_text}>Register</p>
+          <p className="mt-20 mb-20">Login to access dashboard</p>
+        </div>
+        <div className="w-100">
+          <Form
+            autoComplete="off"
+            form={form}
+            name="login"
+            onFinish={onSubmit}
+            scrollToFirstError
+          >
+            <Form.Item
+              style={{ margin: "15px 0px " }}
+              name="email"
+              className={`dark-input-login w-100
+                        `}
+              rules={[
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+                {
+                  required: true,
+                  message: "Please Enter your E-mail!",
+                },
+              ]}
+            >
+              <Input
+                type="text"
+                style={{ height: "40px" }}
+                className={`
+                          auth-form-input w-100`}
+                placeholder="Email"
+              />
+            </Form.Item>
+            <Form.Item
+              style={{ margin: "15px 0px " }}
+              name="username"
+              className={`dark-input-login w-100
+                        `}
+              rules={[
+                {
+                  required: true,
+                  message: "Please Enter your username!",
+                },
+              ]}
+            >
+              <Input
+                type="text"
+                style={{ height: "40px" }}
+                className={`
+                          auth-form-input w-100`}
+                placeholder="username"
+              />
+            </Form.Item>
+            <Form.Item
+              className={`dark-input-login w-100
+                        `}
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+            >
+              <Input.Password
+                type="text"
+                style={{ height: "40px", width: "100%" }}
+                className="auth-form-input w-100"
+                placeholder="Enter Password"
+              />
+            </Form.Item>
+            <div
+              onClick={() => setForgotPasswordModal(true)}
+              className={styles.forgot_password}
+            >
+              Forgot Password?
+            </div>
+            {apiError && (
+              <div style={{ color: "#ff4d4f", textAlign: "center" }}>
+                {apiError}
+              </div>
+            )}
+            {apiLoader ? (
+              <button className={styles.login_button}>Logging in....</button>
+            ) : (
+              <button type="submit" className={styles.login_button}>
+                Login
+              </button>
+            )}
+          </Form>
+          <p style={{ marginTop: "20px" }}>
+            Already have an account?{" "}
+            <span
+              className={styles.register}
+              onClick={() => router.push("/login")}
+            >
+              Login
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default RegisterForm;

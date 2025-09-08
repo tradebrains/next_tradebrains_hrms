@@ -9,9 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/plots": "^1.2.5",
     "@next/font": "13.1.6",
+    "@reduxjs/toolkit": "^1.9.2",
+    "antd": "^5.2.0",
+    "axios": "^1.3.2",
+    "dayjs": "^1.11.7",
+    "fernet": "^0.3.3",
+    "firebase": "^9.17.1",
+    "html-to-image": "^1.11.11",
+    "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.1",
     "next": "13.1.6",
+    "next-turnstile": "^1.0.5",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.5",
+    "react-scroll": "^1.8.9",
+    "react-slick": "^0.30.3",
+    "redux-persist": "^6.0.0",
+    "sonner": "^2.0.6",
+    "swr": "^2.2.5",
+    "xlsx": "^0.18.5",
+    "xlsx-populate": "^1.21.0"
   }
 }
