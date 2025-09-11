@@ -8,9 +8,8 @@ import { setAuth } from "@/redux/reducer/authSlice";
 import styles from "./login.module.css";
 import svgSheet from "../../assets/svgSheets";
 import { useRouter } from "next/router";
-import { postLogin } from "@/pages/api/fetchClient";
 
-function LoginForm() {
+function ForgotPasswordForm() {
   const [apiLoader, setApiLoader] = useState(false);
   const [apiError, setApiError] = useState();
   const [form] = Form.useForm();
@@ -23,11 +22,10 @@ function LoginForm() {
 
     try {
       const resp = await postLogin(values);
-      console.log(resp, "resprespresp");
 
       if (resp?.status === 200) {
         cookie.set("hrms_login_session", "true", { expires: 999 });
-        cookie.set("hrms_access_token", resp?.data?.access, {
+        cookie.set("hrms_access_token", resp?.data?.tokens?.access, {
           expires: 999,
         });
         window.location.href = "/dashboard";
@@ -36,10 +34,8 @@ function LoginForm() {
         setApiError("Invalid login credentials.");
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
-
       const errorMsg =
-        error?.response?.data?.non_field_errors[0] ||
+        error?.response?.data?.detail ||
         error?.message ||
         "Login failed. Please check your credentials.";
 
@@ -63,17 +59,17 @@ function LoginForm() {
           backgroundColor: "#1e1e1e",
         }}
       >
-        <div className="">
-          {svgSheet.trade_brains_Logo}
-          <p className={styles.header_text}>Login</p>
-          <p className="mt-20 mb-20">Login to access dashboard</p>
-        </div>
         <div className="w-100">
+          {svgSheet.trade_brains_Logo}
+          <p className={styles.header_text}>Forgot Password</p>
+          <p className={styles.text_email}>
+            Enter your email to get a password reset link
+          </p>
           <Form
             autoComplete="off"
-            form={form}
-            name="login"
-            onFinish={onSubmit}
+            // form={forgotForm}
+            name="forgot_password"
+            // onFinish={onSubmitForgotPassword}
             scrollToFirstError
           >
             <Form.Item
@@ -100,50 +96,18 @@ function LoginForm() {
                 placeholder="Email"
               />
             </Form.Item>
-            <Form.Item
-              className={`dark-input-login w-100
-                        `}
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input.Password
-                type="text"
-                style={{ height: "40px", width: "100%" }}
-                className="auth-form-input w-100"
-                placeholder="Enter Password"
-              />
-            </Form.Item>
-            <div
-              onClick={() => router.push("/forgot-password")}
-              className={styles.forgot_password}
-            >
-              Forgot Password?
-            </div>
-            {apiError && (
-              <div style={{ color: "#ff4d4f", textAlign: "center" }}>
-                {apiError}
-              </div>
-            )}
-            {apiLoader ? (
-              <button className={styles.login_button}>Logging in....</button>
-            ) : (
-              <button type="submit" className={styles.login_button}>
-                Login
-              </button>
-            )}
+
+            <button type="submit" className={styles.login_button}>
+              Get Reset Link
+            </button>
           </Form>
           <p style={{ marginTop: "20px" }}>
-            Don't have an account yet?{" "}
+            Remember your password?{" "}
             <span
               className={styles.register}
-              onClick={() => router.push("/register")}
+              onClick={() => router.push("/login")}
             >
-              Register
+              Login
             </span>
           </p>
         </div>
@@ -152,4 +116,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default ForgotPasswordForm;

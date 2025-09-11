@@ -1,0 +1,40 @@
+.nav {
+  margin: 1rem 0;
+}
+
+.breadcrumb {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  margin-right: 0.5rem;
+  font-size: 14px;
+}
+
+.item::after {
+  content: ">";
+  margin-left: 0.5rem;
+  color: #999;
+}
+
+.item:last-child::after {
+  content: "";
+}
+
+.item a {
+  text-decoration: none;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.item a:hover {
+  color: #666;
+}
+
+.active {
+  color: #666;
+  font-weight: 600;
+}

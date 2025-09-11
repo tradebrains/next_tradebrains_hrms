@@ -10,7 +10,6 @@ function DotLoader({ loaderData }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#222323",
       }}
     >
       <script

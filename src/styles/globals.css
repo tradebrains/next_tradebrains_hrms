@@ -6,6 +6,20 @@ body.preview {
   background-color: transparent;
 }
 
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Rubik", sans-serif;
+}
+
+p {
+  font-family: "Lato", sans-serif;
+}
+
 .layout-container {
   display: flex;
   height: 100vh;
@@ -1065,18 +1079,77 @@ a.ck.ck-button.ck-on {
   color: #f2f2f2 !important;
 }
 
-.custom-rate-preview.rated .ant-rate-star-full svg {
-  color: #f5d81b !important;
-}
-
-.custom-rate-preview.rated .ant-rate-star-half .ant-rate-star-first svg {
-  color: #f5d81b !important;
-}
-
 .custom-rate-preview.rated .ant-rate-star-half .ant-rate-star-second svg {
   color: #f2f2f2 !important;
 }
 
 p {
   margin: 0px;
+}
+
+.ant-select-selector {
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.ant-select-selector:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.ant-select-selector
+  .ant-select-selection-wrap
+  .ant-select-selection-placeholder {
+  color: rgb(179, 174, 174);
+}
+
+.ant-select .ant-select-arrow {
+  color: white !important;
+  fill: white !important;
+}
+
+.ant-col
+  .ant-form-item-control-input
+  .ant-form-item-control-input-content
+  > input::placeholder {
+  color: rgb(179, 174, 174) !important;
+}
+
+.ant-upload {
+  width: 100% !important;
+}
+
+.ant-upload .ant-btn {
+  background-color: #2f2f2f !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+}
+
+.ant-col
+  .ant-form-item-control-input
+  .ant-form-item-control-input-content
+  .ant-picker {
+  border-radius: 8px !important;
+  border: none !important;
+  background-color: #2f2f2f !important;
+}
+
+.ant-col
+  .ant-form-item-control-input
+  .ant-form-item-control-input-content
+  .ant-picker
+  .ant-picker-input
+  > input::placeholder {
+  color: rgb(179, 174, 174) !important;
+}
+
+.ant-col
+  .ant-form-item-control-input
+  .ant-form-item-control-input-content
+  .ant-picker
+  .ant-picker-input
+  .ant-picker-suffix {
+  color: rgb(179, 174, 174) !important;
 }
