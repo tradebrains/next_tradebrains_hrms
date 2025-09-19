@@ -4,6 +4,10 @@
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 16px;
+  position: sticky;
+  width: 100% !important;
+  z-index: 100;
+  top: 0;
 }
 
 .headerWrapper {

@@ -1,16 +1,104 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Select,
+  Upload,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import {
+  getDashboardData,
+  getEmployeeIds,
+  getManagerList,
+  validateUser,
+} from "../api/fetchClient";
+import EmployeeProfile from "@/components/Dashboard/EmployeeProfile";
+import unknown from "../../assets/images/unknown.webp";
+import { authStore } from "@/redux/reducer/authSlice";
+import { useSelector } from "react-redux";
 
 const { Option } = Select;
 
 function dashboard() {
   const [form] = Form.useForm();
   const [addEmployeeModal, setAddEmployeeModal] = useState(false);
+  const [employeeDetails, setEmployeeDetails] = useState([]);
+  const [employeeEmailIds, setEmployeeEmailIds] = useState([]);
+  const [managerList, setManagerList] = useState([]);
 
-  const onSubmit = (values) => {};
+  const auth = useSelector(authStore);
 
+  console.log(auth.userData?.user_details?.user_role, "authauthauth");
+
+  const getEmployeeDetails = async () => {
+    try {
+      const resp = await getDashboardData();
+      setEmployeeDetails(resp?.data);
+    } catch (error) {
+      console.log("Error fetching employee details:", error);
+    }
+  };
+
+  const getEmployeeEmailIds = async () => {
+    try {
+      const resp = await getEmployeeIds();
+      setEmployeeEmailIds(resp?.data);
+    } catch (error) {
+      console.log("Error fetching employee email ids:", error);
+    }
+  };
+
+  const getManagerListData = async () => {
+    try {
+      const resp = await getManagerList();
+      setManagerList(resp?.data);
+    } catch (error) {
+      console.log("Error fetching manager list:", error);
+    }
+  };
+
+  useEffect(() => {
+    getEmployeeDetails();
+    getEmployeeEmailIds();
+    getManagerListData();
+  }, []);
+
+  console.log(employeeDetails, "employeeDetails");
+
+  const onSubmit = async (values) => {
+    console.log(values, "valuesvalues");
+
+    try {
+      const formData = new FormData();
+      formData.append("id", values.id);
+      formData.append("name", values.name);
+      formData.append("gender", values.gender);
+      formData.append("employee_id", values.employee_id);
+      formData.append("doj", values.doj.format("YYYY-MM-DD"));
+      // .format("YYYY-MM-DD")
+      formData.append("designation", values.designation);
+      formData.append("user_role", values.user_role);
+      formData.append("probation_days", values.probation_days);
+      formData.append("manager_id", values.manager_id);
+      if (values.photo) {
+        formData.append("profile_pic", values.photo.file);
+      }
+      const resp = await validateUser(formData);
+      if (resp?.status === 200) {
+        message.success("Employee added successfully");
+        setAddEmployeeModal(false);
+        form.resetFields();
+        getEmployeeDetails();
+      }
+    } catch (error) {
+      console.log("Error submitting form:", error);
+    }
+  };
   return (
     <div>
       <div className={styles.top_section}>
@@ -21,6 +109,20 @@ function dashboard() {
         >
           + Add Employee
         </div>
+      </div>
+      <div className={styles.profile_section}>
+        {employeeDetails?.map((profile, index) => (
+          <EmployeeProfile
+            key={index}
+            name={profile?.full_name}
+            role={profile?.designation}
+            image={
+              profile?.profile_pic === null || profile.profile_pic === "nan"
+                ? unknown
+                : profile?.profile_pic
+            }
+          />
+        ))}
       </div>
       <Modal
         centered
@@ -46,15 +148,18 @@ function dashboard() {
               <div className={styles.row}>
                 <Form.Item
                   label="User ID"
-                  name="userId"
+                  name="id"
                   rules={[
                     { required: true, message: "Please select a User ID" },
                   ]}
                   className={styles.item}
                 >
                   <Select placeholder="Select">
-                    <Option value="1">User 1</Option>
-                    <Option value="2">User 2</Option>
+                    {employeeEmailIds?.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.email}
+                      </Option>
+                    ))}
                   </Select>
                 </Form.Item>
 
@@ -83,7 +188,7 @@ function dashboard() {
 
                 <Form.Item
                   label="Employee ID"
-                  name="employeeId"
+                  name="employee_id"
                   rules={[
                     { required: true, message: "Please enter Employee ID" },
                   ]}
@@ -96,7 +201,7 @@ function dashboard() {
               <div className={styles.row}>
                 <Form.Item
                   label="Joining Date"
-                  name="joiningDate"
+                  name="doj"
                   rules={[
                     { required: true, message: "Please select Joining Date" },
                   ]}
@@ -120,22 +225,22 @@ function dashboard() {
               <div className={styles.row}>
                 <Form.Item
                   label="User Role"
-                  name="userRole"
+                  name="user_role"
                   rules={[
                     { required: true, message: "Please select User Role" },
                   ]}
                   className={styles.item}
                 >
                   <Select placeholder="Select Role">
-                    <Option value="admin">Admin</Option>
-                    <Option value="manager">Manager</Option>
-                    <Option value="employee">Employee</Option>
+                    <Option value="1">Admin</Option>
+                    <Option value="2">Employee</Option>
+                    <Option value="3">Developer</Option>
                   </Select>
                 </Form.Item>
 
                 <Form.Item
                   label="Probation Period (in days)"
-                  name="probation"
+                  name="probation_days"
                   rules={[
                     {
                       required: true,
@@ -151,7 +256,7 @@ function dashboard() {
               <div className={styles.row}>
                 <Form.Item
                   label="Reporting Manager"
-                  name="manager"
+                  name="manager_id"
                   rules={[
                     {
                       required: true,
@@ -161,12 +266,19 @@ function dashboard() {
                   className={styles.item}
                 >
                   <Select placeholder="Select Manager">
-                    <Option value="1">Manager 1</Option>
-                    <Option value="2">Manager 2</Option>
+                    {managerList?.map((item) => (
+                      <Option key={item?.id} value={item.id}>
+                        {item?.manager_name}
+                      </Option>
+                    ))}
                   </Select>
                 </Form.Item>
 
-                <Form.Item label="Photo" name="photo" className={styles.item}>
+                <Form.Item
+                  label="Photo"
+                  name="profile_pic"
+                  className={styles.item}
+                >
                   <Upload beforeUpload={() => false}>
                     <Button icon={<UploadOutlined />}>Upload Photo</Button>
                   </Upload>
@@ -191,3 +303,20 @@ function dashboard() {
 }
 
 export default dashboard;
+
+export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  if (!req?.cookies?.hrms_access_token) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}

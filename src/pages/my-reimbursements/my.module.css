@@ -6,7 +6,7 @@
   padding: 10px 20px;
   border-radius: 15px;
   cursor: pointer;
-  width: 110px;
+  width: 190px;
   margin-top: 10px;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%);
 }
@@ -47,13 +47,4 @@
   height: 40px;
   margin-top: 10px;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%);
-}
-
-.select {
-  width: 100% !important;
-}
-
-.edit {
-  color: white;
-  cursor: pointer;
 }

@@ -1,0 +1,13 @@
+.header_text {
+  font-size: 24px;
+  font-weight: 600;
+  color: #dfd3d3;
+  margin-bottom: 20px;
+}
+
+.link {
+  color: #ff9b44;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}

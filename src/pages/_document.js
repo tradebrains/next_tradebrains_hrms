@@ -28,6 +28,10 @@ export default function Document() {
           href="/_next/static/media/pie_chart_light.webp"
           type="image/webp"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
       </Head>
       <body>
         <Main />

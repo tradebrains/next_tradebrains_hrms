@@ -21,7 +21,7 @@ export default function AuthLayoutWrapper({ children }) {
           <DotLoader />
         </div>
       ) : (
-        <main>{children}</main>
+        <main className="padding-bottom">{children}</main>
       )}
     </>
   );

@@ -51,7 +51,9 @@ function Header() {
       : "";
 
   const userData = useSelector(authStore);
-  const userName = userData?.userData?.user?.first_name || "User";
+  const userName = userData?.userData?.user_details?.full_name || "User";
+
+  console.log(userData, "userData");
 
   const getRandomColor = () =>
     `#${Math.floor(Math.random() * 16777215).toString(16)}`;
@@ -69,6 +71,17 @@ function Header() {
         `}
       style={{ width: "100px", height: "auto" }}
       items={[
+        {
+          label: (
+            <div
+              className="fs-s-14 fw-500 flex"
+              onClick={() => router.push("/profile")}
+            >
+              <span>My Profile</span>
+            </div>
+          ),
+          key: "1",
+        },
         {
           label: (
             <div className="fs-s-14 fw-500 flex" onClick={userLogout}>

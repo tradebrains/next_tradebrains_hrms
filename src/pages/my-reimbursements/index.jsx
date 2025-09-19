@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import styles from "./leaves.module.css";
 import CustomTable from "@/components/Tables/CustomTable";
-import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
+import React, { useState } from "react";
+import styles from "./my.module.css";
 
-function MyLeaves() {
-  const [status, setStatus] = useState("");
-  const [record, setRecord] = useState({});
+function MyReimbursement() {
+  const [addAssetsModal, setAddAssetsModal] = useState(false);
   const [editData, setEditData] = useState({});
   const [deleteID, setDeleteID] = useState(null);
-  const [editShow, setEditShow] = useState(false);
-  const [addLeavesModal, setAddLeavesModal] = useState(false);
-  const [form] = Form.useForm();
-  const { Option } = Select;
+  const [record, setRecord] = useState({});
+  const [status, setStatus] = useState("");
+
   const columns = [
     {
       title: "Employee",
@@ -22,49 +19,65 @@ function MyLeaves() {
             <img alt="" src={record.image} />
           </div>
           <div>
-            {text} <span>{record.role}</span>
+            {text}
+            <span>{record.role}</span>
           </div>
         </h2>
       ),
+      sorter: (a, b) => a.name.length - b.name.length,
     },
     {
-      title: "Leave Type",
-      dataIndex: "leavetype",
-    },
-
-    {
-      title: "From",
-      dataIndex: "from",
+      title: "Date",
+      dataIndex: "date",
+      sorter: (a, b) => a.date.length - b.date.length,
+      align: "center",
     },
     {
-      title: "To",
-      dataIndex: "to",
+      title: "Amount",
+      dataIndex: "amount",
+      sorter: (a, b) => a.amount.length - b.amount.length,
+      align: "center",
     },
-
     {
-      title: "No Of Days",
-      dataIndex: "duration",
+      title: "Purpose",
+      dataIndex: "purpose",
+      sorter: (a, b) => a.purpose.length - b.purpose.length,
+      align: "center",
     },
-
     {
-      title: "Reason",
-      dataIndex: "reason",
-      render: (text) => (
-        <span
-          className="d-inline-block text-truncate"
-          data-toggle="tooltip"
-          data-placement="top"
-          title={text}
-          style={{ maxWidth: "150px" }}
-        >
-          {text}
+      title: "Attachment",
+      dataIndex: "attachment",
+      align: "center",
+      render: (attachment) => (
+        <span>
+          <a
+            onClick={() => attachModelHandler(attachment)}
+            className="dropdown-item"
+            href="#"
+            data-toggle="modal"
+            data-target="#attachment-modal"
+          >
+            {attachment.match(".pdf") ? (
+              <img
+                alt="pdf.file"
+                src="https://firebasestorage.googleapis.com/v0/b/hrms-tradebrains.appspot.com/o/assets%2FattachmentPdf.png?alt=media&token=ba18543b-f1c4-40b5-8a3b-369af165df04"
+                style={{ width: "40px", height: "40px", borderRadius: ".5rem" }}
+              />
+            ) : (
+              <img
+                alt="image.file"
+                src={attachment}
+                style={{ width: "50px", height: "40px", borderRadius: ".5rem" }}
+              />
+            )}
+          </a>
         </span>
       ),
-      // sorter: (a, b) => a.reason.length - b.reason.length,
     },
     {
       title: "Status",
       dataIndex: "status",
+      align: "center",
       render: (text, record, i) => {
         return (
           <div key={i} className="dropdown action-label text-center">
@@ -91,10 +104,6 @@ function MyLeaves() {
               style={{ cursor: "pointer" }}
               className="dropdown-menu dropdown-menu-right"
             >
-              {/* <div onClick={()=>{
-                setStatus('New')
-                setRecord(record)
-              }}  className="dropdown-item"  ><i className="fa fa-dot-circle-o text-purple" /> New</div> */}
               {record.status !== "Approved" && (
                 <div
                   onClick={() => {
@@ -103,7 +112,7 @@ function MyLeaves() {
                   }}
                   className="dropdown-item"
                   data-toggle="modal"
-                  data-target="#approve_leave"
+                  data-target="#approve_reimbursement"
                 >
                   <i className="fa fa-dot-circle-o text-info" /> Pending
                 </div>
@@ -116,7 +125,7 @@ function MyLeaves() {
                   }}
                   className="dropdown-item"
                   data-toggle="modal"
-                  data-target="#approve_leave"
+                  data-target="#approve_reimbursement"
                 >
                   <i className="fa fa-dot-circle-o text-success" /> Approved
                 </div>
@@ -129,7 +138,7 @@ function MyLeaves() {
                   }}
                   className="dropdown-item"
                   data-toggle="modal"
-                  data-target="#approve_leave"
+                  data-target="#approve_reimbursement"
                 >
                   <i className="fa fa-dot-circle-o text-danger" /> Rejected
                 </div>
@@ -142,7 +151,7 @@ function MyLeaves() {
                   }}
                   className="dropdown-item"
                   data-toggle="modal"
-                  data-target="#approve_leave"
+                  data-target="#approve_reimbursement"
                 >
                   <i className="fa fa-dot-circle-o text-purple" /> Decline
                 </div>
@@ -157,7 +166,7 @@ function MyLeaves() {
       title: "Action",
       render: (text, record, i) => {
         return (
-          <div key={i} className="dropdown dropdown-action text-right">
+          <div key={i} className="dropdown dropdown-action text-center">
             {record.status !== "Approved" ? (
               <>
                 <div
@@ -171,8 +180,9 @@ function MyLeaves() {
                 <div className="dropdown-menu dropdown-menu-right">
                   <div
                     onClick={() => {
-                      setEditData(record);
                       editHandleShow();
+                      setEditData(record);
+                      handleEdit(record.id);
                     }}
                     style={{ cursor: "pointer" }}
                     className="dropdown-item"
@@ -180,11 +190,12 @@ function MyLeaves() {
                     <i className="fa fa-pencil m-r-5" /> Edit
                   </div>
                   <div
-                    onClick={() => setDeleteID(record.id)}
+                    onClick={() => {
+                      deleteHandleShow();
+                      setDeleteID(record.id);
+                    }}
                     style={{ cursor: "pointer" }}
                     className="dropdown-item"
-                    data-toggle="modal"
-                    data-target="#delete_approve"
                   >
                     <i className="fa fa-trash-o m-r-5" /> Delete
                   </div>
@@ -199,99 +210,18 @@ function MyLeaves() {
     },
   ];
 
-  const onSubmit = (values) => {
-    console.log("Form values:", values);
-  };
-
   return (
-    <div>
+    <>
       <div className={styles.top_section}>
-        <p className={styles.header_text}>Leaves</p>
-        <div
-          className={styles.add_employee}
-          onClick={() => setAddLeavesModal(true)}
-        >
-          + Add Leaves
-        </div>
+        <p className={styles.header_text}>Reimbursement</p>
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
           <CustomTable columns={columns} />
         </div>
       </div>
-      <Modal
-        centered
-        closable={true}
-        width="500px"
-        bodyStyle={{ padding: "0px", minHeight: "200px", borderRadius: "18px" }}
-        visible={addLeavesModal}
-        footer={null}
-        onCancel={() => setAddLeavesModal(false)}
-        className="modelClassname"
-        wrapClassName={"modelClassname"}
-      >
-        <div>
-          <p className={styles.heading_text}>Add Leave</p>
-          <div className="w-100">
-            <Form
-              form={form}
-              layout="vertical"
-              autoComplete="off"
-              onFinish={onSubmit}
-              className={styles.form}
-            >
-              <Form.Item
-                label="Leave Type"
-                name="gender"
-                rules={[
-                  { required: true, message: "Please select Leave Type" },
-                ]}
-                className={styles.item}
-              >
-                <Select placeholder="Select">
-                  <Option value="male">Male</Option>
-                  <Option value="female">Female</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="From"
-                name="doj"
-                rules={[{ required: true, message: "Please select From" }]}
-                className={styles.item}
-              >
-                <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
-              </Form.Item>
-              <Form.Item
-                label="To"
-                name="doj"
-                rules={[{ required: true, message: "Please select To" }]}
-                className={styles.item}
-              >
-                <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
-              </Form.Item>
-              <Form.Item
-                label="Leave Reason"
-                name="gender"
-                rules={[{ required: true, message: "Please enter Reason" }]}
-                className={styles.item}
-              >
-                <Input.TextArea rows={4} />
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className={styles.submit}
-                >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        </div>
-      </Modal>
-    </div>
+    </>
   );
 }
 
-export default MyLeaves;
+export default MyReimbursement;

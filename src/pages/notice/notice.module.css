@@ -1,0 +1,30 @@
+.header_text {
+  font-size: 20px;
+  font-weight: 600;
+  color: #dfd3d3;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: 600;
+  color: #dfd3d3;
+}
+
+.list {
+  font-size: 16px;
+  font-weight: 600;
+  color: #c7bbbb;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #dfd3d3;
+}
+
+.h5 {
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 600;
+  color: #dfd3d3;
+}

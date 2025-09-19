@@ -84,7 +84,7 @@ const Sidebar = () => {
     },
     {
       name: "Assets (Admin)",
-      href: "/assets-admin",
+      href: "/admin-assets",
       icon: "KeyRound",
     },
     {
