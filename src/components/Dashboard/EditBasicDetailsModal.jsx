@@ -1,11 +1,29 @@
 import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./employee.module.css";
 import { UploadOutlined } from "@ant-design/icons";
+import { authStore } from "@/redux/reducer/authSlice";
+import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 
 const { Option } = Select;
-function EditBasicDetailsModal({ editBasicModal, setEditBasicModal }) {
+function EditBasicDetailsModal({
+  editBasicModal,
+  setEditBasicModal,
+  employeeDetails,
+}) {
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (editBasicModal && employeeDetails) {
+      form.setFieldsValue({
+        ...employeeDetails,
+        date_of_join: employeeDetails.date_of_join
+          ? dayjs(employeeDetails.date_of_join)
+          : null,
+      });
+    }
+  }, [editBasicModal, employeeDetails, form]);
 
   const onSubmit = (values) => {};
 
@@ -23,7 +41,7 @@ function EditBasicDetailsModal({ editBasicModal, setEditBasicModal }) {
         wrapClassName={"modelClassname"}
       >
         <div>
-          <p className={styles.heading_text}>Add Employee</p>
+          <p className={styles.heading_text}>Edit Employee</p>
           <div className="w-100">
             <Form
               form={form}
@@ -35,7 +53,7 @@ function EditBasicDetailsModal({ editBasicModal, setEditBasicModal }) {
               <div className={styles.row}>
                 <Form.Item
                   label="Name"
-                  name="name"
+                  name="full_name"
                   rules={[{ required: true, message: "Please enter name" }]}
                   className={styles.item}
                 >
@@ -67,7 +85,7 @@ function EditBasicDetailsModal({ editBasicModal, setEditBasicModal }) {
                 </Form.Item>
                 <Form.Item
                   label="Joining Date"
-                  name="doj"
+                  name="date_of_join"
                   rules={[
                     { required: true, message: "Please select Joining Date" },
                   ]}
@@ -118,7 +136,7 @@ function EditBasicDetailsModal({ editBasicModal, setEditBasicModal }) {
                 >
                   <Input type="number" placeholder="Enter Days" />
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   label="Reporting Manager"
                   name="manager_id"
                   rules={[
@@ -130,13 +148,13 @@ function EditBasicDetailsModal({ editBasicModal, setEditBasicModal }) {
                   className={styles.item}
                 >
                   <Select placeholder="Select Manager">
-                    {/* {managerList?.map((item) => (
+                    {managerList?.map((item) => (
                       <Option key={item?.id} value={item.id}>
                         {item?.manager_name}
                       </Option>
-                    ))} */}
+                    ))}
                   </Select>
-                </Form.Item>
+                </Form.Item> */}
               </div>
 
               <div className={styles.row}>

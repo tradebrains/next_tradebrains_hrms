@@ -33,8 +33,6 @@ function dashboard() {
 
   const auth = useSelector(authStore);
 
-  console.log(auth.userData?.user_details?.user_role, "authauthauth");
-
   const getEmployeeDetails = async () => {
     try {
       const resp = await getDashboardData();
@@ -116,6 +114,7 @@ function dashboard() {
             key={index}
             name={profile?.full_name}
             role={profile?.designation}
+            employeeDetails={profile}
             image={
               profile?.profile_pic === null || profile.profile_pic === "nan"
                 ? unknown

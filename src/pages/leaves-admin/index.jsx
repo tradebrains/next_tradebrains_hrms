@@ -14,31 +14,148 @@ import {
   Select,
 } from "antd";
 import { Pencil } from "lucide-react";
-import { getAdminLeaveList, postAdminLeaves } from "../api/fetchClient";
+import {
+  deleteLeaves,
+  editLeaves,
+  getAdminLeaveList,
+  getLeftLeaves,
+  postAdminLeaves,
+  postLeaveStatus,
+} from "../api/fetchClient";
+import dayjs from "dayjs";
+import { itemRender, onShowSizeChange } from "@/utility/PaginationFunction";
+import CustomPagination from "@/components/Tables/CustomPagination";
 
 function AdminLeaves({ employeeIdMail }) {
-  const [status, setStatus] = useState("");
-  const [record, setRecord] = useState({});
-  const [editData, setEditData] = useState({});
+  const [statusModal, setStatusModal] = useState(false);
   const [deleteID, setDeleteID] = useState(null);
-  const [editShow, setEditShow] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [id, setId] = useState("");
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
+  const [leftLeaves, setLeftLeaves] = useState("");
   const [employeeList, setEmployeeList] = useState([]);
   const [addLeavesModal, setAddLeavesModal] = useState(false);
+  const [selectedStatuses, setSelectedStatuses] = useState({}); // { id: status }
+  const [pendingStatus, setPendingStatus] = useState(null);
+  const [pendingId, setPendingId] = useState(null);
+  const [totalCount, setTotalCount] = useState();
+  const [Page, setPage] = useState({ page: 1, perPage: 10 });
   const [form] = Form.useForm();
   const { Option } = Select;
 
   const getEmployeeDetails = async () => {
     try {
-      const resp = await getAdminLeaveList();
+      const resp = await getAdminLeaveList(Page);
       if (resp?.status === 200) {
-        setEmployeeList(resp?.data);
+        setEmployeeList(resp?.data?.results);
+        setTotalCount(resp?.data?.count);
       }
     } catch (error) {}
   };
 
   useEffect(() => {
     getEmployeeDetails();
-  }, [addLeavesModal]);
+  }, [addLeavesModal, deleteModal, Page]);
+
+  useEffect(() => {
+    if (addLeavesModal && id && employeeList.length > 0) {
+      const data = employeeList.find((item) => item.id === id);
+      if (data) {
+        form.setFieldsValue({
+          ...data,
+          start_date: data?.start_date ? dayjs(data.start_date) : null,
+          end_date: data?.end_date ? dayjs(data.end_date) : null,
+        });
+      }
+    } else if (addLeavesModal && !id) {
+      form.resetFields();
+    }
+  }, [id, addLeavesModal, employeeList]);
+
+  const getLeavesLeft = async () => {
+    try {
+      const resp = await getLeftLeaves(selectedEmployeeId);
+      if (resp?.status === 200) {
+        setLeftLeaves(resp?.data);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (selectedEmployeeId) {
+      getLeavesLeft();
+    }
+  }, [selectedEmployeeId]);
+
+  const handleStatusUpdater = (id, value) => {
+    setPendingId(id);
+    setPendingStatus(value);
+    setStatusModal(true);
+  };
+
+  const submitStatus = async () => {
+    try {
+      const resp = await postLeaveStatus(pendingId, pendingStatus);
+      if (resp.status === 200) {
+        message.success("Status Updated");
+
+        setSelectedStatuses((prev) => ({
+          ...prev,
+          [pendingId]: pendingStatus,
+        }));
+
+        setStatusModal(false);
+      }
+    } catch (error) {
+      message.error("Failed to update status");
+    }
+  };
+
+  const handleSelectChange = (value) => {
+    setSelectedEmployeeId(value);
+  };
+
+  const onSubmit = async (values) => {
+    const payload = {
+      ...values,
+      start_date: values.start_date
+        ? values.start_date.format("YYYY-MM-DD")
+        : null,
+      end_date: values.end_date ? values.end_date.format("YYYY-MM-DD") : null,
+    };
+
+    if (id) {
+      try {
+        const resp = await editLeaves(id, payload);
+        if (resp.status === 200) {
+          message.success("Leave Edited Successfully");
+          setAddLeavesModal(false);
+          form.resetFields();
+        }
+      } catch (error) {}
+    } else {
+      try {
+        const resp = await postAdminLeaves(payload);
+        if (resp.status === 201) {
+          message.success("Leave applied Successfully");
+          setAddLeavesModal(false);
+          form.resetFields();
+        }
+      } catch (error) {}
+    }
+  };
+
+  const submitDelete = async () => {
+    const resp = await deleteLeaves(deleteID);
+    if (resp.status === 204) {
+      message.success("Leave Deleted");
+      setDeleteModal(false);
+    }
+  };
+
+  const onPageChange = (page, perPage) => {
+    setPage({ page: page, perPage: perPage });
+  };
 
   const baseCellStyle = {
     background: "#1e1e1e",
@@ -76,13 +193,22 @@ function AdminLeaves({ employeeIdMail }) {
   const columns = [
     {
       title: "Employee",
-      dataIndex: "employee_full_name",
+      dataIndex: "full_name",
       render: (text, record) => renderCell(text),
     },
     {
       title: "Leave Type",
       dataIndex: "leave_type",
-      render: (text, record) => renderCell(text),
+      render: (text, record) =>
+        renderCell(
+          text === "leave_without_pay"
+            ? "Leave without Pay"
+            : text === "privilege_leave"
+            ? "Privilege Leave"
+            : text === "sick_leave"
+            ? "Sick Leave"
+            : ""
+        ),
     },
 
     {
@@ -97,7 +223,7 @@ function AdminLeaves({ employeeIdMail }) {
     },
     {
       title: "No Of Days",
-      dataIndex: "duration",
+      dataIndex: "no_of_days",
       render: (text, record) => renderCell(text),
     },
 
@@ -105,13 +231,32 @@ function AdminLeaves({ employeeIdMail }) {
       title: "Reason",
       dataIndex: "reason",
       render: (text, record) => renderCell(text),
-      // sorter: (a, b) => a.reason.length - b.reason.length,
     },
     {
       title: "Status",
       dataIndex: "status",
       width: "150px",
-      render: (text, record, i) => {
+      render: (text, record) => {
+        const currentStatus = selectedStatuses[record.id] || record.status;
+
+        const statusOptions = {
+          Pending: (
+            <>
+              <span className="fa fa-dot-circle-o text-purple"></span> Pending
+            </>
+          ),
+          Rejected: (
+            <>
+              <span className="fa fa-dot-circle-o text-danger"></span> Rejected
+            </>
+          ),
+          Approved: (
+            <>
+              <span className="fa fa-dot-circle-o text-success"></span> Approved
+            </>
+          ),
+        };
+
         return {
           props: {
             style: {
@@ -120,25 +265,27 @@ function AdminLeaves({ employeeIdMail }) {
           },
           children: (
             <div>
-              <Select placeholder={text} className={styles.select}>
-                <Option value="Pending">
-                  <span className="fa fa-dot-circle-o text-purple"></span>
-                  Pending
+              <Select
+                className={styles.select}
+                value={currentStatus}
+                onChange={(value) => handleStatusUpdater(record.id, value)}
+                labelInValue={false}
+              >
+                <Option value="Pending" label="Pending">
+                  {statusOptions.Pending}
                 </Option>
-                <Option value="Rejected">
-                  <span className="fa fa-dot-circle-o text-danger"></span>
-                  Rejected
+                <Option value="Rejected" label="Rejected">
+                  {statusOptions.Rejected}
                 </Option>
-                <Option value="Approved">
-                  {" "}
-                  <span className="fa fa-dot-circle-o text-success"></span>
-                  Approved
+                <Option value="Approved" label="Approved">
+                  {statusOptions.Approved}
                 </Option>
               </Select>
             </div>
           ),
         };
       },
+
       sorter: (a, b) => a.status.length - b.status.length,
     },
     {
@@ -174,9 +321,8 @@ function AdminLeaves({ employeeIdMail }) {
                     <div className="">
                       <div
                         onClick={() => {
-                          setModel(true);
+                          setAddLeavesModal(true);
                           setId(record.id);
-                          fetchAnnouncementById(record.id);
                         }}
                         className={`text-white`}
                       >
@@ -185,7 +331,7 @@ function AdminLeaves({ employeeIdMail }) {
                       <div
                         onClick={() => {
                           setDeleteModal(true);
-                          setId(record.id);
+                          setDeleteID(record.id);
                         }}
                         className={`text-white mt-10`}
                       >
@@ -204,38 +350,34 @@ function AdminLeaves({ employeeIdMail }) {
     },
   ];
 
-  const onSubmit = async (values) => {
-    const payload = {
-      ...values,
-      start_date: values.start_date
-        ? values.start_date.format("YYYY-MM-DD")
-        : null,
-      end_date: values.end_date ? values.end_date.format("YYYY-MM-DD") : null,
-    };
-    try {
-      const resp = await postAdminLeaves(payload);
-      if (resp.status === 201) {
-        message.success("Leave applied Successfully");
-        setAddLeavesModal(false);
-        form.resetFields();
-      }
-    } catch (error) {}
-  };
-
   return (
     <div>
       <div className={styles.top_section}>
         <p className={styles.header_text}>Leaves</p>
         <div
           className={styles.add_employee}
-          onClick={() => setAddLeavesModal(true)}
+          onClick={() => {
+            setId(null);
+            form.resetFields();
+            setAddLeavesModal(true);
+          }}
         >
           + Add Leaves
         </div>
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
-          <CustomTable columns={columns} data={employeeList} />
+          <CustomTable
+            columns={columns}
+            data={employeeList}
+            pagination={false}
+          />
+          <CustomPagination
+            current={Page.page}
+            pageSize={Page.perPage}
+            onChange={onPageChange}
+            total={totalCount}
+          />
         </div>
       </div>
       <Modal
@@ -267,7 +409,11 @@ function AdminLeaves({ employeeIdMail }) {
                 ]}
                 className={styles.item}
               >
-                <Select placeholder="Select">
+                <Select
+                  placeholder="Select"
+                  onChange={handleSelectChange}
+                  disabled={id}
+                >
                   {employeeIdMail?.map((item) => (
                     <Option key={item?.employee_id} value={item?.employee_id}>
                       {item?.employee_id}{" "}
@@ -275,14 +421,24 @@ function AdminLeaves({ employeeIdMail }) {
                   ))}
                 </Select>
               </Form.Item>
+              {leftLeaves && (
+                <div className={styles.flex_between}>
+                  <p className={styles.leaves_left_text}>
+                    Sick Leave Left : {leftLeaves?.sick_leaves_left}
+                  </p>
+                  <p className={styles.leaves_left_text}>
+                    Privilege Leave Left : {leftLeaves?.privilege_leaves_left}
+                  </p>
+                </div>
+              )}
               <Form.Item
                 label="User ID"
                 name="email"
                 rules={[{ required: true, message: "Please select User ID" }]}
                 className={styles.item}
               >
-                <Select placeholder="Select">
-                  {employeeIdMail.map((item) => (
+                <Select placeholder="Select" disabled={id}>
+                  {employeeIdMail?.map((item) => (
                     <Option key={item?.employee_id} value={item?.email}>
                       {item?.email}{" "}
                     </Option>
@@ -298,9 +454,9 @@ function AdminLeaves({ employeeIdMail }) {
                 className={styles.item}
               >
                 <Select placeholder="Select">
-                  <Option value="Previlege Leave">Previlege Leave</Option>
-                  <Option value="Sick Leave">Sick Leave</Option>
-                  <Option value="lop">Leave without Pay</Option>
+                  <Option value="privilege_leave">Privilege Leave</Option>
+                  <Option value="sick_leave">Sick Leave</Option>
+                  <Option value="leave_without_pay">Leave without Pay</Option>
                 </Select>
               </Form.Item>
               <Form.Item
@@ -337,6 +493,68 @@ function AdminLeaves({ employeeIdMail }) {
                 </Button>
               </Form.Item>
             </Form>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        centered
+        closable={true}
+        width="500px"
+        bodyStyle={{ padding: "0px", minHeight: "150px", borderRadius: "18px" }}
+        visible={statusModal}
+        footer={null}
+        onCancel={() => setStatusModal(false)}
+        className="modelClassname"
+        wrapClassName={"modelClassname"}
+        okText="Yes"
+        cancelText="No"
+      >
+        <div>
+          <p className={styles.status_heading}>Leave {pendingStatus}</p>
+          <p className={styles.status_text}>
+            Are you want to set {pendingStatus} status for this leave?
+          </p>
+          <div className={styles.flex_button}>
+            <div className={styles.yes_no_button} onClick={submitStatus}>
+              Yes
+            </div>
+            <div
+              className={styles.yes_no_button}
+              onClick={() => setStatusModal(false)}
+            >
+              No
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        centered
+        closable={true}
+        width="500px"
+        bodyStyle={{ padding: "0px", minHeight: "150px", borderRadius: "18px" }}
+        visible={deleteModal}
+        footer={null}
+        onCancel={() => setDeleteModal(false)}
+        className="modelClassname"
+        wrapClassName={"modelClassname"}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <div>
+          <p className={styles.status_heading}>Delete Leave</p>
+          <p className={styles.status_text}>
+            Are you sure want to delete this leave?
+          </p>
+          <div className={styles.flex_button}>
+            <div className={styles.yes_no_button} onClick={submitDelete}>
+              Delete
+            </div>
+            <div
+              className={styles.yes_no_button}
+              onClick={() => setDeleteModal(false)}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       </Modal>

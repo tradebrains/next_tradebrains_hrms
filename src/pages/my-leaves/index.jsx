@@ -1,207 +1,272 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./leaves.module.css";
 import CustomTable from "@/components/Tables/CustomTable";
-import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  Form,
+  Input,
+  Menu,
+  message,
+  Modal,
+  Popover,
+  Select,
+} from "antd";
+import { Pencil } from "lucide-react";
+import {
+  editLeaves,
+  getAdminLeaveList,
+  getEmployeeLeaves,
+  postAdminLeaves,
+  postEmployeeLeaves,
+} from "../api/fetchClient";
+import { authStore } from "@/redux/reducer/authSlice";
+import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 
-function MyLeaves() {
+function EmployeeLeaves({}) {
   const [status, setStatus] = useState("");
   const [record, setRecord] = useState({});
   const [editData, setEditData] = useState({});
   const [deleteID, setDeleteID] = useState(null);
   const [editShow, setEditShow] = useState(false);
+  const [id, setId] = useState("");
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
+  const [leavesTable, setLeavesTable] = useState([]);
   const [addLeavesModal, setAddLeavesModal] = useState(false);
   const [form] = Form.useForm();
   const { Option } = Select;
+
+  const auth = useSelector(authStore);
+
+  const getLeaves = async () => {
+    try {
+      const resp = await getEmployeeLeaves();
+      if (resp?.status === 200) {
+        setLeavesTable(resp?.data?.results);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getLeaves();
+  }, [addLeavesModal]);
+
+  useEffect(() => {
+    if (addLeavesModal && id && leavesTable.length > 0) {
+      const data = leavesTable.find((item) => item.id === id);
+      if (data) {
+        form.setFieldsValue({
+          ...data,
+          start_date: data?.start_date ? dayjs(data.start_date) : null,
+          end_date: data?.end_date ? dayjs(data.end_date) : null,
+        });
+      }
+    } else if (addLeavesModal && !id) {
+      form.resetFields();
+    }
+  }, [id, addLeavesModal, leavesTable]);
+
+  const onSubmit = async (values) => {
+    const payload = {
+      ...values,
+      employee: auth?.userData?.user_details?.id,
+      start_date: values.start_date
+        ? values.start_date.format("YYYY-MM-DD")
+        : null,
+      end_date: values.end_date ? values.end_date.format("YYYY-MM-DD") : null,
+    };
+    if (id) {
+      try {
+        const resp = await editLeaves(id, payload);
+        if (resp.status === 200) {
+          message.success("Leave Edited Successfully");
+          setAddLeavesModal(false);
+          form.resetFields();
+        }
+      } catch (error) {}
+    } else {
+      try {
+        const resp = await postEmployeeLeaves(payload);
+        if (resp.status === 201) {
+          message.success("Leave applied Successfully");
+          setAddLeavesModal(false);
+          form.resetFields();
+        }
+      } catch (error) {}
+    }
+  };
+
+  const baseCellStyle = {
+    background: "#1e1e1e",
+    borderRight: "1px solid #2f2f2f",
+    borderLeft: "1px solid #2f2f2f",
+    borderBottom: "none",
+  };
+
+  const baseTextStyle = {
+    fontSize: "14px",
+    fontWeight: "400",
+    color: "white",
+  };
+
+  const renderCell = (
+    text,
+    customStyle = {},
+    extraClasses = "",
+    onClick = null
+  ) => ({
+    props: { style: baseCellStyle },
+    children: (
+      <span
+        onClick={onClick}
+        className={`ff-lato ${extraClasses} ${
+          onClick ? "pointer link-hover-underline" : ""
+        }`}
+        style={{ ...baseTextStyle, ...customStyle }}
+      >
+        {text}
+      </span>
+    ),
+  });
+
   const columns = [
     {
-      title: "Employee",
-      dataIndex: "name",
-      render: (text, record, i) => (
-        <h2 key={i} className="table-avatar">
-          <div className="avatar">
-            <img alt="" src={record.image} />
-          </div>
-          <div>
-            {text} <span>{record.role}</span>
-          </div>
-        </h2>
-      ),
-    },
-    {
       title: "Leave Type",
-      dataIndex: "leavetype",
+      dataIndex: "leave_type",
+      render: (text, record) =>
+        renderCell(
+          text === "leave_without_pay"
+            ? "Leave without Pay"
+            : text === "privilege_leave"
+            ? "Privilege Leave"
+            : text === "sick_leave"
+            ? "Sick Leave"
+            : ""
+        ),
     },
 
     {
       title: "From",
-      dataIndex: "from",
+      dataIndex: "start_date",
+      render: (text, record) => renderCell(text),
     },
     {
       title: "To",
-      dataIndex: "to",
+      dataIndex: "end_date",
+      render: (text, record) => renderCell(text),
     },
-
     {
       title: "No Of Days",
-      dataIndex: "duration",
+      dataIndex: "no_of_days",
+      render: (text, record) => renderCell(text),
     },
 
     {
       title: "Reason",
       dataIndex: "reason",
-      render: (text) => (
-        <span
-          className="d-inline-block text-truncate"
-          data-toggle="tooltip"
-          data-placement="top"
-          title={text}
-          style={{ maxWidth: "150px" }}
-        >
-          {text}
-        </span>
-      ),
-      // sorter: (a, b) => a.reason.length - b.reason.length,
+      render: (text, record) => renderCell(text),
     },
     {
       title: "Status",
       dataIndex: "status",
+      width: "150px",
       render: (text, record, i) => {
-        return (
-          <div key={i} className="dropdown action-label text-center">
-            <a
-              className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-              href="#"
-              data-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i
-                className={
-                  text === "New"
-                    ? "fa fa-dot-circle-o text-purple"
-                    : text === "Pending"
-                    ? "fa fa-dot-circle-o text-info"
-                    : text === "Approved"
-                    ? "fa fa-dot-circle-o text-success"
-                    : "fa fa-dot-circle-o text-danger"
-                }
-              />{" "}
-              {text}
-            </a>
-            <div
-              style={{ cursor: "pointer" }}
-              className="dropdown-menu dropdown-menu-right"
-            >
-              {/* <div onClick={()=>{
-                setStatus('New')
-                setRecord(record)
-              }}  className="dropdown-item"  ><i className="fa fa-dot-circle-o text-purple" /> New</div> */}
-              {record.status !== "Approved" && (
-                <div
-                  onClick={() => {
-                    setStatus("Pending");
-                    setRecord(record);
-                  }}
-                  className="dropdown-item"
-                  data-toggle="modal"
-                  data-target="#approve_leave"
-                >
-                  <i className="fa fa-dot-circle-o text-info" /> Pending
+        return {
+          props: {
+            style: {
+              ...baseCellStyle,
+            },
+          },
+          children: (
+            <div>
+              {text === "Pending" && (
+                <div className={styles.select}>
+                  <span className="fa fa-dot-circle-o text-purple"></span>{" "}
+                  Pending
                 </div>
               )}
-              {record.status !== "Approved" && (
-                <div
-                  onClick={() => {
-                    setStatus("Approved");
-                    setRecord(record);
-                  }}
-                  className="dropdown-item"
-                  data-toggle="modal"
-                  data-target="#approve_leave"
-                >
-                  <i className="fa fa-dot-circle-o text-success" /> Approved
+
+              {text === "Rejected" && (
+                <div className={styles.select}>
+                  <span className="fa fa-dot-circle-o text-danger"></span>{" "}
+                  Rejected
                 </div>
               )}
-              {record.status !== "Approved" && (
-                <div
-                  onClick={() => {
-                    setStatus("Rejected");
-                    setRecord(record);
-                  }}
-                  className="dropdown-item"
-                  data-toggle="modal"
-                  data-target="#approve_leave"
-                >
-                  <i className="fa fa-dot-circle-o text-danger" /> Rejected
-                </div>
-              )}
-              {record.status === "Approved" && (
-                <div
-                  onClick={() => {
-                    setStatus("Decline");
-                    setRecord(record);
-                  }}
-                  className="dropdown-item"
-                  data-toggle="modal"
-                  data-target="#approve_leave"
-                >
-                  <i className="fa fa-dot-circle-o text-purple" /> Decline
+              {text === "Approved" && (
+                <div className={styles.select}>
+                  <span className="fa fa-dot-circle-o text-success"></span>{" "}
+                  Approved
                 </div>
               )}
             </div>
-          </div>
-        );
+          ),
+        };
       },
       sorter: (a, b) => a.status.length - b.status.length,
     },
     {
       title: "Action",
+      dataIndex: "status",
+      width: "50px",
       render: (text, record, i) => {
-        return (
-          <div key={i} className="dropdown dropdown-action text-right">
-            {record.status !== "Approved" ? (
-              <>
-                <div
-                  style={{ cursor: "pointer" }}
-                  className="action-icon dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
+        return {
+          props: {
+            style: {
+              ...baseCellStyle,
+            },
+          },
+          children: (
+            <div
+              style={{
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              {record?.status === "Approved" ? (
+                "NA"
+              ) : (
+                <Popover
+                  color={"#2f2f2f"}
+                  className={`nameis fs-s-20 `}
+                  openClassName=""
+                  placement="bottom"
+                  style={{ width: "10px", height: "30px" }}
+                  content={
+                    <div className="">
+                      <div
+                        onClick={() => {
+                          setAddLeavesModal(true);
+                          setId(record.id);
+                        }}
+                        className={`text-white`}
+                      >
+                        <p className={styles.edit}>Edit</p>
+                      </div>
+                      <div
+                        onClick={() => {
+                          setDeleteModal(true);
+                          setId(record.id);
+                        }}
+                        className={`text-white mt-10`}
+                      >
+                        <p className={styles.edit}>Delete</p>
+                      </div>
+                    </div>
+                  }
                 >
-                  <i className="material-icons">more_vert</i>
-                </div>
-                <div className="dropdown-menu dropdown-menu-right">
-                  <div
-                    onClick={() => {
-                      setEditData(record);
-                      editHandleShow();
-                    }}
-                    style={{ cursor: "pointer" }}
-                    className="dropdown-item"
-                  >
-                    <i className="fa fa-pencil m-r-5" /> Edit
-                  </div>
-                  <div
-                    onClick={() => setDeleteID(record.id)}
-                    style={{ cursor: "pointer" }}
-                    className="dropdown-item"
-                    data-toggle="modal"
-                    data-target="#delete_approve"
-                  >
-                    <i className="fa fa-trash-o m-r-5" /> Delete
-                  </div>
-                </div>
-              </>
-            ) : (
-              "NA"
-            )}
-          </div>
-        );
+                  <p className="mb-0">{<Pencil />}</p>
+                </Popover>
+              )}
+            </div>
+          ),
+        };
       },
     },
   ];
-
-  const onSubmit = (values) => {
-    console.log("Form values:", values);
-  };
 
   return (
     <div>
@@ -216,7 +281,7 @@ function MyLeaves() {
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
-          <CustomTable columns={columns} />
+          <CustomTable columns={columns} data={leavesTable} />
         </div>
       </div>
       <Modal
@@ -242,20 +307,21 @@ function MyLeaves() {
             >
               <Form.Item
                 label="Leave Type"
-                name="gender"
+                name="leave_type"
                 rules={[
                   { required: true, message: "Please select Leave Type" },
                 ]}
                 className={styles.item}
               >
                 <Select placeholder="Select">
-                  <Option value="male">Male</Option>
-                  <Option value="female">Female</Option>
+                  <Option value="privilege_leave">Privilege Leave</Option>
+                  <Option value="sick_leave">Sick Leave</Option>
+                  <Option value="leave_without_pay">Leave without Pay</Option>
                 </Select>
               </Form.Item>
               <Form.Item
                 label="From"
-                name="doj"
+                name="start_date"
                 rules={[{ required: true, message: "Please select From" }]}
                 className={styles.item}
               >
@@ -263,7 +329,7 @@ function MyLeaves() {
               </Form.Item>
               <Form.Item
                 label="To"
-                name="doj"
+                name="end_date"
                 rules={[{ required: true, message: "Please select To" }]}
                 className={styles.item}
               >
@@ -271,7 +337,7 @@ function MyLeaves() {
               </Form.Item>
               <Form.Item
                 label="Leave Reason"
-                name="gender"
+                name="reason"
                 rules={[{ required: true, message: "Please enter Reason" }]}
                 className={styles.item}
               >
@@ -294,4 +360,4 @@ function MyLeaves() {
   );
 }
 
-export default MyLeaves;
+export default EmployeeLeaves;

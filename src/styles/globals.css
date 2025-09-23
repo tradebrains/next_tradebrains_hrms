@@ -1167,6 +1167,10 @@ p {
   color: red !important;
 }
 
+.ant-picker .ant-picker-input > input {
+  color: white;
+}
+
 :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper
   .ant-table-thead
   > tr
@@ -1311,6 +1315,7 @@ p {
 
 .text-info {
   color: #17a2b8;
+  margin-right: 5px;
 }
 .text-success {
   color: #28a745;

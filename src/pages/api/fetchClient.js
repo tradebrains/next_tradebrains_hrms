@@ -1,5 +1,5 @@
 import { authPost } from "./authClient";
-import { get, patch, post, put } from "./MainClient";
+import { del, delWithParams, get, patch, post, put } from "./MainClient";
 
 export const postRegister = async (data) => {
   const loginResp = await authPost(`authentication/register/`, data).then(
@@ -74,12 +74,12 @@ export const getProfileDetails = async () => {
   return response;
 };
 
-export const getAdminLeaveList = async () => {
-  const response = await get(`employee/leaves/admin/applications/`).then(
-    (resp) => {
-      return resp;
-    }
-  );
+export const getAdminLeaveList = async (Page) => {
+  const response = await get(
+    `employee/leaves/admin/applications/?page=${Page.page}&per_page=${Page.perPage}`
+  ).then((resp) => {
+    return resp;
+  });
   return response;
 };
 
@@ -107,5 +107,107 @@ export const postAdminLeaves = async (data) => {
       return resp;
     }
   );
+  return response;
+};
+
+export const getLeftLeaves = async (id) => {
+  const response = await get(
+    `employee/leaves/admin/employee-leave-balance/${id}`
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const postEmployeeLeaves = async (data) => {
+  const response = await post(`employee/leaves/apply/`, data).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const getEmployeeLeaves = async () => {
+  const response = await get(`employee/leaves/my-applications/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const postLeaveStatus = async (id, status) => {
+  const response = await post(`employee/leaves/approve/${id}/${status}/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const deleteLeaves = async (id) => {
+  const response = await del(`employee/leaves/apply/${id}/delete/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const editLeaves = async (id, data) => {
+  const response = await put(`employee/leaves/apply/${id}/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const postAsset = async (data) => {
+  const response = await post(`employee/assets/admin/create/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const getAdminAsset = async () => {
+  const response = await get(`employee/assets/admin/`).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const updateAssetStatus = async (id, data) => {
+  const response = await put(`employee/assets/status/update/${id}/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const editAsset = async (id, data) => {
+  const response = await put(`employee/assets/admin/${id}/edit/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const deleteAsset = async (id) => {
+  const response = await del(`employee/assets/admin/${id}/delete/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const getEmployeeAsset = async () => {
+  const response = await get(`employee/assets/user/`).then((resp) => {
+    return resp;
+  });
   return response;
 };

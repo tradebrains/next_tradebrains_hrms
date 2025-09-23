@@ -8,7 +8,7 @@ import AddPersonalDetails from "./AddEditPersonalDetails";
 import DeleteModal from "./DeleteModal";
 import UploadDocuments from "./UploadDocuments";
 
-function EmployeeProfile({ name, role, image }) {
+function EmployeeProfile({ name, role, image, employeeDetails }) {
   const [editBasicModal, setEditBasicModal] = useState(false);
   const [addPersonalModal, setAddPersonalModal] = useState(false);
   const [editPersonalModal, setEditPersonalModal] = useState(false);
@@ -125,6 +125,7 @@ function EmployeeProfile({ name, role, image }) {
       <EditBasicDetailsModal
         setEditBasicModal={setEditBasicModal}
         editBasicModal={editBasicModal}
+        employeeDetails={employeeDetails}
       />
       <AddPersonalDetails
         setAddPersonalModal={setAddPersonalModal}
