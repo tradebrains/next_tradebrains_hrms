@@ -1,16 +1,27 @@
-import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
-import React, { useEffect } from "react";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Select,
+  Upload,
+} from "antd";
+import React, { useEffect, useState } from "react";
 import styles from "./employee.module.css";
 import { UploadOutlined } from "@ant-design/icons";
 import { authStore } from "@/redux/reducer/authSlice";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { getManagerList, validateUser } from "@/pages/api/fetchClient";
 
 const { Option } = Select;
 function EditBasicDetailsModal({
   editBasicModal,
   setEditBasicModal,
   employeeDetails,
+  managerList,
 }) {
   const [form] = Form.useForm();
 
@@ -25,7 +36,32 @@ function EditBasicDetailsModal({
     }
   }, [editBasicModal, employeeDetails, form]);
 
-  const onSubmit = (values) => {};
+  const onSubmit = async (values) => {
+    try {
+      const formData = new FormData();
+      formData.append("id", Number(employeeDetails.id));
+      formData.append("full_name", values.full_name);
+      formData.append("gender", values.gender);
+      formData.append("employee_id", values.employee_id);
+      formData.append("date_of_join", values.date_of_join.format("YYYY-MM-DD"));
+      formData.append("designation", values.designation);
+      formData.append("user_role", values.user_role);
+      formData.append("probation_days", values.probation_days);
+      formData.append("manager_id", values.manager_id);
+      if (values.photo) {
+        formData.append("profile_pic", values.photo.file);
+      }
+
+      const resp = await validateUser(formData);
+      if (resp?.status === 200) {
+        message.success("Employee Details Updated successfully");
+        setEditBasicModal(false);
+        form.resetFields();
+      }
+    } catch (error) {
+      console.log("Error submitting form:", error);
+    }
+  };
 
   return (
     <div>
@@ -115,9 +151,9 @@ function EditBasicDetailsModal({
                   className={styles.item}
                 >
                   <Select placeholder="Select Role">
-                    <Option value="1">Admin</Option>
-                    <Option value="2">Employee</Option>
-                    <Option value="3">Developer</Option>
+                    <Select.Option value={1}>Admin</Select.Option>
+                    <Select.Option value={2}>Employee</Select.Option>
+                    <Select.Option value={3}>Developer</Select.Option>
                   </Select>
                 </Form.Item>
               </div>
@@ -136,7 +172,7 @@ function EditBasicDetailsModal({
                 >
                   <Input type="number" placeholder="Enter Days" />
                 </Form.Item>
-                {/* <Form.Item
+                <Form.Item
                   label="Reporting Manager"
                   name="manager_id"
                   rules={[
@@ -149,12 +185,12 @@ function EditBasicDetailsModal({
                 >
                   <Select placeholder="Select Manager">
                     {managerList?.map((item) => (
-                      <Option key={item?.id} value={item.id}>
+                      <Select.Option key={item?.id} value={item.id}>
                         {item?.manager_name}
-                      </Option>
+                      </Select.Option>
                     ))}
                   </Select>
-                </Form.Item> */}
+                </Form.Item>
               </div>
 
               <div className={styles.row}>

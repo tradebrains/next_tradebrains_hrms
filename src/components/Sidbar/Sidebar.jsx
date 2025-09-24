@@ -73,15 +73,15 @@ const Sidebar = () => {
       href: "/my-leaves",
       icon: "BadgeIndianRupee",
     },
-    {
-      name: "Payroll",
-      hasDropdown: true,
-      subItems: [
-        { name: "Employee Salary", href: "/payroll/employee-salary" },
-        { name: "Payslip", href: "/payroll/payslip" },
-      ],
-      icon: "ShieldCheck",
-    },
+    // {
+    //   name: "Payroll",
+    //   hasDropdown: true,
+    //   subItems: [
+    //     { name: "Employee Salary", href: "/payroll/employee-salary" },
+    //     { name: "Payslip", href: "/payroll/payslip" },
+    //   ],
+    //   icon: "ShieldCheck",
+    // },
     {
       name: "Assets (Admin)",
       href: "/admin-assets",
@@ -107,11 +107,11 @@ const Sidebar = () => {
       href: "/documents",
       icon: "UserCheck",
     },
-    {
-      name: "Medical Insurance (Admin)",
-      href: "/medical-insurance",
-      icon: "Activity",
-    },
+    // {
+    //   name: "Medical Insurance (Admin)",
+    //   href: "/medical-insurance",
+    //   icon: "Activity",
+    // },
     {
       name: "Leave Policy",
       href: "/leave-policy",
@@ -135,6 +135,11 @@ const Sidebar = () => {
     {
       name: "Travel Policy",
       href: "/travel-policy",
+      icon: "PaintBucket",
+    },
+    {
+      name: "Attendance",
+      href: "/calendar",
       icon: "PaintBucket",
     },
   ];

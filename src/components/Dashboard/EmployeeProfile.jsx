@@ -8,7 +8,14 @@ import AddPersonalDetails from "./AddEditPersonalDetails";
 import DeleteModal from "./DeleteModal";
 import UploadDocuments from "./UploadDocuments";
 
-function EmployeeProfile({ name, role, image, employeeDetails }) {
+function EmployeeProfile({
+  name,
+  role,
+  image,
+  employeeDetails,
+  managerList,
+  employeeEmailIds,
+}) {
   const [editBasicModal, setEditBasicModal] = useState(false);
   const [addPersonalModal, setAddPersonalModal] = useState(false);
   const [editPersonalModal, setEditPersonalModal] = useState(false);
@@ -126,18 +133,24 @@ function EmployeeProfile({ name, role, image, employeeDetails }) {
         setEditBasicModal={setEditBasicModal}
         editBasicModal={editBasicModal}
         employeeDetails={employeeDetails}
+        managerList={managerList}
       />
       <AddPersonalDetails
         setAddPersonalModal={setAddPersonalModal}
         addPersonalModal={addPersonalModal}
         setEditPersonalModal={setEditPersonalModal}
         editPersonalModal={editPersonalModal}
+        employeeEmailIds={employeeEmailIds}
       />
       <UploadDocuments
         uploadDocumentModal={uploadDocumentModal}
         setUploadDocumentModal={setUploadDocumentModal}
       />
-      <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} />
+      <DeleteModal
+        deleteModal={deleteModal}
+        setDeleteModal={setDeleteModal}
+        deleteID={employeeDetails?.id}
+      />
     </div>
   );
 }

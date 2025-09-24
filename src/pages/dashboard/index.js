@@ -69,16 +69,13 @@ function dashboard() {
   console.log(employeeDetails, "employeeDetails");
 
   const onSubmit = async (values) => {
-    console.log(values, "valuesvalues");
-
     try {
       const formData = new FormData();
       formData.append("id", values.id);
-      formData.append("name", values.name);
+      formData.append("full_name", values.full_name);
       formData.append("gender", values.gender);
       formData.append("employee_id", values.employee_id);
-      formData.append("doj", values.doj.format("YYYY-MM-DD"));
-      // .format("YYYY-MM-DD")
+      formData.append("date_of_join", values.date_of_join.format("YYYY-MM-DD"));
       formData.append("designation", values.designation);
       formData.append("user_role", values.user_role);
       formData.append("probation_days", values.probation_days);
@@ -115,6 +112,8 @@ function dashboard() {
             name={profile?.full_name}
             role={profile?.designation}
             employeeDetails={profile}
+            managerList={managerList}
+            employeeEmailIds={employeeEmailIds}
             image={
               profile?.profile_pic === null || profile.profile_pic === "nan"
                 ? unknown

@@ -1,151 +1,148 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./assets.module.css";
 import CustomTable from "@/components/Tables/CustomTable";
+import { Popover, Select } from "antd";
+import { getEmployeeAsset } from "../api/fetchClient";
+import CustomPagination from "@/components/Tables/CustomPagination";
 
 function MyAssets() {
+  const { Option } = Select;
   const [editAssetData, setEditAssetData] = useState({});
+  const [tableData, setTableData] = useState([]);
+  const [Page, setPage] = useState({ page: 1, perPage: 10 });
+  const [totalCount, setTotalCount] = useState();
+
+  const getAsset = async () => {
+    try {
+      const resp = await getEmployeeAsset(Page);
+      if (resp?.status === 200) {
+        setTableData(resp?.data?.results);
+        setTotalCount(resp?.data?.count);
+      }
+    } catch (error) {}
+  };
+
+  console.log(tableData, "tableData");
+
+  useEffect(() => {
+    getAsset();
+  }, []);
+
+  const onPageChange = (page, perPage) => {
+    setPage({ page: page, perPage: perPage });
+  };
+
+  const baseCellStyle = {
+    background: "#1e1e1e",
+    borderRight: "1px solid #2f2f2f",
+    borderLeft: "1px solid #2f2f2f",
+    borderBottom: "none",
+  };
+
+  const baseTextStyle = {
+    fontSize: "14px",
+    fontWeight: "400",
+    color: "white",
+  };
+
+  const renderCell = (
+    text,
+    customStyle = {},
+    extraClasses = "",
+    onClick = null
+  ) => ({
+    props: { style: baseCellStyle },
+    children: (
+      <span
+        onClick={onClick}
+        className={`ff-lato ${extraClasses} ${
+          onClick ? "pointer link-hover-underline" : ""
+        }`}
+        style={{ ...baseTextStyle, ...customStyle }}
+      >
+        {text}
+      </span>
+    ),
+  });
 
   const columns = [
     {
       title: "Employee ID",
       dataIndex: "employee_id",
       align: "center",
+      render: (text, record) => renderCell(text),
     },
     {
       title: "Employee Name",
-      dataIndex: "name",
-      render: (text, record) => <span> {record.employee.name}</span>,
+      dataIndex: "full_name",
+      render: (text, record) => renderCell(text),
     },
     {
       title: "Assets Type",
       dataIndex: "type",
+      render: (text, record) => renderCell(text),
     },
     {
       title: "Amount",
       dataIndex: "amount",
-      render: (text, record) => <span> ₹{text}</span>,
+      render: (text, record) => renderCell(<span> ₹{text}</span>),
       align: "center",
     },
     {
       title: "Description",
       dataIndex: "description",
-      render: (text) => (
-        <span
-          className="d-inline-block text-truncate"
-          data-toggle="tooltip"
-          data-placement="top"
-          title={text}
-          style={{ maxWidth: "150px" }}
-        >
-          {text}
-        </span>
-      ),
+      render: (text, record) => renderCell(text),
     },
     {
       title: "Model Number",
-      dataIndex: "model_no",
+      dataIndex: "model_number",
+      render: (text, record) => renderCell(text),
     },
     {
       title: "Date of Allocation",
-      dataIndex: "date_of_allocation",
+      dataIndex: "received_date",
+      render: (text, record) => renderCell(text),
       align: "center",
     },
     {
       title: "Date of Submission",
-      dataIndex: "date_of_submition",
-      render: (text, record) => (
-        <span>{record.status === "Assigned" ? "NA" : `${text}`}</span>
-      ),
+      dataIndex: "return_date",
       align: "center",
+      render: (text, record) =>
+        renderCell(
+          <span>{record.status === "Assigned" ? "NA" : `${text}`}</span>
+        ),
     },
 
     {
       title: "Status",
       dataIndex: "status",
-      render: (text, record) => (
-        <div
-          key={record.employee_id}
-          className="dropdown action-label text-center"
-        >
-          <a
-            className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-            href="#"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i
-              className={
-                text === "Pending"
-                  ? "fa fa-dot-circle-o text-danger"
-                  : text === "Assigned"
-                  ? "fa fa-dot-circle-o text-success"
-                  : "fa fa-dot-circle-o text-info"
-              }
-            />{" "}
-            {text}
-          </a>
-          <div className="dropdown-menu dropdown-menu-right">
-            {record.status === "Assigned" ? (
-              <a
-                className="dropdown-item"
-                onClick={() =>
-                  setEditAssetData({ ...record, status: "Returned" })
-                }
-                data-toggle="modal"
-                data-target="#add_return"
-              >
-                <i className="fa fa-dot-circle-o text-info" /> Returned
-              </a>
-            ) : (
-              <a
-                className="dropdown-item"
-                onClick={() => handleStatusChange(record, "Assigned")}
-              >
-                <i className="fa fa-dot-circle-o text-success" /> Assigned
-              </a>
-            )}
-          </div>
-        </div>
-      ),
-      align: "center",
-    },
-    {
-      title: "Action",
-      render: (text, record) => (
-        <div
-          key={record.employee_id}
-          className="dropdown dropdown-action text-right"
-        >
-          <a
-            href="#"
-            className="action-icon dropdown-toggle"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i className="material-icons">more_vert</i>
-          </a>
-          <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => {
-                setEditAssetData(record);
-                editHandleShow();
-              }}
-            >
-              <i className="fa fa-pencil m-r-5" /> Edit
-            </a>
-            <a
-              className="dropdown-item"
-              href=""
-              onClick={() => setEditAssetData(record.id)}
-              data-toggle="modal"
-              data-target="#delete_asset"
-            >
-              <i className="fa fa-trash-o m-r-5" /> Delete
-            </a>
-          </div>
-        </div>
-      ),
+      render: (text, record, i) => {
+        return {
+          props: {
+            style: {
+              ...baseCellStyle,
+            },
+          },
+          children: (
+            <div>
+              {text === "Assigned" && (
+                <div className={styles.select}>
+                  <span className="fa fa-dot-circle-o text-success"></span>{" "}
+                  Assigned
+                </div>
+              )}
+
+              {text === "Returned" && (
+                <div className={styles.select}>
+                  <span className="fa fa-dot-circle-o text-info"></span>{" "}
+                  Returned
+                </div>
+              )}
+            </div>
+          ),
+        };
+      },
     },
   ];
   return (
@@ -153,16 +150,16 @@ function MyAssets() {
       {" "}
       <div className={styles.top_section}>
         <p className={styles.header_text}>Assets</p>
-        <div
-          className={styles.add_employee}
-          onClick={() => setAddEmployeeModal(true)}
-        >
-          + Add Assets
-        </div>
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
-          <CustomTable columns={columns} />
+          <CustomTable columns={columns} data={tableData} pagination={false} />
+          <CustomPagination
+            current={Page.page}
+            pageSize={Page.perPage}
+            onChange={onPageChange}
+            total={totalCount}
+          />
         </div>
       </div>
     </div>

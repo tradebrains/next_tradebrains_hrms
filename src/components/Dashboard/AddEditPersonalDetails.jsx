@@ -8,6 +8,7 @@ function AddPersonalDetails({
   addPersonalModal,
   setEditPersonalModal,
   editPersonalModal,
+  employeeEmailIds,
 }) {
   const [form] = Form.useForm();
 
@@ -43,12 +44,18 @@ function AddPersonalDetails({
             >
               <div className={styles.row}>
                 <Form.Item
-                  label="Email ID"
+                  label="Email"
                   name="email"
-                  rules={[{ required: true, message: "Please enter email Id" }]}
+                  rules={[{ required: true, message: "Please select email" }]}
                   className={styles.item}
                 >
-                  <Input disabled={!!editPersonalModal} />
+                  <Select placeholder="Select" disabled={!!editPersonalModal}>
+                    {employeeEmailIds?.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.email}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
                 <Form.Item
                   label="Date of Birth"

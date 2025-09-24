@@ -1,0 +1,151 @@
+/* styles/Calendar.module.css */
+.container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.legend {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.legendCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.presentCircle {
+  background-color: #51c96b;
+}
+.absentCircle {
+  background-color: #d84545;
+}
+.halfDayCircle {
+  background-color: #ffa500;
+}
+.plCircle {
+  background-color: #5d5dff;
+}
+.weekendCircle {
+  background-color: #8b8b8b;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.dayHeader {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.card {
+  padding: 10px;
+  height: 100px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.card.present {
+  background-color: #232f1e !important;
+  border-top: 2px solid #4bb01a !important;
+}
+
+.card.absent {
+  background-color: #342323;
+  border-top: 2px solid #ff4d4f;
+}
+
+.card.halfday {
+  background-color: #342c1d;
+  border-top: 2px solid #faad14;
+}
+
+.card.pl {
+  background-color: #2c2c2c;
+  border-top: 2px solid #adadad;
+}
+
+.card.weekend {
+  background-color: #f5f5f5;
+  color: #8b8b8b;
+  border-top: 2px solid #ccc;
+}
+
+.date {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.status {
+  font-size: 16px;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+.workTime {
+  font-size: 14px;
+  color: #e4dede;
+  margin-top: 10px;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateX(-50%);
+  background-color: #2c2c2c;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 20;
+}
+
+.popupDate {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.popupStatus,
+.popupTime,
+.popupTotal {
+  font-size: 0.9em;
+  margin-bottom: 3px;
+}
+
+.popupTime {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.timing_text {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: 0%;
+  color: rgba(177, 177, 177, 1);
+}

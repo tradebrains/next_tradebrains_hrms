@@ -15,10 +15,9 @@ import {
 } from "antd";
 import { Pencil } from "lucide-react";
 import {
+  deleteLeaves,
   editLeaves,
-  getAdminLeaveList,
   getEmployeeLeaves,
-  postAdminLeaves,
   postEmployeeLeaves,
 } from "../api/fetchClient";
 import { authStore } from "@/redux/reducer/authSlice";
@@ -26,15 +25,11 @@ import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 
 function EmployeeLeaves({}) {
-  const [status, setStatus] = useState("");
-  const [record, setRecord] = useState({});
-  const [editData, setEditData] = useState({});
-  const [deleteID, setDeleteID] = useState(null);
-  const [editShow, setEditShow] = useState(false);
   const [id, setId] = useState("");
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
   const [leavesTable, setLeavesTable] = useState([]);
   const [addLeavesModal, setAddLeavesModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteID, setDeleteId] = useState("");
   const [form] = Form.useForm();
   const { Option } = Select;
 
@@ -51,7 +46,7 @@ function EmployeeLeaves({}) {
 
   useEffect(() => {
     getLeaves();
-  }, [addLeavesModal]);
+  }, [addLeavesModal, deleteModal]);
 
   useEffect(() => {
     if (addLeavesModal && id && leavesTable.length > 0) {
@@ -95,6 +90,14 @@ function EmployeeLeaves({}) {
           form.resetFields();
         }
       } catch (error) {}
+    }
+  };
+
+  const submitDelete = async () => {
+    const resp = await deleteLeaves(deleteID);
+    if (resp.status === 204) {
+      message.success("Leave Deleted");
+      setDeleteModal(false);
     }
   };
 
@@ -249,7 +252,7 @@ function EmployeeLeaves({}) {
                       <div
                         onClick={() => {
                           setDeleteModal(true);
-                          setId(record.id);
+                          setDeleteId(record.id);
                         }}
                         className={`text-white mt-10`}
                       >
@@ -353,6 +356,37 @@ function EmployeeLeaves({}) {
                 </Button>
               </Form.Item>
             </Form>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        centered
+        closable={true}
+        width="500px"
+        bodyStyle={{ padding: "0px", minHeight: "150px", borderRadius: "18px" }}
+        visible={deleteModal}
+        footer={null}
+        onCancel={() => setDeleteModal(false)}
+        className="modelClassname"
+        wrapClassName={"modelClassname"}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <div>
+          <p className={styles.status_heading}>Delete Leave</p>
+          <p className={styles.status_text}>
+            Are you sure want to delete this leave?
+          </p>
+          <div className={styles.flex_button}>
+            <div className={styles.yes_no_button} onClick={submitDelete}>
+              Delete
+            </div>
+            <div
+              className={styles.yes_no_button}
+              onClick={() => setDeleteModal(false)}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       </Modal>

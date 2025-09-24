@@ -171,8 +171,10 @@ export const postAsset = async (data) => {
   return response;
 };
 
-export const getAdminAsset = async () => {
-  const response = await get(`employee/assets/admin/`).then((resp) => {
+export const getAdminAsset = async (Page) => {
+  const response = await get(
+    `employee/assets/admin/?page=${Page.page}&page_size=${Page.perPage}`
+  ).then((resp) => {
     return resp;
   });
   return response;
@@ -205,8 +207,102 @@ export const deleteAsset = async (id) => {
   return response;
 };
 
-export const getEmployeeAsset = async () => {
-  const response = await get(`employee/assets/user/`).then((resp) => {
+export const getEmployeeAsset = async (Page) => {
+  const response = await get(
+    `employee/assets/user/?page=${Page.page}&page_size=${Page.perPage}`
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const deleteEmployee = async (id) => {
+  const response = await del(`employee/delete/${id}/`).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const postAdminReimburse = async (data) => {
+  const response = await post(
+    `employee/reimbursements/admin/create/`,
+    data
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const postEmployeeReimburse = async (data) => {
+  const response = await post(
+    `employee/reimbursements/user/create/`,
+    data
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const postStatusReimburse = async (id) => {
+  const response = await post(
+    `employee/reimbursements/aprove/${id}/approved/`
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const getAdminReimburse = async (Page) => {
+  const response = await get(
+    `employee/reimbursements/admin/?page=${Page.page}&page_size=${Page.perPage}`
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const getEmployeeReimburse = async (Page) => {
+  const response = await get(
+    `employee/reimbursements/user/?page=${Page.page}&page_size=${Page.perPage}`
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const editAdminReimburse = async (id, data) => {
+  const response = await put(
+    `employee/reimbusements/admin/edit/${id}/`,
+    data
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const editEmployeeReimburse = async (id, data) => {
+  const response = await put(
+    `employee/reimbursements/user/edit/${id}/`,
+    data
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const deleteReimburse = async (id) => {
+  const response = await del(`employee/reimbursements/delete/${id}/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const getAttendance = async (empcode) => {
+  const response = await get(
+    `employee/get-office-timings/?emp_code=${"0001"}&month=${"09"}&year=${"2025"}`
+  ).then((resp) => {
     return resp;
   });
   return response;

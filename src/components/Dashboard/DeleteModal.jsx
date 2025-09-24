@@ -1,9 +1,17 @@
 import svgSheet from "../../assets/svgSheets";
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import React from "react";
 import styles from "./employee.module.css";
+import { deleteEmployee } from "@/pages/api/fetchClient";
 
-function DeleteModal({ setDeleteModal, deleteModal }) {
+function DeleteModal({ setDeleteModal, deleteModal, deleteID }) {
+  const onConfirm = async () => {
+    const resp = await deleteEmployee(deleteID);
+    if (resp.status === 204) {
+      message.success("Employee Deleted");
+      setDeleteModal(false);
+    }
+  };
   return (
     <Modal
       style={{ width: "320px" }}

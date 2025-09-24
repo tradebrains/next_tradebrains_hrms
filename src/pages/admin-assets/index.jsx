@@ -20,6 +20,8 @@ import {
   getAdminAsset,
   postAsset,
 } from "../api/fetchClient";
+import CustomPagination from "@/components/Tables/CustomPagination";
+import dayjs from "dayjs";
 
 function AdminAssets({ employeeIdMail }) {
   const [form] = Form.useForm();
@@ -34,6 +36,9 @@ function AdminAssets({ employeeIdMail }) {
   const [deleteID, setDeleteID] = useState("");
   const [selectedStatuses, setSelectedStatuses] = useState({});
   const [pendingStatus, setPendingStatus] = useState(null);
+  const [Page, setPage] = useState({ page: 1, perPage: 10 });
+  const [dateModal, setDateModal] = useState(false);
+  const [pendingId, setPendingId] = useState("");
 
   const handleSelectChange = (value) => {
     setSelectedEmployeeId(value);
@@ -41,7 +46,7 @@ function AdminAssets({ employeeIdMail }) {
 
   const getAsset = async () => {
     try {
-      const resp = await getAdminAsset();
+      const resp = await getAdminAsset(Page);
       if (resp?.status === 200) {
         setTableData(resp?.data?.results);
         setTotalCount(resp?.data?.count);
@@ -51,12 +56,12 @@ function AdminAssets({ employeeIdMail }) {
 
   useEffect(() => {
     getAsset();
-  }, []);
+  }, [assetsModal, Page, deleteModal]);
 
   const handleStatusUpdater = (id, value) => {
     setPendingId(id);
     setPendingStatus(value);
-    setStatusModal(true);
+    setDateModal(true);
   };
 
   useEffect(() => {
@@ -101,12 +106,18 @@ function AdminAssets({ employeeIdMail }) {
     }
   };
 
+  const onSubmitDate = async (values) => {};
+
   const submitDelete = async () => {
     const resp = await deleteAsset(deleteID);
     if (resp.status === 204) {
       message.success("Leave Deleted");
       setDeleteModal(false);
     }
+  };
+
+  const onPageChange = (page, perPage) => {
+    setPage({ page: page, perPage: perPage });
   };
 
   const baseCellStyle = {
@@ -151,7 +162,7 @@ function AdminAssets({ employeeIdMail }) {
     },
     {
       title: "Employee Name",
-      dataIndex: "employee_name",
+      dataIndex: "full_name",
       render: (text, record) => renderCell(text),
     },
     {
@@ -227,8 +238,8 @@ function AdminAssets({ employeeIdMail }) {
                 <Option value="Returned" label="Returned">
                   {statusOptions.Returned}
                 </Option>
-                <Option value="Assigned" label="Approved">
-                  {statusOptions.Approved}
+                <Option value="Assigned" label="Assigned">
+                  {statusOptions.Assigned}
                 </Option>
               </Select>
             </div>
@@ -310,7 +321,13 @@ function AdminAssets({ employeeIdMail }) {
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
-          <CustomTable columns={columns} data={tableData} />
+          <CustomTable columns={columns} data={tableData} pagination={false} />
+          <CustomPagination
+            current={Page.page}
+            pageSize={Page.perPage}
+            onChange={onPageChange}
+            total={totalCount}
+          />
         </div>
       </div>
       <Modal
@@ -459,6 +476,53 @@ function AdminAssets({ employeeIdMail }) {
               Cancel
             </div>
           </div>
+        </div>
+      </Modal>
+      <Modal
+        centered
+        closable={true}
+        width="500px"
+        bodyStyle={{ padding: "0px", minHeight: "150px", borderRadius: "18px" }}
+        visible={dateModal}
+        footer={null}
+        onCancel={() => setDateModal(false)}
+        className="modelClassname"
+        wrapClassName={"modelClassname"}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <div>
+          <p className={styles.status_heading}>Add Return Date</p>
+          <Form
+            form={form}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmitDate}
+            className={styles.form}
+          >
+            <Form.Item
+              label="Date of Return"
+              name="return_date"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select Date of Return",
+                },
+              ]}
+              className={styles.item}
+            >
+              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={styles.submit}
+              >
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
       </Modal>
     </div>

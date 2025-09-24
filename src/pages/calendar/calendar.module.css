@@ -1,0 +1,137 @@
+/* styles/Calendar.module.css */
+.container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.legend {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.legendCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.presentCircle {
+  background-color: #51c96b;
+}
+.absentCircle {
+  background-color: #d84545;
+}
+.halfDayCircle {
+  background-color: #ffa500;
+}
+.plCircle {
+  background-color: #5d5dff;
+}
+.weekendCircle {
+  background-color: #8b8b8b;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.dayHeader {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 100px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.card.present {
+  background-color: #232f1e !important;
+  border-top: 2px solid #4bb01a !important;
+}
+
+.card.absent {
+  background-color: #fcebeb;
+  border-color: #d84545;
+}
+
+.card.halfday {
+  background-color: #fff8e6;
+  border-color: #ffa500;
+}
+
+.card.pl {
+  background-color: #e6e6ff;
+  border-color: #5d5dff;
+}
+
+.card.weekend {
+  background-color: #f5f5f5;
+  color: #8b8b8b;
+  border-color: #ccc;
+}
+
+.date {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.status {
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.workTime {
+  font-size: 0.8em;
+  color: #555;
+  margin-top: 2px;
+}
+
+.popup {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 20;
+}
+
+.popupDate {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.popupStatus,
+.popupTime,
+.popupTotal {
+  font-size: 0.9em;
+  margin-bottom: 3px;
+}

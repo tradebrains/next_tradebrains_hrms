@@ -55,12 +55,12 @@
 
 .select {
   width: 100% !important;
-  border: 1px solid white;
+  background-color: #2d2d2d;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 0px;
+  padding: 3px 0px;
   color: #ffffff;
 }
 

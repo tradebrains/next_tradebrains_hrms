@@ -1329,3 +1329,36 @@ p {
   color: #6f42c1;
   margin-right: 5px;
 } /* purple */
+
+.kycmodal-close-dark .ant-modal-content,
+.kycmodal-close-light .ant-modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.custom-kyc-terms-modal .ant-modal-body {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Dark scrollbar (for WebKit: Chrome, Edge, Safari) */
+.custom-kyc-terms-modal .ant-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-kyc-terms-modal .ant-modal-body::-webkit-scrollbar-thumb {
+  background-color: #545e78;
+  border-radius: 4px;
+}
+
+.custom-kyc-terms-modal .ant-modal-body::-webkit-scrollbar-track {
+  background-color: #1e1e1e;
+}
+
+/* Firefox scrollbar support */
+.custom-kyc-terms-modal .ant-modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: #545e78 #1e1e1e;
+}
