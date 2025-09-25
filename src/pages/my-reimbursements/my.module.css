@@ -48,3 +48,84 @@
   margin-top: 10px;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%);
 }
+
+.submit:hover {
+  background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
+}
+
+.select {
+  width: 100% !important;
+  background-color: #2d2d2d;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 0px;
+  color: #ffffff;
+}
+
+.edit {
+  color: white;
+  cursor: pointer;
+}
+
+.flex_between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -15px;
+  margin-bottom: 10px;
+}
+
+.leaves_left_text {
+  font-size: 14px;
+  color: white;
+}
+
+.status_heading {
+  font-size: 20px;
+  color: #ffffff;
+  line-height: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.flex_button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.status_text {
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 24px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.yes_no_button {
+  width: 50%;
+  border: 2px solid #ff9b44;
+  border-radius: 20px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.yes_no_button:hover {
+  font-weight: 500;
+  background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
+}
+
+.choose_file {
+  color: #55ce63;
+}

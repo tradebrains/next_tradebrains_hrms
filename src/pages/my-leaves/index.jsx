@@ -18,6 +18,7 @@ import {
   deleteLeaves,
   editLeaves,
   getEmployeeLeaves,
+  getLeftLeaves,
   postEmployeeLeaves,
 } from "../api/fetchClient";
 import { authStore } from "@/redux/reducer/authSlice";
@@ -30,10 +31,12 @@ function EmployeeLeaves({}) {
   const [addLeavesModal, setAddLeavesModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteID, setDeleteId] = useState("");
+  const [leavesLeft, setLeavesLeft] = useState("");
   const [form] = Form.useForm();
   const { Option } = Select;
 
   const auth = useSelector(authStore);
+  const employee_id = auth?.userData?.user_details?.employee_id;
 
   const getLeaves = async () => {
     try {
@@ -44,8 +47,18 @@ function EmployeeLeaves({}) {
     } catch (error) {}
   };
 
+  const getLeavesLeft = async () => {
+    try {
+      const resp = await getLeftLeaves(employee_id);
+      if (resp?.status === 200) {
+        setLeavesLeft(resp?.data);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getLeaves();
+    getLeavesLeft();
   }, [addLeavesModal, deleteModal]);
 
   useEffect(() => {
@@ -277,9 +290,25 @@ function EmployeeLeaves({}) {
         <p className={styles.header_text}>Leaves</p>
         <div
           className={styles.add_employee}
-          onClick={() => setAddLeavesModal(true)}
+          onClick={() => {
+            setId(null);
+            form.resetFields();
+            setAddLeavesModal(true);
+          }}
         >
           + Add Leaves
+        </div>
+      </div>
+      <div className={styles.leaves_cnt}>
+        <div className={styles.leaves_left}>
+          <p className={styles.leaves_text}>Privilege Leave Left</p>
+          <p className={styles.leaves_number}>
+            {leavesLeft?.privilege_leaves_left}
+          </p>
+        </div>
+        <div className={styles.leaves_left}>
+          <p className={styles.leaves_text}>Sick Leave Left</p>
+          <p className={styles.leaves_number}>{leavesLeft?.sick_leaves_left}</p>
         </div>
       </div>
       <div className={styles.table_container}>

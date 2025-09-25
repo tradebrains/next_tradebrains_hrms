@@ -125,3 +125,32 @@
   font-weight: 500;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
 }
+
+.leaves_cnt {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.leaves_left {
+  width: 20%;
+  height: 80px;
+  background-color: #2d2d2d;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.leaves_text {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgb(177, 177, 171);
+}
+
+.leaves_number {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 10px;
+}

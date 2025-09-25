@@ -243,9 +243,9 @@ export const postEmployeeReimburse = async (data) => {
   return response;
 };
 
-export const postStatusReimburse = async (id) => {
+export const postStatusReimburse = async (id, data) => {
   const response = await post(
-    `employee/reimbursements/aprove/${id}/approved/`
+    `employee/reimbursements/aprove/${id}/${data}/`
   ).then((resp) => {
     return resp;
   });
