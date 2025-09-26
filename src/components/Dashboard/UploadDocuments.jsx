@@ -2,6 +2,7 @@ import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
 import React, { use, useEffect } from "react";
 import styles from "./employee.module.css";
 import { UploadOutlined } from "@ant-design/icons";
+import { postEmployeeDocuments } from "@/pages/api/fetchClient";
 function UploadDocuments({
   uploadDocumentModal,
   employeeEmailIds,
@@ -18,7 +19,15 @@ function UploadDocuments({
 
   useEffect(() => {}, []);
 
-  const onSubmit = (values) => {};
+  const onSubmit = async (values) => {
+    try {
+      const resp = await postEmployeeDocuments(deleteID, values);
+      if (resp.status === 201) {
+        form.resetFields();
+        setUploadDocumentModal(false);
+      }
+    } catch (error) {}
+  };
   return (
     <div>
       {" "}

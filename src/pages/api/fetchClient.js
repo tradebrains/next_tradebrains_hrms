@@ -357,3 +357,12 @@ export const getEmployeeDocuments = async () => {
   });
   return response;
 };
+
+export const deleteEmployeeDocuments = async (id) => {
+  const response = await del(`employee/documents/${id}/delete/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
