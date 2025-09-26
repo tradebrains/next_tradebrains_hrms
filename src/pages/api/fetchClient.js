@@ -217,7 +217,7 @@ export const getEmployeeAsset = async (Page) => {
 };
 
 export const deleteEmployee = async (id) => {
-  const response = await del(`employee/delete/${id}/`).then((resp) => {
+  const response = await del(`employee/employee/delete/${id}/`).then((resp) => {
     return resp;
   });
   return response;
@@ -303,6 +303,56 @@ export const getAttendance = async (empcode, month, year) => {
   const response = await get(
     `employee/get-office-timings/?emp_code=${empcode}&month=${month}&year=${year}`
   ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const putEmployeeDetails = async (id, data) => {
+  const response = await put(`employee/personal-details/${id}/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const getEmployeeDetails = async (id) => {
+  const response = await get(`employee/personal-details/${id}/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const getEmailEmployeeIds = async (id) => {
+  const response = await get(`employee/leaves/admin/employees/`).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const postEmployeeDocuments = async (id, data) => {
+  const response = await post(`employee/documents/upload/${id}/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const editEmployeeDocuments = async (id, data) => {
+  const response = await put(`employee/documents/${id}/`, data).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const getEmployeeDocuments = async () => {
+  const response = await get(`employee/documents/all/`).then((resp) => {
     return resp;
   });
   return response;

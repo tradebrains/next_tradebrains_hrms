@@ -135,3 +135,15 @@
   font-size: 0.9em;
   margin-bottom: 3px;
 }
+
+.dropdowns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.date_year_gap {
+  display: flex;
+  gap: 20px;
+}

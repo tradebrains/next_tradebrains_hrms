@@ -126,7 +126,9 @@ function EmployeeProfile({
         />
       </div>
       <div className={styles.content}>
-        <h3 className={styles.name}>{name}</h3>
+        <h3 title={name} className={styles.name}>
+          {name && name.length > 20 ? name.slice(0, 16) + "..." : name}
+        </h3>
         <p className={styles.role}>{role}</p>
       </div>
       <EditBasicDetailsModal
@@ -141,10 +143,13 @@ function EmployeeProfile({
         setEditPersonalModal={setEditPersonalModal}
         editPersonalModal={editPersonalModal}
         employeeEmailIds={employeeEmailIds}
+        deleteID={employeeDetails?.id}
       />
       <UploadDocuments
         uploadDocumentModal={uploadDocumentModal}
         setUploadDocumentModal={setUploadDocumentModal}
+        employeeEmailIds={employeeEmailIds}
+        deleteID={employeeDetails?.id}
       />
       <DeleteModal
         deleteModal={deleteModal}

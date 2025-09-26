@@ -19,6 +19,7 @@ import {
   editAsset,
   getAdminAsset,
   postAsset,
+  updateAssetStatus,
 } from "../api/fetchClient";
 import CustomPagination from "@/components/Tables/CustomPagination";
 import dayjs from "dayjs";
@@ -56,7 +57,7 @@ function AdminAssets({ employeeIdMail }) {
 
   useEffect(() => {
     getAsset();
-  }, [assetsModal, Page, deleteModal]);
+  }, [assetsModal, Page, deleteModal, dateModal]);
 
   const handleStatusUpdater = (id, value) => {
     setPendingId(id);
@@ -89,7 +90,7 @@ function AdminAssets({ employeeIdMail }) {
       try {
         const resp = await editAsset(id, payload);
         if (resp.status === 200) {
-          message.success("Leave Edited Successfully");
+          message.success("Assets Edited Successfully");
           setAssetsModal(false);
           form.resetFields();
         }
@@ -98,7 +99,7 @@ function AdminAssets({ employeeIdMail }) {
       try {
         const resp = await postAsset(payload);
         if (resp.status === 201) {
-          message.success("Leave applied Successfully");
+          message.success("Assets applied Successfully");
           setAssetsModal(false);
           form.resetFields();
         }
@@ -106,12 +107,27 @@ function AdminAssets({ employeeIdMail }) {
     }
   };
 
-  const onSubmitDate = async (values) => {};
+  const onSubmitDate = async (values) => {
+    const payload = {
+      return_date: values.return_date
+        ? values.return_date.format("YYYY-MM-DD")
+        : null,
+      status: "Returned",
+    };
+    try {
+      const resp = await updateAssetStatus(pendingId, payload);
+      if (resp.status === 200) {
+        message.success("Status Updated Successfully");
+        setDateModal(false);
+        form.resetFields();
+      }
+    } catch (error) {}
+  };
 
   const submitDelete = async () => {
     const resp = await deleteAsset(deleteID);
     if (resp.status === 204) {
-      message.success("Leave Deleted");
+      message.success("Asset Deleted");
       setDeleteModal(false);
     }
   };
@@ -206,6 +222,8 @@ function AdminAssets({ employeeIdMail }) {
       title: "Status",
       dataIndex: "status",
       render: (text, record, i) => {
+        console.log(record, "recordrecord");
+
         const currentStatus = selectedStatuses[record.id] || record.status;
 
         const statusOptions = {

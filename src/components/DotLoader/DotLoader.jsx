@@ -3,10 +3,9 @@ import React from "react";
 function DotLoader({ loaderData }) {
   return (
     <div
-      className="d-flex justify-content-center"
       style={{
         width: "100%",
-        height: loaderData ? "25vh" : "100vh",
+        // height: loaderData ? "25vh" : "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

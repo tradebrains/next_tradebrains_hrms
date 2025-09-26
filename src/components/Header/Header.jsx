@@ -16,44 +16,38 @@ function Header() {
   const listedName =
     pathname?.split("/").pop() === "dashboard"
       ? "All Employees"
-      : pathname?.split("/").pop() === "user-list"
-      ? "User List"
-      : pathname?.split("/").pop() === "premium-support"
-      ? "Premium Support"
-      : pathname?.split("/").pop() === "transaction"
-      ? "Transaction Details"
-      : pathname?.split("/").pop() === "kyc-record"
-      ? "KYC Records"
-      : pathname?.split("/").pop() === "coupons"
-      ? "Coupons"
-      : pathname?.split("/").pop() === "superstar"
-      ? "Superstar Portfolio"
-      : pathname?.split("/").pop() === "feedback"
-      ? "Feedback"
-      : pathname?.split("/").pop() === "notifications"
-      ? "Notifications"
-      : pathname?.split("/").pop() === "user-management"
-      ? "User Management"
-      : pathname?.split("/").pop() === "stock-details"
-      ? "Stock Details"
-      : pathname?.split("/").pop() === "buckets"
-      ? "Buckets"
-      : pathname.includes("user-management/edit/")
-      ? "User Management Edit"
-      : pathname.includes("superstar/edit/")
-      ? "Superstar Portfolio Edit"
-      : pathname.includes("affiliate")
-      ? "Affiliate"
-      : pathname.includes("stock-details/create")
-      ? "Stock Details Create"
-      : pathname.includes("stock-details/edit")
-      ? "Stock Details Edit"
+      : pathname?.split("/").pop() === "holidays"
+      ? "Holidays"
+      : pathname?.split("/").pop() === "leaves-admin"
+      ? "Leaves (Admin)"
+      : pathname?.split("/").pop() === "my-leaves"
+      ? "My Leaves"
+      : pathname?.split("/").pop() === "admin-assets"
+      ? "Assets (Admin)"
+      : pathname?.split("/").pop() === "my-assets"
+      ? "My Assets"
+      : pathname?.split("/").pop() === "reimbursements-admin"
+      ? "Reimbursements (Admin)"
+      : pathname?.split("/").pop() === "my-reimbursements"
+      ? "My Reimbursements"
+      : pathname?.split("/").pop() === "documents"
+      ? "Employee Documents"
+      : pathname?.split("/").pop() === "leave-policy"
+      ? "Leave Policy"
+      : pathname?.split("/").pop() === "harassment-policy"
+      ? "Harassment Policy"
+      : pathname?.split("/").pop() === "code-of-conduct"
+      ? "Code of Conduct"
+      : pathname.includes("notice")
+      ? "Notice Period Policy"
+      : pathname.includes("travel-policy")
+      ? "Travel Policy"
+      : pathname.includes("calendar")
+      ? "Attendance"
       : "";
 
   const userData = useSelector(authStore);
   const userName = userData?.userData?.user_details?.full_name || "User";
-
-  console.log(userData, "userData");
 
   const getRandomColor = () =>
     `#${Math.floor(Math.random() * 16777215).toString(16)}`;

@@ -2,12 +2,15 @@
 import { useState, useEffect, useCallback } from "react";
 import styles from "./calendar.module.css";
 import CalendarCard from "@/components/Calendar/Calendar";
-import { getAttendance } from "../api/fetchClient"; // Ensure this file is updated as shown previously
+import { getAttendance } from "../api/fetchClient";
+import { Select } from "antd";
+import DotLoader from "@/components/DotLoader/DotLoader";
+
+const { Option } = Select;
 
 const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-const EMPLOYEE_CODE = "0001"; // Employee code remains static for this scope
+const EMPLOYEE_CODE = "0001";
 
-// Helper data for dropdowns
 const MONTHS = [
   { value: 0, name: "January" },
   { value: 1, name: "February" },
@@ -23,16 +26,14 @@ const MONTHS = [
   { value: 11, name: "December" },
 ];
 
-// Generate years: current year and a few before/after for dropdown
 const generateYears = (currentYear) => {
   const years = [];
-  for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+  for (let i = currentYear - 5; i <= currentYear; i++) {
     years.push(i);
   }
   return years;
 };
 
-// Utility functions (getDaysInMonth, addEmptyDays, createDayDataMap) remain unchanged
 const getDaysInMonth = (year, month) => {
   const date = new Date(year, month, 1);
   const days = [];
@@ -44,7 +45,7 @@ const getDaysInMonth = (year, month) => {
 };
 
 const addEmptyDays = (days) => {
-  const firstDay = days[0].getDay(); // 0 for Sunday, 1 for Monday...
+  const firstDay = days[0].getDay();
   const emptyDays = Array(firstDay).fill(null);
   return [...emptyDays, ...days];
 };
@@ -61,11 +62,8 @@ const createDayDataMap = (apiData) => {
   return map;
 };
 
-// --- Main Component ---
-
 const CalendarPage = () => {
   const today = new Date();
-  // State initialization: current month and current year
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
@@ -73,16 +71,13 @@ const CalendarPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Function to fetch data when month/year changes
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      // 1. Format parameters for the API call (month is 0-indexed, API needs 1-indexed and padded)
       const apiMonth = (currentMonth + 1).toString().padStart(2, "0");
       const apiYear = currentYear.toString();
 
-      // 2. Pass dynamic parameters to the API client
       const data = await getAttendance(EMPLOYEE_CODE, apiMonth, apiYear);
 
       setAttendanceData(data?.data?.attendance);
@@ -91,7 +86,7 @@ const CalendarPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentMonth, currentYear]); // Dependency array: refetch on month/year change
+  }, [currentMonth, currentYear]);
 
   useEffect(() => {
     fetchData();
@@ -107,36 +102,42 @@ const CalendarPage = () => {
 
   return (
     <div className={styles.container}>
-      {/* Month/Year Dropdown Selector */}
       <div className={styles.header}>
-        <div className={styles.dropdowns}>
-          <select
-            className={styles.monthSelect}
-            value={currentMonth}
-            onChange={(e) => setCurrentMonth(parseInt(e.target.value))}
-            aria-label="Select Month"
-          >
-            {MONTHS.map((month) => (
-              <option key={month.value} value={month.value}>
-                {month.name}
-              </option>
-            ))}
-          </select>
-
-          <select
-            className={styles.yearSelect}
-            value={currentYear}
-            onChange={(e) => setCurrentYear(parseInt(e.target.value))}
-            aria-label="Select Year"
-          >
-            {yearsList.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
         <h2 className={styles.title}>Attendance Calendar</h2>
+        <div className={styles.dropdowns}>
+          <div></div>
+          <div className={styles.date_year_gap}>
+            <div>
+              <Select
+                className={styles.monthSelect}
+                value={currentMonth}
+                onChange={(value) => setCurrentMonth(parseInt(value))}
+                aria-label="Select Month"
+              >
+                {MONTHS.map((month) => (
+                  <Option key={month.value} value={month.value}>
+                    {month.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+
+            <div>
+              <Select
+                className={styles.yearSelect}
+                value={currentYear}
+                onChange={(value) => setCurrentYear(parseInt(value))}
+                aria-label="Select Year"
+              >
+                {yearsList.map((year) => (
+                  <Option key={year} value={year}>
+                    {year}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Legend and Grid Rendering remain the same */}
@@ -172,7 +173,9 @@ const CalendarPage = () => {
       </div>
 
       {loading ? (
-        <div className={styles.loading}>Loading Calendar Data...</div>
+        <div className={styles.loading}>
+          <DotLoader />
+        </div>
       ) : (
         <div className={styles.calendarGrid}>
           {daysOfWeek.map((day) => (

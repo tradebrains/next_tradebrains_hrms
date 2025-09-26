@@ -6,7 +6,7 @@
   height: 250px;
   position: relative;
   transition: all 0.3s ease;
-  padding: 12px;
+  padding: 14px;
   background: rgba(255, 255, 255, 0.11);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -81,12 +81,16 @@
 }
 
 .card:hover .name {
-  transform: translateX(-0%) translateY(-20%);
+  transform: translateX(-0%) translateY(-70%);
+}
+
+.card .name {
+  transition: transform 0.3s ease-in-out;
 }
 
 .card:hover .role {
   opacity: 1;
-  transform: translateX(-50%) translateY(50%);
+  transform: translateX(-50%) translateY(30%);
 }
 
 .header_text {

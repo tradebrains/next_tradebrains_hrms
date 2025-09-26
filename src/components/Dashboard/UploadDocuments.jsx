@@ -2,8 +2,19 @@ import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
 import React, { use, useEffect } from "react";
 import styles from "./employee.module.css";
 import { UploadOutlined } from "@ant-design/icons";
-function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
+function UploadDocuments({
+  uploadDocumentModal,
+  employeeEmailIds,
+  setUploadDocumentModal,
+  deleteID,
+}) {
   const [form] = Form.useForm();
+
+  const employeeEmail = employeeEmailIds.filter(
+    (item) => item?.id === deleteID
+  );
+
+  console.log(employeeEmailIds, "employeeEmail");
 
   useEffect(() => {}, []);
 
@@ -31,19 +42,28 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
               autoComplete="off"
               onFinish={onSubmit}
               className={styles.form}
+              initialValues={{
+                email: employeeEmail?.[0]?.email,
+                employee_id: employeeEmail?.[0]?.employee_id,
+              }}
             >
               <div className={styles.row}>
                 <Form.Item
-                  label="User ID"
+                  label="Email"
                   name="email"
-                  rules={[{ required: true, message: "Please enter email Id" }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select email",
+                    },
+                  ]}
                   className={styles.item}
                 >
-                  <Input />
+                  <Input disabled />
                 </Form.Item>
                 <Form.Item
                   label="Employee"
-                  name="email"
+                  name="employee_id"
                   rules={[
                     {
                       required: true,
@@ -52,13 +72,13 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                   ]}
                   className={styles.item}
                 >
-                  <Input />
+                  <Input disabled />
                 </Form.Item>
               </div>
               <div className={styles.row}>
                 <Form.Item
-                  label="Photo"
-                  name="Offer Letter"
+                  label="Offer Letter"
+                  name="offer_letter"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -66,8 +86,8 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                   </Upload>
                 </Form.Item>
                 <Form.Item
-                  label="Photo"
-                  name="Relieving Letter"
+                  label="Offer Letter"
+                  name="relieving_letter"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -79,7 +99,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
               <div className={styles.row}>
                 <Form.Item
                   label="PAN Card"
-                  name=""
+                  name="pan_card"
                   className={styles.upload}
                   rules={[
                     { required: true, message: "Please upload Pan Card" },
@@ -91,7 +111,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                 </Form.Item>
                 <Form.Item
                   label="Aadhar Card"
-                  name="Relieving Letter"
+                  name="aadhar_card"
                   className={styles.upload}
                   rules={[
                     { required: true, message: "Please upload Aadhar Card" },
@@ -105,7 +125,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
               <div className={styles.row}>
                 <Form.Item
                   label="Driving licence"
-                  name=""
+                  name="driving_licence"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -114,7 +134,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                 </Form.Item>
                 <Form.Item
                   label="Passport"
-                  name="Relieving Letter"
+                  name="passport"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -123,7 +143,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                 </Form.Item>
               </div>
               <div className={styles.upload}>
-                <Form.Item label="Voter ID" name="">
+                <Form.Item label="Voter ID" name="voter_id">
                   <Upload beforeUpload={() => false}>
                     <Button icon={<UploadOutlined />}>Choose File</Button>
                   </Upload>
@@ -134,7 +154,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
               <div className={styles.row}>
                 <Form.Item
                   label="SSLC Mark Sheet"
-                  name=""
+                  name="sslc_mark_sheet"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -142,8 +162,8 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                   </Upload>
                 </Form.Item>
                 <Form.Item
-                  label="Passport"
-                  name="Plus Two Mark Sheet"
+                  label="Plus Two Mark Sheet"
+                  name="plus_two_mark_sheet"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -154,7 +174,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
               <div className={styles.row}>
                 <Form.Item
                   label="UG Certificate"
-                  name=""
+                  name="ug_certificate"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -162,8 +182,8 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                   </Upload>
                 </Form.Item>
                 <Form.Item
-                  label="Passport"
-                  name="PG Certificate"
+                  label="PG Certificate"
+                  name="pg_certificate"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -174,7 +194,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
               <div className={styles.row}>
                 <Form.Item
                   label="Other Certificates 1"
-                  name=""
+                  name="other_certificate_1"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -182,8 +202,8 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                   </Upload>
                 </Form.Item>
                 <Form.Item
-                  label="Passport"
-                  name="Other Certificates 2"
+                  label="Other Certificates 2"
+                  name="other_certificate_2"
                   className={styles.upload}
                 >
                   <Upload beforeUpload={() => false}>
@@ -192,7 +212,7 @@ function UploadDocuments({ uploadDocumentModal, setUploadDocumentModal }) {
                 </Form.Item>
               </div>
               <div className={styles.upload}>
-                <Form.Item label="Other Certificates 2" name="">
+                <Form.Item label="Other Certificates 3" name="cancelled_check">
                   <Upload beforeUpload={() => false}>
                     <Button icon={<UploadOutlined />}>Choose File</Button>
                   </Upload>
