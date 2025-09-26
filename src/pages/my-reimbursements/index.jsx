@@ -103,8 +103,8 @@ function MyReimbursement({}) {
     putData.append("amount", values.amount);
     putData.append("date", values.date.format("YYYY-MM-DD"));
 
-    if (values.receipt_file) {
-      putData.append("receipt_file", values.receipt_file);
+    if (values.receipt_file && values.receipt_file.file) {
+      putData.append("receipt_file", values.receipt_file.file);
     }
 
     if (id) {

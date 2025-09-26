@@ -119,9 +119,10 @@ function AdminReimbursement({ employeeIdMail }) {
     formData.append("amount", values.amount);
     formData.append("date", values.date.format("YYYY-MM-DD"));
 
-    if (values.receipt_file) {
+    if (values.receipt_file && values.receipt_file.file) {
       formData.append("receipt_file", values.receipt_file.file);
     }
+
     if (id) {
       try {
         const resp = await editAdminReimburse(id, formData);

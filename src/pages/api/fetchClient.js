@@ -299,9 +299,9 @@ export const deleteReimburse = async (id) => {
   return response;
 };
 
-export const getAttendance = async (empcode) => {
+export const getAttendance = async (empcode, month, year) => {
   const response = await get(
-    `employee/get-office-timings/?emp_code=${"0001"}&month=${"09"}&year=${"2025"}`
+    `employee/get-office-timings/?emp_code=${empcode}&month=${month}&year=${year}`
   ).then((resp) => {
     return resp;
   });
