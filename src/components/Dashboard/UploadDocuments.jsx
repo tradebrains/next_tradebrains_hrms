@@ -20,8 +20,39 @@ function UploadDocuments({
   useEffect(() => {}, []);
 
   const onSubmit = async (values) => {
+    const formdata = new FormData();
+
+    formdata.append("employee_id", values.employee_id);
+    formdata.append("offer_letter", values.offer_letter?.file || "");
+    formdata.append("relieving_letter", values.relieving_letter?.file || "");
+    formdata.append("pan_card", values.pan_card?.file || "");
+    formdata.append("aadhar_card", values.aadhar_card?.file || "");
+    formdata.append("driving_licence", values.driving_licence?.file || "");
+    formdata.append("passport", values.passport?.file || "");
+    formdata.append("voter_id", values.voter_id?.file || "");
+    formdata.append("sslc_mark_sheet", values.sslc_mark_sheet?.file || "");
+    formdata.append(
+      "plus_two_mark_sheet",
+      values.plus_two_mark_sheet?.file || ""
+    );
+    formdata.append("ug_certificate", values.ug_certificate?.file || "");
+    formdata.append("pg_certificate", values.pg_certificate?.file || "");
+    formdata.append(
+      "other_certificate_1",
+      values.other_certificate_1?.file || ""
+    );
+    formdata.append(
+      "other_certificate_2",
+      values.other_certificate_2?.file || ""
+    );
+    formdata.append(
+      "passbook_first_page",
+      values.passbook_first_page?.file || ""
+    );
+    formdata.append("cancelled_check", values.cancelled_check?.file || "");
+
     try {
-      const resp = await postEmployeeDocuments(deleteID, values);
+      const resp = await postEmployeeDocuments(deleteID, formdata);
       if (resp.status === 201) {
         form.resetFields();
         setUploadDocumentModal(false);
@@ -159,7 +190,27 @@ function UploadDocuments({
                 </Form.Item>
               </div>
               <p className={styles.heading_text}>Bank Details</p>
-
+              <div className={styles.row}>
+                <Form.Item
+                  label="Passbook First Page"
+                  name="passbook_first_page"
+                  className={styles.upload}
+                >
+                  <Upload beforeUpload={() => false}>
+                    <Button icon={<UploadOutlined />}>Choose File</Button>
+                  </Upload>
+                </Form.Item>
+                <Form.Item
+                  label="Cancelled Check"
+                  name="cancelled_check"
+                  className={styles.upload}
+                >
+                  <Upload beforeUpload={() => false}>
+                    <Button icon={<UploadOutlined />}>Choose File</Button>
+                  </Upload>
+                </Form.Item>
+              </div>
+              <p className={styles.heading_text}>Education Details</p>
               <div className={styles.row}>
                 <Form.Item
                   label="SSLC Mark Sheet"
@@ -220,13 +271,13 @@ function UploadDocuments({
                   </Upload>
                 </Form.Item>
               </div>
-              <div className={styles.upload}>
+              {/* <div className={styles.upload}>
                 <Form.Item label="Other Certificates 3" name="cancelled_check">
                   <Upload beforeUpload={() => false}>
                     <Button icon={<UploadOutlined />}>Choose File</Button>
                   </Upload>
                 </Form.Item>
-              </div>
+              </div> */}
               <Form.Item>
                 <Button
                   type="primary"
