@@ -1,17 +1,31 @@
 "use client";
-import React, { use } from "react";
+import React, { use, useEffect, useState } from "react";
 import styles from "./header.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { Dropdown, Menu } from "antd";
+import { Drawer, Dropdown, Menu } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import Cookies from "js-cookie";
 import { authStore, setAuth } from "@/redux/reducer/authSlice";
+import Sidebar from "../Sidbar/Sidebar";
+import { MenuIcon } from "lucide-react";
 
 function Header() {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    setOpen(false);
+  }, [router]);
 
   const listedName =
     pathname?.split("/").pop() === "dashboard"
@@ -93,7 +107,14 @@ function Header() {
     <header className={styles.header}>
       <div className={styles.headerWrapper}>
         <h1 className={styles.title}>{listedName}</h1>
-
+        <div className={styles.mobileMenu}>
+          <button onClick={showDrawer} className={styles.toggleButton}>
+            <MenuIcon />
+          </button>
+          <Drawer onClose={onClose} open={open}>
+            <Sidebar />
+          </Drawer>
+        </div>
         <div className={styles.controls}>
           <div className={styles.adminContainer}>
             <span className={styles.name}>{userName}</span>
