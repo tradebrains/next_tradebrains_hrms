@@ -129,3 +129,15 @@
 .choose_file {
   color: #55ce63;
 }
+
+@media (max-width: 640px) {
+  .header_text {
+    font-size: 18px;
+  }
+
+  .add_employee {
+    font-size: 14px;
+    padding: 10px 15px;
+    width: 160px;
+  }
+}

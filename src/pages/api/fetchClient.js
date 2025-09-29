@@ -299,6 +299,13 @@ export const deleteReimburse = async (id) => {
   return response;
 };
 
+export const getEmployeeList = async () => {
+  const response = await get(`authentication/etime-userlist/`).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
 export const getAttendance = async (empcode, month, year) => {
   const response = await get(
     `employee/get-office-timings/?emp_code=${empcode}&month=${month}&year=${year}`
@@ -364,5 +371,37 @@ export const deleteEmployeeDocuments = async (id) => {
       return resp;
     }
   );
+  return response;
+};
+
+export const getHolidaysList = async () => {
+  const response = await get(`employee/holidays/`).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const postHolidays = async (data) => {
+  const response = await post(`employee/holidays/create/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const editHolidays = async (id, data) => {
+  const response = await put(`employee/holidays/edit/${id}/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
+
+export const deleteHolidays = async (id) => {
+  const response = await del(`employee/holidays/delete/${id}/`).then((resp) => {
+    return resp;
+  });
   return response;
 };

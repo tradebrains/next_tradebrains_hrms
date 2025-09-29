@@ -1,10 +1,10 @@
-/* Sidebar.module.css */
 .sidebarContainer {
   position: relative;
   z-index: 10;
   transition: all 0.3s ease-in-out;
   flex-shrink: 0;
   width: auto !important;
+  height: 100vh !important;
 }
 
 .sidebarOpen {
@@ -23,7 +23,7 @@
   display: flex;
   flex-direction: column;
   border-right: 1px solid #2f2f2f;
-  overflow-y: scroll;
+  overflow-y: scroll !important;
 }
 
 .sidebarInner::-webkit-scrollbar-thumb {

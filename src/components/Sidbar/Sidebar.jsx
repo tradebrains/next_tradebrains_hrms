@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./sidebar.module.css";
+import { useSelector } from "react-redux";
+import { authStore } from "@/redux/reducer/authSlice";
 
 const ICONS = {
   Users,
@@ -48,6 +50,8 @@ const Sidebar = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
+  const auth = useSelector(authStore);
+  const user_role = auth?.userData?.user_details?.user_role;
 
   const handleDropdownToggle = (name) => {
     setOpenDropdown((prev) => (prev === name ? null : name));
@@ -63,11 +67,12 @@ const Sidebar = () => {
       href: "/holidays",
       icon: "Users",
     },
-    {
+    user_role === 1 && {
       name: "Leaves (Admin)",
       href: "/leaves-admin",
       icon: "Gem",
     },
+
     {
       name: "My Leaves",
       href: "/my-leaves",
@@ -82,7 +87,7 @@ const Sidebar = () => {
     //   ],
     //   icon: "ShieldCheck",
     // },
-    {
+    user_role === 1 && {
       name: "Assets (Admin)",
       href: "/admin-assets",
       icon: "KeyRound",
@@ -92,7 +97,7 @@ const Sidebar = () => {
       href: "/my-assets",
       icon: "ChartCandlestick",
     },
-    {
+    user_role === 1 && {
       name: "Reimbursements (Admin)",
       href: "/reimbursements-admin",
       icon: "MessageCircleCode",
@@ -102,7 +107,7 @@ const Sidebar = () => {
       href: "/my-reimbursements",
       icon: "BellDot",
     },
-    {
+    user_role === 1 && {
       name: "Employee Documents",
       href: "/documents",
       icon: "UserCheck",
@@ -142,7 +147,7 @@ const Sidebar = () => {
       href: "/calendar",
       icon: "PaintBucket",
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <div
@@ -160,22 +165,22 @@ const Sidebar = () => {
 
         <nav className={styles.navContainer}>
           {sideBarItems.map((item) => {
-            const IconComponent = ICONS[item.icon];
+            const IconComponent = ICONS[item?.icon];
             const isActive =
-              pathname === item.href ||
-              item.subItems?.some((sub) => pathname === sub.href);
+              pathname === item?.href ||
+              item?.subItems?.some((sub) => pathname === sub.href);
 
             return (
-              <div key={item.name}>
+              <div key={item?.name}>
                 <div
                   className={`${styles.navItem} ${
                     isActive ? styles.navItemActive : ""
                   }`}
                   onClick={() => {
-                    if (item.hasDropdown) {
-                      handleDropdownToggle(item.name);
+                    if (item?.hasDropdown) {
+                      handleDropdownToggle(item?.name);
                     } else {
-                      router.push(item.href);
+                      router.push(item?.href);
                     }
                   }}
                 >
@@ -185,8 +190,8 @@ const Sidebar = () => {
                   />
                   {isSideBarOpen && (
                     <span className={styles.navText}>
-                      {item.name}{" "}
-                      {item.hasDropdown && (
+                      {item?.name}{" "}
+                      {item?.hasDropdown && (
                         <span className={styles.dropdown_icon}>
                           {openDropdown ? <ChevronUp /> : <ChevronDown />}
                         </span>
@@ -196,25 +201,25 @@ const Sidebar = () => {
                 </div>
 
                 {/* Dropdown items */}
-                {item.hasDropdown &&
-                  openDropdown === item.name &&
+                {item?.hasDropdown &&
+                  openDropdown === item?.name &&
                   isSideBarOpen && (
                     <div className={styles.dropdownContainer}>
-                      {item.subItems.map((subItem) => (
+                      {item?.subItems?.map((subItem) => (
                         <div
-                          key={subItem.name}
+                          key={subItem?.name}
                           className={`${styles.navItem} ${
-                            pathname === subItem.href
+                            pathname === subItem?.href
                               ? styles.navItemActive
                               : ""
                           }`}
-                          onClick={() => router.push(subItem.href)}
+                          onClick={() => router.push(subItem?.href)}
                         >
                           <span
                             className={styles.navText}
                             style={{ paddingLeft: "30px" }}
                           >
-                            {subItem.name}
+                            {subItem?.name}
                           </span>
                         </div>
                       ))}

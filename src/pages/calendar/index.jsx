@@ -2,14 +2,15 @@
 import { useState, useEffect, useCallback } from "react";
 import styles from "./calendar.module.css";
 import CalendarCard from "@/components/Calendar/Calendar";
-import { getAttendance } from "../api/fetchClient";
+import { getAttendance, getEmployeeList } from "../api/fetchClient";
 import { Select } from "antd";
 import DotLoader from "@/components/DotLoader/DotLoader";
+import { useSelector } from "react-redux";
+import { authStore } from "@/redux/reducer/authSlice";
 
 const { Option } = Select;
 
 const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-const EMPLOYEE_CODE = "0001";
 
 const MONTHS = [
   { value: 0, name: "January" },
@@ -66,10 +67,23 @@ const CalendarPage = () => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-
+  const [employeeList, setEmployeeList] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const auth = useSelector(authStore);
+  const userCode = auth?.userData?.user_details?.emp_code;
+  const user_role = auth?.userData?.user_details?.user_role;
+  const [empCode, setEmpCode] = useState(userCode);
+
+  const getEmployee = async () => {
+    try {
+      const resp = await getEmployeeList();
+      if (resp?.status === 200) {
+        setEmployeeList(resp?.data);
+      }
+    } catch (error) {}
+  };
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -77,8 +91,9 @@ const CalendarPage = () => {
     try {
       const apiMonth = (currentMonth + 1).toString().padStart(2, "0");
       const apiYear = currentYear.toString();
+      console.log(empCode, "authauthauthauth");
 
-      const data = await getAttendance(EMPLOYEE_CODE, apiMonth, apiYear);
+      const data = await getAttendance(empCode, apiMonth, apiYear);
 
       setAttendanceData(data?.data?.attendance);
     } catch (err) {
@@ -86,11 +101,14 @@ const CalendarPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentMonth, currentYear]);
+  }, [currentMonth, currentYear, empCode]);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+    getEmployee();
+  }, [currentMonth, currentYear, empCode]);
+
+  console.log(user_role, "employeeList");
 
   const yearsList = generateYears(today.getFullYear());
 
@@ -105,7 +123,25 @@ const CalendarPage = () => {
       <div className={styles.header}>
         <h2 className={styles.title}>Attendance Calendar</h2>
         <div className={styles.dropdowns}>
-          <div></div>
+          <div>
+            {user_role == 1 && (
+              <Select
+                showSearch
+                className={styles.employee_list}
+                value={empCode}
+                onChange={(value) => setEmpCode(value)}
+                aria-label="Select Employee"
+                optionFilterProp="children"
+              >
+                {employeeList?.map((email) => (
+                  <Option key={email.id} value={email.emp_code}>
+                    {email.email}
+                  </Option>
+                ))}
+              </Select>
+            )}
+          </div>
+
           <div className={styles.date_year_gap}>
             <div>
               <Select

@@ -4,7 +4,7 @@ import styles from "./notice.module.css";
 function index() {
   return (
     <div>
-      <h2>Notice Period</h2>
+      <h2 className={styles.header}>Notice Period</h2>
       <p className={styles.title}>
         All the full-time time and part-time employees of the company have to
         abide by the following Notice Period Policy:

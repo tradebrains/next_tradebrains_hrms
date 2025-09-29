@@ -191,13 +191,7 @@ function index() {
       </p>
       <h5 className={styles.h5}>Types of Wedding Leave:</h5>
       <ul className={styles.list}>
-        <table
-          style={{
-            borderCollapse: "collapse",
-            width: "60%",
-            // padding: "20px",
-          }}
-        >
+        <table className={styles.table}>
           <tr style={{ textAlign: "left", borderBottom: "1px solid #ddd" }}>
             <th style={{ fontWeight: "bold" }}>Relation</th>
             <th style={{ fontWeight: "bold" }}>Maximum Leave Allowed</th>

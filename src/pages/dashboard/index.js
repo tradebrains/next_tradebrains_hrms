@@ -32,7 +32,7 @@ function dashboard() {
   const [managerList, setManagerList] = useState([]);
 
   const auth = useSelector(authStore);
-
+  const user_role = auth?.userData?.user_details?.user_role;
   const getEmployeeDetails = async () => {
     try {
       const resp = await getDashboardData();
@@ -100,12 +100,14 @@ function dashboard() {
     <div>
       <div className={styles.top_section}>
         <p className={styles.header_text}>Employee</p>
-        <div
-          className={styles.add_employee}
-          onClick={() => setAddEmployeeModal(true)}
-        >
-          + Add Employee
-        </div>
+        {user_role == 1 && (
+          <div
+            className={styles.add_employee}
+            onClick={() => setAddEmployeeModal(true)}
+          >
+            + Add Employee
+          </div>
+        )}
       </div>
       <div className={styles.profile_section}>
         {employeeDetails?.map((profile, index) => (
@@ -121,6 +123,7 @@ function dashboard() {
                 ? unknown
                 : profile?.profile_pic
             }
+            user_role={user_role}
           />
         ))}
       </div>

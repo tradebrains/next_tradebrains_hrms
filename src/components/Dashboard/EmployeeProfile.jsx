@@ -15,6 +15,7 @@ function EmployeeProfile({
   employeeDetails,
   managerList,
   employeeEmailIds,
+  user_role,
 }) {
   const [editBasicModal, setEditBasicModal] = useState(false);
   const [addPersonalModal, setAddPersonalModal] = useState(false);
@@ -110,11 +111,13 @@ function EmployeeProfile({
 
   return (
     <div className={styles.card}>
-      <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
-        <div className={styles.dropdown_container}>
-          <EllipsisVertical />
-        </div>
-      </Dropdown>
+      {user_role == 1 && (
+        <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
+          <div className={styles.dropdown_container}>
+            <EllipsisVertical />
+          </div>
+        </Dropdown>
+      )}
 
       <div className={styles.imageWrapper}>
         <Image

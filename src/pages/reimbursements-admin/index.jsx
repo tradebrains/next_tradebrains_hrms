@@ -259,7 +259,7 @@ function AdminReimbursement({ employeeIdMail }) {
     {
       title: "Status",
       dataIndex: "status",
-      align: "center",
+      width: "150px",
       render: (text, record) => {
         const currentStatus = selectedStatuses[record.id] || record.status;
 

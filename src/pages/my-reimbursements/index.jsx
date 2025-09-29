@@ -243,7 +243,7 @@ function MyReimbursement({}) {
     {
       title: "Status",
       dataIndex: "status",
-      align: "center",
+      width: "150px",
       render: (text, record, i) => {
         return {
           props: {

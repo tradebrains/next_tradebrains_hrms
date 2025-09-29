@@ -28,6 +28,7 @@ p {
 
 .padding-bottom {
   padding-bottom: 60px;
+  overflow: auto;
 }
 
 .content-wrapper {
@@ -35,7 +36,6 @@ p {
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
-  margin: auto;
 }
 
 .header-container {
@@ -43,11 +43,12 @@ p {
   margin-left: auto;
   margin-right: auto;
   padding: 0px 50px;
+  overflow-x: auto;
 }
 
 @media (max-width: 1024px) {
   .header-container {
-    padding: 0px 20px;
+    padding: 0px 15px;
   }
 }
 
@@ -69,6 +70,12 @@ p {
 
 .pb-30 {
   padding-bottom: 30px !important;
+  margin: auto;
+}
+
+.loader-container {
+  margin: auto;
+  padding: 0px 15px;
 }
 
 :root {
@@ -107,10 +114,6 @@ body {
   > .ant-table-header
   > table {
   border-color: #2f2f2f !important;
-}
-
-.custom-antd-head-dark {
-  width: 100% !important;
 }
 
 .ant-tab-expand .custom-antd-head-dark .ant-table-tbody > tr > td:nth-child(2) {
@@ -1160,6 +1163,10 @@ p {
   .ant-picker
   .ant-picker-input
   .ant-picker-suffix {
+  color: rgb(179, 174, 174) !important;
+}
+
+.row-grey .ant-table-cell > span {
   color: rgb(179, 174, 174) !important;
 }
 

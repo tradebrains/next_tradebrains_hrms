@@ -154,3 +154,10 @@
   font-weight: 600;
   margin-top: 10px;
 }
+
+@media (max-width: 640px) {
+  .leaves_left {
+    width: 50%;
+    margin-top: 20px;
+  }
+}

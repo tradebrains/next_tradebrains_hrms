@@ -46,3 +46,9 @@
 .submit:hover {
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
 }
+
+@media (max-width: 640px) {
+  .header_text {
+    font-size: 18px;
+  }
+}

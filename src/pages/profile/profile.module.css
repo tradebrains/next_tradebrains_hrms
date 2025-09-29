@@ -7,7 +7,7 @@
 }
 
 .left_section {
-  width: 320px;
+  max-width: 320px;
   height: 425px;
   background: rgba(30, 30, 30, 1);
   border-radius: 8px;
@@ -91,4 +91,18 @@
 
 .value {
   height: 70%;
+}
+
+@media (max-width: 640px) {
+  .top_section {
+    flex-direction: column;
+  }
+
+  .left_section {
+    max-width: 100% !important;
+  }
+
+  .profile_pic {
+    width: 100%;
+  }
 }

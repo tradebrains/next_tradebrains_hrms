@@ -117,6 +117,7 @@ function MyAssets() {
     {
       title: "Status",
       dataIndex: "status",
+      width: "150px",
       render: (text, record, i) => {
         return {
           props: {

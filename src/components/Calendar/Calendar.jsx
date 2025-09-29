@@ -12,6 +12,8 @@ const getStatusText = (status) => {
       return "Half Day";
     case "PL":
       return "PL";
+    case "HL":
+      return "Holiday";
     case "A":
       return "Absent";
     default:
@@ -29,6 +31,8 @@ const getStatusClass = (status) => {
       return styles.halfday;
     case "PL":
       return styles.pl;
+    case "HL":
+      return styles.holiday;
     case "A":
       return styles.absent;
     default:
@@ -44,7 +48,6 @@ const CalendarCard = ({ dayData, date }) => {
   const formattedDate = dayjs(rawDate, "DD/MM/YYYY").format(
     "dddd, DD MMM YYYY"
   );
-  console.log(dayData, "dayData");
 
   return (
     <div
@@ -63,7 +66,7 @@ const CalendarCard = ({ dayData, date }) => {
           <div className={styles.popupDate}>{formattedDate}</div>
           <div className={styles.popupTime}>
             <span className={styles.timing_text}>Check In:</span>{" "}
-            <span>{dayData.in_timne} AM</span>
+            <span>{dayData.in_time} AM</span>
           </div>
           <div className={styles.popupTime}>
             <span className={styles.timing_text}>Check Out:</span>{" "}
