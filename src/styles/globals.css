@@ -35,10 +35,11 @@ p {
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
+  margin: auto;
 }
 
 .header-container {
-  width: 100%;
+  width: 100% !important;
   margin-left: auto;
   margin-right: auto;
   padding: 0px 50px;
@@ -106,6 +107,10 @@ body {
   > .ant-table-header
   > table {
   border-color: #2f2f2f !important;
+}
+
+.custom-antd-head-dark {
+  width: 100% !important;
 }
 
 .ant-tab-expand .custom-antd-head-dark .ant-table-tbody > tr > td:nth-child(2) {
@@ -1361,4 +1366,31 @@ p {
 .custom-kyc-terms-modal .ant-modal-body {
   scrollbar-width: thin;
   scrollbar-color: #545e78 #1e1e1e;
+}
+
+:where(.css-dev-only-do-not-override-xepvsj).ant-drawer .ant-drawer-body {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 0px;
+  overflow: auto;
+}
+
+:where(.css-dev-only-do-not-override-xepvsj).ant-drawer .ant-drawer-header {
+  display: flex;
+  flex: 0;
+  align-items: center;
+  padding: 0px;
+  font-size: 16px;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+:where(.css-dev-only-do-not-override-xepvsj).ant-drawer .ant-drawer-header {
+  display: none;
+  align-items: center;
+  padding: 0px;
+  font-size: 16px;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }

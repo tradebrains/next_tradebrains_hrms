@@ -79,3 +79,40 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.sidebarWrapper {
+  display: none;
+}
+
+.mobileMenu {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .name {
+    display: none;
+  }
+
+  .title {
+    display: none;
+  }
+
+  .sidebarWrapper {
+    display: block;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+
+  .toggleButton {
+    padding: 5px 8px;
+    border-radius: 9999px;
+    transition: background-color 0.3s;
+    border: none !important;
+    max-width: fit-content;
+    cursor: pointer;
+    background: none;
+    color: white;
+  }
+}
