@@ -1,42 +1,24 @@
 services:
-  hrms_next_frontent:
+  hrms_next_frontent_main:
     # container_name: hrms_frontend
     build:
       context: ./
       # target: production
       dockerfile: Dockerfile
       args:
-        NEXT_APP_FIREBASE_APIKEY: ${NEXT_APP_FIREBASE_APIKEY}
-        NEXT_APP_FIREBASE_AUTH: ${NEXT_APP_FIREBASE_AUTH}
-        NEXT_APP_FIREBASE_ID: ${NEXT_APP_FIREBASE_ID}
-        NEXT_APP_FIREBASE_BUCKET: ${NEXT_APP_FIREBASE_BUCKET}
-        NEXT_APP_FIREBASE_MSGID: ${NEXT_APP_FIREBASE_MSGID}
-        NEXT_APP_FIREBASE_APPID: ${NEXT_APP_FIREBASE_APPID}
-        NEXT_APP_HOST_URL: ${NEXT_APP_HOST_URL}
         NEXT_APP_BASE_URL: ${NEXT_APP_BASE_URL}
-        NEXT_APP_NEWS_BASE_URL: ${NEXT_APP_NEWS_BASE_URL}
     volumes:
-      - hrms:/app/
+      - hrms_next:/app/
       # - /app/node_modules
       # - /app/.next
     restart: always
     ports:
-      - "3070"
+      - "3070:3000"
     networks:
       - hrms_network
-    deploy:
-      replicas: 2 # Number of Next.js instances to run
-      update_config:
-        parallelism: 1
-        delay: 30s
-      resources:
-        limits:
-          memory: 2g
-        reservations:
-          memory: 2g
+
 volumes:
   hrms:
-    external: true
+
 networks:
   hrms_network:
-    external: true
