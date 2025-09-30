@@ -82,6 +82,11 @@
   border-top: 2px solid #faad14;
 }
 
+.card.holiday {
+  background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%);
+  border-top: 2px solid #b11e1e !important;
+}
+
 .card.pl {
   background-color: #2c2c2c;
   border-top: 2px solid #adadad;

@@ -1,7 +1,5 @@
-/* styles/Calendar.module.css */
 .container {
   font-family: Arial, sans-serif;
-  padding: 20px;
 }
 
 .legend {
@@ -92,11 +90,6 @@
   border-color: #5d5dff;
 }
 
-.card.holiday {
-  background-color: #e6e6ff !important;
-  border-color: #2323b8 !important;
-}
-
 .card.weekend {
   background-color: #f5f5f5;
   color: #8b8b8b;
@@ -155,4 +148,32 @@
 .date_year_gap {
   display: flex;
   gap: 20px;
+}
+
+@media (max-width: 640px) {
+  .dropdowns {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .employee_list {
+    width: 100%;
+  }
+
+  .date_year_gap {
+    width: 100% !important;
+  }
+
+  .monthSelect {
+    width: 100% !important;
+  }
+
+  .yearSelect {
+    width: 100% !important;
+  }
+
+  .month_year {
+    width: 100% !important;
+  }
 }

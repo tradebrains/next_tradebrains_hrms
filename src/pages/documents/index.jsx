@@ -75,8 +75,6 @@ function EmployeeDocuments() {
     ),
   });
 
-  console.log(tableData, "tableDatatableData");
-
   const renderDocumentCell = (fileUrl, attachModelHandler) => {
     let content;
 

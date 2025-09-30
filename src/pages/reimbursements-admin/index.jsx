@@ -211,7 +211,6 @@ function AdminReimbursement({ employeeIdMail }) {
       dataIndex: "attachment",
       align: "center",
       render: (text, record) => {
-        console.log(record, "recordrecord");
         return {
           props: {
             style: {

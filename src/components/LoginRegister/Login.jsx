@@ -23,7 +23,6 @@ function LoginForm() {
 
     try {
       const resp = await postLogin(values);
-      console.log(resp, "resprespresp");
 
       if (resp?.status === 200) {
         cookie.set("hrms_login_session", "true", { expires: 999 });
@@ -36,8 +35,6 @@ function LoginForm() {
         setApiError("Invalid login credentials.");
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
-
       const errorMsg =
         error?.response?.data?.non_field_errors[0] ||
         error?.message ||
@@ -54,14 +51,6 @@ function LoginForm() {
       <div
         className={`${styles.login_form_container} 
         `}
-        style={{
-          width: "500px",
-          textAlign: "center",
-          margin: "auto",
-          padding: "20px",
-          borderRadius: "10px",
-          backgroundColor: "#1e1e1e",
-        }}
       >
         <div className="">
           {svgSheet.trade_brains_Logo}

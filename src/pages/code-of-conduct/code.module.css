@@ -5,9 +5,16 @@
   margin-bottom: 20px;
 }
 
-.link {
+.flex_text_image {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.text {
   color: #ff9b44;
   text-decoration: none;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }

@@ -91,8 +91,6 @@ const CalendarPage = () => {
     try {
       const apiMonth = (currentMonth + 1).toString().padStart(2, "0");
       const apiYear = currentYear.toString();
-      console.log(empCode, "authauthauthauth");
-
       const data = await getAttendance(empCode, apiMonth, apiYear);
 
       setAttendanceData(data?.data?.attendance);
@@ -108,8 +106,6 @@ const CalendarPage = () => {
     getEmployee();
   }, [currentMonth, currentYear, empCode]);
 
-  console.log(user_role, "employeeList");
-
   const yearsList = generateYears(today.getFullYear());
 
   if (error) return <div className={styles.error}>Error: {error}</div>;
@@ -123,7 +119,7 @@ const CalendarPage = () => {
       <div className={styles.header}>
         <h2 className={styles.title}>Attendance Calendar</h2>
         <div className={styles.dropdowns}>
-          <div>
+          <div className={styles.month_year}>
             {user_role == 1 && (
               <Select
                 showSearch
@@ -143,7 +139,7 @@ const CalendarPage = () => {
           </div>
 
           <div className={styles.date_year_gap}>
-            <div>
+            <div className={styles.month_year}>
               <Select
                 className={styles.monthSelect}
                 value={currentMonth}
@@ -158,7 +154,7 @@ const CalendarPage = () => {
               </Select>
             </div>
 
-            <div>
+            <div className={styles.month_year}>
               <Select
                 className={styles.yearSelect}
                 value={currentYear}
@@ -176,7 +172,6 @@ const CalendarPage = () => {
         </div>
       </div>
 
-      {/* Legend and Grid Rendering remain the same */}
       <div className={styles.legend}>
         <div className={styles.legendItem}>
           <span

@@ -67,7 +67,7 @@ const Sidebar = () => {
       href: "/holidays",
       icon: "Users",
     },
-    user_role === 1 && {
+    user_role == 1 && {
       name: "Leaves (Admin)",
       href: "/leaves-admin",
       icon: "Gem",
@@ -87,7 +87,7 @@ const Sidebar = () => {
     //   ],
     //   icon: "ShieldCheck",
     // },
-    user_role === 1 && {
+    user_role == 1 && {
       name: "Assets (Admin)",
       href: "/admin-assets",
       icon: "KeyRound",
@@ -97,7 +97,7 @@ const Sidebar = () => {
       href: "/my-assets",
       icon: "ChartCandlestick",
     },
-    user_role === 1 && {
+    user_role == 1 && {
       name: "Reimbursements (Admin)",
       href: "/reimbursements-admin",
       icon: "MessageCircleCode",
@@ -107,7 +107,7 @@ const Sidebar = () => {
       href: "/my-reimbursements",
       icon: "BellDot",
     },
-    user_role === 1 && {
+    user_role == 1 && {
       name: "Employee Documents",
       href: "/documents",
       icon: "UserCheck",

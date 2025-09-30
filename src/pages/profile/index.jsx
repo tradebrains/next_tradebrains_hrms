@@ -29,16 +29,12 @@ function Profile() {
     try {
       const resp = await getManagerList();
       setManagerList(resp?.data);
-    } catch (error) {
-      console.log("Error fetching manager list:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
     getManagerListData();
   }, []);
-
-  console.log(managerList, "managerList");
 
   // const managerName = managerList.find();
 
@@ -92,7 +88,6 @@ function Profile() {
       value: null,
     },
   ];
-  console.log(profileData, "profileData");
 
   return (
     <div>

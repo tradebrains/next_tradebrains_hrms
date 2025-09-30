@@ -58,9 +58,7 @@ function EditBasicDetailsModal({
         setEditBasicModal(false);
         form.resetFields();
       }
-    } catch (error) {
-      console.log("Error submitting form:", error);
-    }
+    } catch (error) {}
   };
 
   return (

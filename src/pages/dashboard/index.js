@@ -37,29 +37,21 @@ function dashboard() {
     try {
       const resp = await getDashboardData();
       setEmployeeDetails(resp?.data);
-    } catch (error) {
-      console.log("Error fetching employee details:", error);
-    }
+    } catch (error) {}
   };
 
   const getEmployeeEmailIds = async () => {
     try {
       const resp = await getEmployeeIds();
       setEmployeeEmailIds(resp?.data);
-    } catch (error) {
-      console.log("Error fetching employee email ids:", error);
-    }
+    } catch (error) {}
   };
-
-  console.log(employeeEmailIds, "employeeEmailIds");
 
   const getManagerListData = async () => {
     try {
       const resp = await getManagerList();
       setManagerList(resp?.data);
-    } catch (error) {
-      console.log("Error fetching manager list:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -67,8 +59,6 @@ function dashboard() {
     getEmployeeEmailIds();
     getManagerListData();
   }, []);
-
-  console.log(employeeDetails, "employeeDetails");
 
   const onSubmit = async (values) => {
     try {
@@ -92,9 +82,7 @@ function dashboard() {
         form.resetFields();
         getEmployeeDetails();
       }
-    } catch (error) {
-      console.log("Error submitting form:", error);
-    }
+    } catch (error) {}
   };
   return (
     <div>

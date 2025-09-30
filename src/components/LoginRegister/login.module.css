@@ -9,6 +9,12 @@
 
 .login_form_container {
   margin-top: 100px !important;
+  width: 500px;
+  text-align: center;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #1e1e1e;
 }
 
 .header_text {
@@ -72,4 +78,11 @@
   margin-top: 20px;
   color: #fff;
   font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .login_form_container {
+    width: 80% !important;
+    overflow: hidden;
+  }
 }

@@ -222,8 +222,6 @@ function AdminAssets({ employeeIdMail }) {
       title: "Status",
       dataIndex: "status",
       render: (text, record, i) => {
-        console.log(record, "recordrecord");
-
         const currentStatus = selectedStatuses[record.id] || record.status;
 
         const statusOptions = {

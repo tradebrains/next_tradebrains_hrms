@@ -15,8 +15,6 @@ function UploadDocuments({
     (item) => item?.id === deleteID
   );
 
-  console.log(employeeEmailIds, "employeeEmail");
-
   useEffect(() => {}, []);
 
   const onSubmit = async (values) => {

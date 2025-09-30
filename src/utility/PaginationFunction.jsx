@@ -10,6 +10,4 @@ export function itemRender(current, type, originalElement) {
   return originalElement;
 }
 
-export function onShowSizeChange(current, pageSize) {
-  // console.log(current, pageSize);
-}
+export function onShowSizeChange(current, pageSize) {}

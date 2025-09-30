@@ -22,8 +22,6 @@ function MyAssets() {
     } catch (error) {}
   };
 
-  console.log(tableData, "tableData");
-
   useEffect(() => {
     getAsset();
   }, []);
