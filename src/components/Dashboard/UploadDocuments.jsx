@@ -79,7 +79,6 @@ function UploadDocuments({
               layout="vertical"
               autoComplete="off"
               onFinish={onSubmit}
-              className={styles.form}
               initialValues={{
                 email: employeeEmail?.[0]?.email,
                 employee_id: employeeEmail?.[0]?.employee_id,

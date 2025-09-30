@@ -148,7 +148,6 @@ function AddPersonalDetails({
               layout="vertical"
               autoComplete="off"
               onFinish={onSubmit}
-              className={styles.form}
               initialValues={{
                 email: employeeEmail?.[0]?.email,
               }}

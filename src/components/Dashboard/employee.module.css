@@ -190,4 +190,13 @@
     width: 90%;
     height: 350px !important;
   }
+
+  .row {
+    flex-direction: column;
+    gap: 0px;
+  }
+
+  .upload {
+    width: 100% !important;
+  }
 }

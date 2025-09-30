@@ -134,7 +134,6 @@ function dashboard() {
               layout="vertical"
               autoComplete="off"
               onFinish={onSubmit}
-              className={styles.form}
             >
               <div className={styles.row}>
                 <Form.Item

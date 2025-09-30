@@ -76,4 +76,9 @@
     align-items: center;
     flex-direction: column;
   }
+
+  .row {
+    flex-direction: column;
+    gap: 0px;
+  }
 }
