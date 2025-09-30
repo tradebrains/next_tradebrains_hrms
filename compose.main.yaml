@@ -1,5 +1,5 @@
 services:
-  hrms_next:
+  hrms_next_frontent:
     # container_name: hrms_frontend
     build:
       context: ./
