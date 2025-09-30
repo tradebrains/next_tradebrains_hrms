@@ -21,6 +21,7 @@ import {
   PaintBucket,
   SprayCan,
   ShieldCheck,
+  X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./sidebar.module.css";
@@ -45,7 +46,7 @@ const ICONS = {
   SprayCan,
   ShieldCheck,
 };
-const Sidebar = () => {
+const Sidebar = ({ onClose }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [openDropdown, setOpenDropdown] = useState(null);
   const pathname = usePathname();
@@ -162,7 +163,9 @@ const Sidebar = () => {
         >
           <Menu size={24} style={{ color: "white" }} />
         </button>
-
+        <div className={styles.mobile_icon} onClick={() => onClose()}>
+          <X style={{ color: "white" }} />
+        </div>
         <nav className={styles.navContainer}>
           {sideBarItems.map((item) => {
             const IconComponent = ICONS[item?.icon];

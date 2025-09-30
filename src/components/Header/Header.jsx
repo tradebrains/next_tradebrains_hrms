@@ -112,7 +112,7 @@ function Header() {
             <MenuIcon />
           </button>
           <Drawer onClose={onClose} open={open}>
-            <Sidebar />
+            <Sidebar onClose={onClose} />
           </Drawer>
         </div>
         <div className={styles.controls}>

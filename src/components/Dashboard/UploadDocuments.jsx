@@ -1,5 +1,14 @@
-import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
-import React, { use, useEffect } from "react";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Select,
+  Upload,
+} from "antd";
+import React, { useEffect } from "react";
 import styles from "./employee.module.css";
 import { UploadOutlined } from "@ant-design/icons";
 import { postEmployeeDocuments } from "@/pages/api/fetchClient";
@@ -11,7 +20,7 @@ function UploadDocuments({
 }) {
   const [form] = Form.useForm();
 
-  const employeeEmail = employeeEmailIds.filter(
+  const employeeEmail = employeeEmailIds?.filter(
     (item) => item?.id === deleteID
   );
 
@@ -53,6 +62,7 @@ function UploadDocuments({
       const resp = await postEmployeeDocuments(deleteID, formdata);
       if (resp.status === 201) {
         form.resetFields();
+        message.success("Documents Uploaded Successfully");
         setUploadDocumentModal(false);
       }
     } catch (error) {}

@@ -1401,3 +1401,29 @@ p {
   line-height: 1.5;
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
+
+:where(.css-xepvsj).ant-drawer .ant-drawer-body {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 0px !important;
+  overflow: auto;
+}
+
+:where(.css-xepvsj).ant-drawer .ant-drawer-header {
+  display: flex;
+  flex: 0;
+  align-items: center;
+  padding: 0px !important;
+  font-size: 16px;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+:where(.css-xepvsj).ant-drawer .ant-drawer-header-title {
+  display: none !important;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+}

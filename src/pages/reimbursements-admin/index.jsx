@@ -208,8 +208,7 @@ function AdminReimbursement({ employeeIdMail }) {
     },
     {
       title: "Attachment",
-      dataIndex: "attachment",
-      align: "center",
+      dataIndex: "",
       render: (text, record) => {
         return {
           props: {
@@ -223,7 +222,7 @@ function AdminReimbursement({ employeeIdMail }) {
               <span>
                 <div
                   onClick={() => attachModelHandler(record?.receipt_file)}
-                  className="dropdown-item"
+                  className={styles.items_images}
                 >
                   {record?.receipt_file?.match(".pdf") ? (
                     <img
@@ -238,7 +237,7 @@ function AdminReimbursement({ employeeIdMail }) {
                   ) : (
                     <Image
                       alt="image"
-                      // src={record?.receipt_file}
+                      src={record?.receipt_file}
                       width={50}
                       height={40}
                       style={{
@@ -442,6 +441,7 @@ function AdminReimbursement({ employeeIdMail }) {
                 name="email"
                 rules={[{ required: true, message: "Please select User ID" }]}
                 className={styles.item}
+                disabled={id}
               >
                 <Select placeholder="Select" disabled={id}>
                   {employeeIdMail?.map((item) => (
@@ -578,7 +578,7 @@ function AdminReimbursement({ employeeIdMail }) {
           <iframe
             src={file}
             width="100%"
-            height="800px"
+            height="400px"
             style={{ border: "none" }}
           />
         </div>

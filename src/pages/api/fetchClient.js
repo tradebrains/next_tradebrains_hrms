@@ -224,12 +224,11 @@ export const deleteEmployee = async (id) => {
 };
 
 export const postAdminReimburse = async (data) => {
-  const response = await post(
-    `employee/reimbursements/admin/create/`,
-    data
-  ).then((resp) => {
-    return resp;
-  });
+  const response = await post(`employee/reimbursements/admin/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
   return response;
 };
 
@@ -271,12 +270,11 @@ export const getEmployeeReimburse = async (Page) => {
 };
 
 export const editAdminReimburse = async (id, data) => {
-  const response = await put(
-    `employee/reimbusements/admin/edit/${id}/`,
-    data
-  ).then((resp) => {
-    return resp;
-  });
+  const response = await put(`employee/reimbursements/admin/${id}/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
   return response;
 };
 
@@ -291,7 +289,7 @@ export const editEmployeeReimburse = async (id, data) => {
 };
 
 export const deleteReimburse = async (id) => {
-  const response = await del(`employee/reimbursements/delete/${id}/`).then(
+  const response = await del(`employee/reimbursements/admin/${id}/`).then(
     (resp) => {
       return resp;
     }

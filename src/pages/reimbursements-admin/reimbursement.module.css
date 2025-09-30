@@ -123,6 +123,10 @@
   color: #55ce63;
 }
 
+.items_images {
+  cursor: pointer;
+}
+
 @media (max-width: 640px) {
   .header_text {
     font-size: 18px;

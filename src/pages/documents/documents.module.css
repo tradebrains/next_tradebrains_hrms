@@ -47,8 +47,83 @@
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
 }
 
+.edit {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.item {
+  flex: 1;
+}
+
+.upload {
+  width: 50% !important;
+}
+
+.status_heading {
+  font-size: 20px;
+  color: #ffffff;
+  line-height: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.flex_button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.status_text {
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 24px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.yes_no_button {
+  width: 50%;
+  border: 2px solid #ff9b44;
+  border-radius: 20px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.yes_no_button:hover {
+  font-weight: 500;
+  background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
+}
+
+.choose_file {
+  color: #55ce63;
+}
+
 @media (max-width: 640px) {
   .header_text {
     font-size: 18px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0px;
+  }
+
+  .upload {
+    width: 100% !important;
   }
 }
