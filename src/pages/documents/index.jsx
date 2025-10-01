@@ -24,6 +24,7 @@ function EmployeeDocuments() {
   const [file, setFile] = useState("");
   const [reimburseModal, setReimburseModal] = useState(false);
   const [id, setId] = useState(null);
+  const [putId, setPutId] = useState("");
   const [uploadDocumentModal, setUploadDocumentModal] = useState(false);
   const [employeeEmailIds, setEmployeeEmailIds] = useState([]);
 
@@ -39,17 +40,17 @@ function EmployeeDocuments() {
 
   useEffect(() => {
     if (uploadDocumentModal && id && tableData.length > 0) {
-      const data = tableData.find((item) => item.id === id);
+      const data = tableData.find((item) => item.id === putId);
       if (data) {
         form.setFieldsValue({
           ...data,
           date: data?.date ? dayjs(data.date) : null,
         });
       }
-    } else if (uploadDocumentModal && !id) {
+    } else if (uploadDocumentModal && !putId) {
       form.resetFields();
     }
-  }, [id, uploadDocumentModal, tableData]);
+  }, [putId, uploadDocumentModal, tableData]);
 
   useEffect(() => {
     getTableData();
@@ -117,7 +118,7 @@ function EmployeeDocuments() {
 
     try {
       const resp = await editEmployeeDocuments(id, formdata);
-      if (resp.status === 201) {
+      if (resp.status === 200) {
         form.resetFields();
         setUploadDocumentModal(false);
       }
@@ -370,7 +371,8 @@ function EmployeeDocuments() {
                       <div
                         onClick={() => {
                           setUploadDocumentModal(true);
-                          setId(record.id);
+                          setId(record.employee);
+                          setPutId(record?.id);
                         }}
                         className={`text-white`}
                       >
@@ -379,7 +381,7 @@ function EmployeeDocuments() {
                       <div
                         onClick={() => {
                           setDeleteModal(true);
-                          setDeleteID(record.id);
+                          setDeleteID(record.employee);
                         }}
                         className={`text-white mt-10`}
                       >

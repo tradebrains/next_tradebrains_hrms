@@ -3,22 +3,14 @@ services:
     # container_name: hrms_frontend
     build:
       context: ./
-      # target: production
       dockerfile: Dockerfile
       args:
         NEXT_APP_BASE_URL: ${NEXT_APP_BASE_URL}
-    volumes:
-      - hrms_next:/app/
-      # - /app/node_modules
-      # - /app/.next
     restart: always
     ports:
       - "3070:3000"
     networks:
       - hrms_network
-
-volumes:
-  hrms:
 
 networks:
   hrms_network:
