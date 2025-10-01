@@ -285,13 +285,10 @@ function AdminLeaves({ employeeIdMail }) {
           ),
         };
       },
-
       sorter: (a, b) => a.status.length - b.status.length,
     },
     {
       title: "Action",
-      dataIndex: "status",
-      width: "50px",
       render: (text, record, i) => {
         return {
           props: {
