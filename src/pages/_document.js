@@ -8,7 +8,7 @@ export default function Document() {
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         ></meta>
-
+        <link rel="icon" href="/favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

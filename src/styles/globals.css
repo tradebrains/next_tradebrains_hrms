@@ -1450,3 +1450,7 @@ p {
   transition: background-color 0.2s;
   content: "";
 }
+
+.ant-table-placeholder {
+  background-color: #2d2d2d !important;
+}
