@@ -29,7 +29,7 @@ const MONTHS = [
 
 const generateYears = (currentYear) => {
   const years = [];
-  for (let i = currentYear - 5; i <= currentYear; i++) {
+  for (let i = currentYear; i <= currentYear; i++) {
     years.push(i);
   }
   return years;
