@@ -284,12 +284,12 @@ function dashboard() {
               </div>
               <div className={styles.upload}>
                 <Form.Item
-                  label="Attendance Employee Code"
+                  label="Employee Code (Attendance)"
                   name="emp_code"
                   rules={[
                     {
                       required: true,
-                      message: "Please enter Attendance Employee Code",
+                      message: "Please enter Employee Code (Attendance)",
                     },
                   ]}
                   className={styles.item}
