@@ -277,6 +277,11 @@ function AdminReimbursement({ employeeIdMail }) {
               <span className="fa fa-dot-circle-o text-success"></span> Approved
             </>
           ),
+          Decline: (
+            <>
+              <span className="fa fa-dot-circle-o text-info"></span> Decline
+            </>
+          ),
         };
 
         return {
@@ -291,17 +296,36 @@ function AdminReimbursement({ employeeIdMail }) {
                 className={styles.select}
                 value={currentStatus}
                 onChange={(value) => handleStatusUpdater(record.id, value)}
-                labelInValue={false}
+                optionLabelProp="label"
               >
-                <Option value="Pending" label="Pending">
+                <Option
+                  value="Pending"
+                  label={statusOptions.Pending}
+                  disabled={currentStatus === "Pending"}
+                >
                   {statusOptions.Pending}
                 </Option>
-                <Option value="Rejected" label="Rejected">
+                <Option
+                  value="Rejected"
+                  label={statusOptions.Rejected}
+                  disabled={currentStatus === "Rejected"}
+                >
                   {statusOptions.Rejected}
                 </Option>
-                <Option value="Approved" label="Approved">
+                <Option
+                  value="Approved"
+                  label={statusOptions.Approved}
+                  disabled={currentStatus === "Approved"}
+                >
                   {statusOptions.Approved}
                 </Option>
+
+                {(currentStatus === "Approved" ||
+                  currentStatus === "Rejected") && (
+                  <Option value="Decline" label={statusOptions.Decline}>
+                    {statusOptions.Decline}
+                  </Option>
+                )}
               </Select>
             </div>
           ),
