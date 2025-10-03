@@ -144,7 +144,11 @@ function dashboard() {
                   ]}
                   className={styles.item}
                 >
-                  <Select placeholder="Select">
+                  <Select
+                    placeholder="Select"
+                    showSearch
+                    optionFilterProp="children"
+                  >
                     {employeeEmailIds?.map((item) => (
                       <Option key={item.id} value={item.id}>
                         {item.email}
@@ -255,7 +259,11 @@ function dashboard() {
                   ]}
                   className={styles.item}
                 >
-                  <Select placeholder="Select Manager">
+                  <Select
+                    placeholder="Select Manager"
+                    showSearch
+                    optionFilterProp="children"
+                  >
                     {managerList?.map((item) => (
                       <Option key={item?.id} value={item.id}>
                         {item?.manager_name}

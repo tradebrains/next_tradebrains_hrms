@@ -123,11 +123,11 @@ const CalendarPage = () => {
             {user_role == 1 && (
               <Select
                 showSearch
+                optionFilterProp="children"
                 className={styles.employee_list}
                 value={empCode}
                 onChange={(value) => setEmpCode(value)}
                 aria-label="Select Employee"
-                optionFilterProp="children"
               >
                 {employeeList?.map((email) => (
                   <Option key={email.id} value={email.emp_code}>
