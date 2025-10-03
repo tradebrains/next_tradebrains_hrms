@@ -180,7 +180,11 @@ function EditBasicDetailsModal({
                   ]}
                   className={styles.item}
                 >
-                  <Select placeholder="Select Manager">
+                  <Select
+                    placeholder="Select Manager"
+                    showSearch
+                    optionFilterProp="children"
+                  >
                     {managerList?.map((item) => (
                       <Select.Option key={item?.id} value={item.id}>
                         {item?.manager_name}

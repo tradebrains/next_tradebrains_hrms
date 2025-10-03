@@ -449,6 +449,8 @@ function AdminReimbursement({ employeeIdMail }) {
                 className={styles.item}
               >
                 <Select
+                  showSearch
+                  optionFilterProp="children"
                   placeholder="Select"
                   onChange={handleSelectChange}
                   disabled={id}
@@ -467,7 +469,12 @@ function AdminReimbursement({ employeeIdMail }) {
                 className={styles.item}
                 disabled={id}
               >
-                <Select placeholder="Select" disabled={id}>
+                <Select
+                  placeholder="Select"
+                  disabled={id}
+                  showSearch
+                  optionFilterProp="children"
+                >
                   {employeeIdMail?.map((item) => (
                     <Option key={item?.employee_id} value={item?.email}>
                       {item?.email}{" "}

@@ -433,6 +433,8 @@ function AdminLeaves({ employeeIdMail }) {
                 className={styles.item}
               >
                 <Select
+                  showSearch
+                  optionFilterProp="children"
                   placeholder="Select"
                   onChange={handleSelectChange}
                   disabled={id}
@@ -460,7 +462,12 @@ function AdminLeaves({ employeeIdMail }) {
                 rules={[{ required: true, message: "Please select User ID" }]}
                 className={styles.item}
               >
-                <Select placeholder="Select" disabled={id}>
+                <Select
+                  placeholder="Select"
+                  disabled={id}
+                  showSearch
+                  optionFilterProp="children"
+                >
                   {employeeIdMail?.map((item) => (
                     <Option key={item?.employee_id} value={item?.email}>
                       {item?.email}{" "}
