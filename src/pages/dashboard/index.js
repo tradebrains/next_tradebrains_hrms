@@ -274,7 +274,21 @@ function dashboard() {
                   </Upload>
                 </Form.Item>
               </div>
-
+              <div className={styles.upload}>
+                <Form.Item
+                  label="Attendance Employee Code"
+                  name="emp_code"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter Attendance Employee Code",
+                    },
+                  ]}
+                  className={styles.item}
+                >
+                  <Input type="number" placeholder="Enter Days" />
+                </Form.Item>
+              </div>
               <Form.Item>
                 <Button
                   type="primary"

@@ -69,6 +69,10 @@
   margin-top: 50px;
 }
 
+.upload {
+  width: 48.5%;
+}
+
 @media (max-width: 640px) {
   .profile_section {
     display: flex;
@@ -80,5 +84,9 @@
   .row {
     flex-direction: column;
     gap: 0px;
+  }
+
+  .upload {
+    width: 100%;
   }
 }
