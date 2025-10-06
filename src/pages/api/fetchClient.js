@@ -356,8 +356,10 @@ export const editEmployeeDocuments = async (id, data) => {
   return response;
 };
 
-export const getEmployeeDocuments = async () => {
-  const response = await get(`employee/documents/all/`).then((resp) => {
+export const getEmployeeDocuments = async (Page) => {
+  const response = await get(
+    `employee/documents/all/?page=${Page.page}&page_size=${Page.perPage}`
+  ).then((resp) => {
     return resp;
   });
   return response;
