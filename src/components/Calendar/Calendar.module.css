@@ -97,6 +97,11 @@
   border-top: 2px solid #2f2f2f;
 }
 
+.card.default {
+  color: #8b8b8b;
+  border-top: 2px solid #2f2f2f;
+}
+
 .date {
   font-weight: bold;
   font-size: 1.2em;
