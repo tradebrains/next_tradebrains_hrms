@@ -1,47 +1,30 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Form, Input } from "antd";
-import cookie from "js-cookie";
-import { useDispatch } from "react-redux";
-import { setAuth } from "@/redux/reducer/authSlice";
+import { Form, Input, message } from "antd";
 import styles from "./login.module.css";
 import svgSheet from "../../assets/svgSheets";
 import { useRouter } from "next/router";
+import { getResetLink } from "@/pages/api/fetchClient";
 
 function ForgotPasswordForm() {
-  const [apiLoader, setApiLoader] = useState(false);
-  const [apiError, setApiError] = useState();
-  const [form] = Form.useForm();
-  const dispatch = useDispatch();
   const router = useRouter();
-  const [Model, setModel] = useState(false);
+  const [form] = Form.useForm();
+
   const onSubmit = async (values) => {
-    setApiLoader(true);
-    setApiError(null);
-
+    const data = {
+      email: values.email,
+      redirect_url: `${window.location.origin}/reset-password`,
+    };
     try {
-      const resp = await postLogin(values);
-
+      const resp = await getResetLink(data);
       if (resp?.status === 200) {
-        cookie.set("hrms_login_session", "true", { expires: 999 });
-        cookie.set("hrms_access_token", resp?.data?.tokens?.access, {
-          expires: 999,
-        });
-        window.location.href = "/dashboard";
-        dispatch(setAuth(resp.data));
+        setForgotPasswordModal(false);
+        message.success("A password reset link has been sent to your email.");
       } else {
-        setApiError("Invalid login credentials.");
       }
     } catch (error) {
-      const errorMsg =
-        error?.response?.data?.detail ||
-        error?.message ||
-        "Login failed. Please check your credentials.";
-
-      setApiError(errorMsg);
     } finally {
-      setApiLoader(false);
     }
   };
 
@@ -67,9 +50,9 @@ function ForgotPasswordForm() {
           </p>
           <Form
             autoComplete="off"
-            // form={forgotForm}
+            form={form}
             name="forgot_password"
-            // onFinish={onSubmitForgotPassword}
+            onFinish={onSubmit}
             scrollToFirstError
           >
             <Form.Item

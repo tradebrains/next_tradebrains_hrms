@@ -6,6 +6,7 @@ import { Form, Input, message, Modal, Select } from "antd";
 import styles from "./login.module.css";
 import { Turnstile } from "next-turnstile";
 import svgSheet from "@/assets/svgSheets";
+import { resetPassword } from "@/pages/api/fetchClient";
 
 function ResetPasswordForm() {
   const [apiLoader, setApiLoader] = useState(false);
@@ -13,32 +14,32 @@ function ResetPasswordForm() {
   const [form] = Form.useForm();
   const [turnsTileToken, setTurnstileToken] = useState(null);
 
-  //   const onSubmit = async (values) => {
-  //     setApiLoader(true);
-  //     setApiError(null);
-  //     const data = {
-  //       password: values.password,
-  //       token: new URLSearchParams(window.location.search).get("token"),
-  //       uidb64: new URLSearchParams(window.location.search).get("uidb64"),
-  //     };
+  const onSubmit = async (values) => {
+    setApiLoader(true);
+    setApiError(null);
+    const data = {
+      new_password: values.password,
+      token: new URLSearchParams(window.location.search).get("token"),
+      uid: new URLSearchParams(window.location.search).get("uid"),
+    };
 
-  //     try {
-  //       const resp = await resetPassword(data);
+    try {
+      const resp = await resetPassword(data);
 
-  //       if (resp?.status === 200) {
-  //         setApiLoader(true);
-  //         message.success("Password reset successful.");
-  //         window.location.href = "/";
-  //       } else {
-  //         message.error("Something went wrong. Please try again.");
-  //       }
-  //     } catch (error) {
-  //       message.error(
-  //         error?.response?.data?.detail || "Failed to reset password."
-  //       );
-  //     }
-  //     setTurnstileToken(null);
-  //   };
+      if (resp?.status === 200) {
+        setApiLoader(true);
+        message.success("Password reset successful.");
+        window.location.href = "/login";
+      } else {
+        message.error("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      message.error(
+        error?.response?.data?.detail || "Failed to reset password."
+      );
+    }
+    setTurnstileToken(null);
+  };
 
   return (
     <div className={styles.ForgotPasswordForm_container}>
@@ -60,7 +61,7 @@ function ResetPasswordForm() {
             autoComplete="off"
             form={form}
             name="password_reset"
-            // onFinish={onSubmit}
+            onFinish={onSubmit}
             scrollToFirstError
           >
             <Form.Item

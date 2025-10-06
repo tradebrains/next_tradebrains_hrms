@@ -32,7 +32,7 @@ function EmployeeDocuments() {
     try {
       const resp = await getEmployeeDocuments(Page);
       if (resp?.status === 200) {
-        setTableData(resp?.data || []);
+        setTableData(resp?.data?.results || []);
         setTotalCount(resp?.data?.count);
       }
     } catch (error) {}

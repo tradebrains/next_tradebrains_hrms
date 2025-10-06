@@ -16,6 +16,10 @@ const getStatusText = (status) => {
       return "Holiday";
     case "A":
       return "Absent";
+    case "LOP":
+      return "LOP";
+    case "SL":
+      return "Sick Leave";
     default:
       return "N/A";
   }
@@ -31,9 +35,13 @@ const getStatusClass = (status) => {
       return styles.halfday;
     case "PL":
       return styles.pl;
+    case "SL":
+      return styles.pl;
     case "HL":
       return styles.holiday;
     case "A":
+      return styles.absent;
+    case "LOP":
       return styles.absent;
     default:
       return styles.default;

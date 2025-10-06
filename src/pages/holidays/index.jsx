@@ -58,6 +58,8 @@ function Holidays() {
     }
   }, [id, modal, tableData]);
 
+  const filterTableData = tableData.filter((item) => item.name !== "Weekend");
+
   const onSubmit = async (values) => {
     const payload = {
       ...values,
@@ -242,7 +244,7 @@ function Holidays() {
         <div>
           <CustomTable
             columns={columns}
-            data={tableData}
+            data={filterTableData}
             scroll={{ x: "max-content" }}
             rowClassName={(record) => {
               const today = new Date();
