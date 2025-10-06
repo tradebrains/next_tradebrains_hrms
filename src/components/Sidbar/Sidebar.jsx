@@ -68,6 +68,11 @@ const Sidebar = ({ onClose }) => {
       href: "/holidays",
       icon: "Users",
     },
+    {
+      name: "Attendance",
+      href: "/calendar",
+      icon: "PaintBucket",
+    },
     user_role == 1 && {
       name: "Leaves (Admin)",
       href: "/leaves-admin",
@@ -144,8 +149,8 @@ const Sidebar = ({ onClose }) => {
       icon: "PaintBucket",
     },
     {
-      name: "Attendance",
-      href: "/calendar",
+      name: "Performance Review",
+      href: "",
       icon: "PaintBucket",
     },
   ].filter(Boolean);
@@ -182,6 +187,8 @@ const Sidebar = ({ onClose }) => {
                   onClick={() => {
                     if (item?.hasDropdown) {
                       handleDropdownToggle(item?.name);
+                    } else if (item?.name === "Performance Review") {
+                      window.open("https://review.tradebrains.net", "_blank");
                     } else {
                       router.push(item?.href);
                     }
