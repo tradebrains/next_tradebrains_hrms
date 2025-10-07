@@ -19,6 +19,8 @@ import {
   postHolidays,
 } from "../api/fetchClient";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import { authStore } from "@/redux/reducer/authSlice";
 
 function Holidays() {
   const [form] = Form.useForm();
@@ -27,6 +29,8 @@ function Holidays() {
   const [id, setId] = useState(null);
   const [tableData, setTableData] = useState([]);
   const [deleteID, setDeleteId] = useState("");
+  const auth = useSelector(authStore);
+  const user_role = auth?.userData?.user_details?.user_role;
 
   const today = new Date();
   const currentYear = today.getFullYear();
@@ -166,11 +170,15 @@ function Holidays() {
       width: "100px",
       render: (text, record) => renderCell(text),
     },
-    {
+    user_role == 1 && {
       title: <p>Action</p>,
       dataIndex: "",
       width: "50px",
       render(text, record) {
+        const today = new Date();
+        const holidayDate = new Date(record.date);
+        const existedHoliday = holidayDate < today;
+
         return {
           props: {
             style: {
@@ -183,48 +191,52 @@ function Holidays() {
                 fontSize: "14px",
                 fontWeight: "400",
                 color: "white",
-                cursor: "pointer",
+                cursor: existedHoliday ? "" : "pointer",
               }}
             >
-              <Popover
-                //  key={key}
-                color={"#2f2f2f"}
-                className={`nameis fs-s-20 `}
-                openClassName=""
-                overlayClassName="Nopadding-pover"
-                placement="Right"
-                style={{ width: "10px", height: "30px" }}
-                content={
-                  <div className="">
-                    <div
-                      onClick={() => {
-                        setModel(true);
-                        setId(record.id);
-                      }}
-                      className={`text-white`}
-                    >
-                      <p className={styles.edit}>Edit</p>
+              {existedHoliday ? (
+                <div className={styles.na}>NA</div>
+              ) : (
+                <Popover
+                  //  key={key}
+                  color={"#2f2f2f"}
+                  className={`nameis fs-s-20 `}
+                  openClassName=""
+                  overlayClassName="Nopadding-pover"
+                  placement="Right"
+                  style={{ width: "10px", height: "30px" }}
+                  content={
+                    <div className="">
+                      <div
+                        onClick={() => {
+                          setModel(true);
+                          setId(record.id);
+                        }}
+                        className={`text-white`}
+                      >
+                        <p className={styles.edit}>Edit</p>
+                      </div>
+                      <div
+                        onClick={() => {
+                          setDeleteModal(true);
+                          setDeleteId(record.id);
+                        }}
+                        className={`text-white mt-10`}
+                      >
+                        <p className={styles.edit}>Delete</p>
+                      </div>
                     </div>
-                    <div
-                      onClick={() => {
-                        setDeleteModal(true);
-                        setDeleteId(record.id);
-                      }}
-                      className={`text-white mt-10`}
-                    >
-                      <p className={styles.edit}>Delete</p>
-                    </div>
-                  </div>
-                }
-              >
-                <p className="mb-0">{<Pencil />}</p>
-              </Popover>
+                  }
+                >
+                  <p className="mb-0">{<Pencil />}</p>
+                </Popover>
+              )}
             </div>
           ),
         };
       },
     },
-  ];
+  ].filter(Boolean);
   return (
     <div>
       <div className={styles.top_section}>

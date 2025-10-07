@@ -175,20 +175,37 @@ function AdminLeaves({ employeeIdMail }) {
     customStyle = {},
     extraClasses = "",
     onClick = null
-  ) => ({
-    props: { style: baseCellStyle },
-    children: (
-      <span
-        onClick={onClick}
-        className={`ff-lato ${extraClasses} ${
-          onClick ? "pointer link-hover-underline" : ""
-        }`}
-        style={{ ...baseTextStyle, ...customStyle }}
-      >
-        {text}
-      </span>
-    ),
-  });
+  ) => {
+    const truncatedText =
+      typeof text === "string" && text.length > 20
+        ? text.slice(0, 20) + "..."
+        : text;
+
+    return {
+      props: { style: baseCellStyle },
+      children: (
+        <span
+          onClick={onClick}
+          className={`ff-lato ${extraClasses} ${
+            onClick ? "pointer link-hover-underline" : ""
+          }`}
+          style={{
+            ...baseTextStyle,
+            ...customStyle,
+            display: "inline-block",
+            maxWidth: "100%",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            verticalAlign: "middle",
+          }}
+          title={text}
+        >
+          {truncatedText}
+        </span>
+      ),
+    };
+  };
 
   const columns = [
     {
