@@ -24,6 +24,7 @@ import {
 import { authStore } from "@/redux/reducer/authSlice";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import CustomPagination from "@/components/Tables/CustomPagination";
 
 function EmployeeLeaves({}) {
   const [id, setId] = useState("");
@@ -34,15 +35,18 @@ function EmployeeLeaves({}) {
   const [leavesLeft, setLeavesLeft] = useState("");
   const [form] = Form.useForm();
   const { Option } = Select;
+  const [totalCount, setTotalCount] = useState();
+  const [Page, setPage] = useState({ page: 1, perPage: 10 });
 
   const auth = useSelector(authStore);
   const employee_id = auth?.userData?.user_details?.employee_id;
 
   const getLeaves = async () => {
     try {
-      const resp = await getEmployeeLeaves();
+      const resp = await getEmployeeLeaves(Page);
       if (resp?.status === 200) {
         setLeavesTable(resp?.data?.results);
+        setTotalCount(resp?.data?.count);
       }
     } catch (error) {}
   };
@@ -59,7 +63,7 @@ function EmployeeLeaves({}) {
   useEffect(() => {
     getLeaves();
     getLeavesLeft();
-  }, [addLeavesModal, deleteModal]);
+  }, [addLeavesModal, deleteModal, Page]);
 
   useEffect(() => {
     if (addLeavesModal && id && leavesTable.length > 0) {
@@ -112,6 +116,10 @@ function EmployeeLeaves({}) {
       message.success("Leave Deleted");
       setDeleteModal(false);
     }
+  };
+
+  const onPageChange = (page, perPage) => {
+    setPage({ page: page, perPage: perPage });
   };
 
   const baseCellStyle = {
@@ -335,7 +343,17 @@ function EmployeeLeaves({}) {
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
-          <CustomTable columns={columns} data={leavesTable} />
+          <CustomTable
+            columns={columns}
+            data={leavesTable}
+            pagination={false}
+          />
+          <CustomPagination
+            current={Page.page}
+            pageSize={Page.perPage}
+            onChange={onPageChange}
+            total={totalCount}
+          />
         </div>
       </div>
       <Modal
