@@ -21,13 +21,12 @@ function ForgotPasswordForm() {
       const resp = await getResetLink(data);
       if (resp?.status === 200) {
         setApiLoader(false);
-        setForgotPasswordModal(false);
         message.success("A password reset link has been sent to your email.");
       } else {
       }
     } catch (error) {
       message.error(
-        error?.response?.data?.detail || "Failed to reset password."
+        error?.response?.data?.detail || "Failed to sent the reset link."
       );
     } finally {
     }

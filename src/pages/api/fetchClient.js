@@ -29,7 +29,7 @@ export const postLogin = async (data) => {
 };
 
 export const resetPassword = async (data) => {
-  const loginResp = await patch(
+  const loginResp = await post(
     `authentication/password-reset-confirm/`,
     data
   ).then((resp) => {
