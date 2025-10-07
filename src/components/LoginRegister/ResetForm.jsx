@@ -27,7 +27,7 @@ function ResetPasswordForm() {
       const resp = await resetPassword(data);
 
       if (resp?.status === 200) {
-        setApiLoader(true);
+        setApiLoader(false);
         message.success("Password reset successful.");
         window.location.href = "/login";
       } else {
