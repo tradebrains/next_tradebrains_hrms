@@ -1,3 +1,7 @@
+.main_container {
+  padding-bottom: 60px !important;
+}
+
 .sidebarContainer {
   position: relative;
   z-index: 10;
@@ -24,7 +28,6 @@
   flex-direction: column;
   border-right: 1px solid #2f2f2f;
   overflow-y: scroll !important;
-  padding-bottom: 60px !important;
 }
 
 .sidebarInner::-webkit-scrollbar-thumb {

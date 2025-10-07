@@ -172,9 +172,9 @@ function EmployeeLeaves({}) {
         renderCell(
           text === "leave_without_pay"
             ? "Leave without Pay"
-            : text === "Priviledged leave"
+            : text === "privilege_leave"
             ? "Privilege Leave"
-            : text === "Sick leave"
+            : text === "sick_leave"
             ? "Sick Leave"
             : ""
         ),
