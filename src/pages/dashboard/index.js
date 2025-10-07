@@ -294,7 +294,7 @@ function dashboard() {
                   ]}
                   className={styles.item}
                 >
-                  <Input type="number" placeholder="Enter Days" />
+                  <Input type="number" placeholder="Employee Code" />
                 </Form.Item>
               </div>
               <Form.Item>

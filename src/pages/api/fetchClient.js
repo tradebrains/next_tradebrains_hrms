@@ -29,7 +29,7 @@ export const postLogin = async (data) => {
 };
 
 export const resetPassword = async (data) => {
-  const loginResp = await patch(
+  const loginResp = await post(
     `authentication/password-reset-confirm/`,
     data
   ).then((resp) => {
@@ -120,9 +120,9 @@ export const postAdminLeaves = async (data) => {
   return response;
 };
 
-export const getLeftLeaves = async (id) => {
+export const getLeftLeaves = async (id, Page) => {
   const response = await get(
-    `employee/leaves/admin/employee-leave-balance/${id}`
+    `employee/leaves/admin/employee-leave-balance/${id}/`
   ).then((resp) => {
     return resp;
   });
@@ -136,12 +136,12 @@ export const postEmployeeLeaves = async (data) => {
   return response;
 };
 
-export const getEmployeeLeaves = async () => {
-  const response = await get(`employee/leaves/my-applications/`).then(
-    (resp) => {
-      return resp;
-    }
-  );
+export const getEmployeeLeaves = async (Page) => {
+  const response = await get(
+    `employee/leaves/my-applications/?page=${Page.page}&page_size=${Page.perPage}`
+  ).then((resp) => {
+    return resp;
+  });
   return response;
 };
 

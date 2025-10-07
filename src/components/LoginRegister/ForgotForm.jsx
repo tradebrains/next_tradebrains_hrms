@@ -10,8 +10,9 @@ import { getResetLink } from "@/pages/api/fetchClient";
 function ForgotPasswordForm() {
   const router = useRouter();
   const [form] = Form.useForm();
-
+  const [apiLoader, setApiLoader] = useState(false);
   const onSubmit = async (values) => {
+    setApiLoader(true);
     const data = {
       email: values.email,
       redirect_url: `${window.location.origin}/reset-password`,
@@ -19,11 +20,14 @@ function ForgotPasswordForm() {
     try {
       const resp = await getResetLink(data);
       if (resp?.status === 200) {
-        setForgotPasswordModal(false);
+        setApiLoader(false);
         message.success("A password reset link has been sent to your email.");
       } else {
       }
     } catch (error) {
+      message.error(
+        error?.response?.data?.detail || "Failed to sent the reset link."
+      );
     } finally {
     }
   };
@@ -79,10 +83,15 @@ function ForgotPasswordForm() {
                 placeholder="Email"
               />
             </Form.Item>
-
-            <button type="submit" className={styles.login_button}>
-              Get Reset Link
-            </button>
+            {apiLoader ? (
+              <button className={styles.login_button}>
+                Get Reset Link....
+              </button>
+            ) : (
+              <button type="submit" className={styles.login_button}>
+                Get Reset Link
+              </button>
+            )}
           </Form>
           <p style={{ marginTop: "20px" }}>
             Remember your password?{" "}
