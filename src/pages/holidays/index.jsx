@@ -241,16 +241,18 @@ function Holidays() {
     <div>
       <div className={styles.top_section}>
         <p className={styles.header_text}>Holidays {currentYear}</p>
-        <div
-          className={styles.add_employee}
-          onClick={() => {
-            setId(null);
-            form.resetFields();
-            setModel(true);
-          }}
-        >
-          + Add Holidays
-        </div>
+        {user_role == 1 && (
+          <div
+            className={styles.add_employee}
+            onClick={() => {
+              setId(null);
+              form.resetFields();
+              setModel(true);
+            }}
+          >
+            + Add Holidays
+          </div>
+        )}
       </div>
       <div className={`custom-antd-head-dark`}>
         <div>
