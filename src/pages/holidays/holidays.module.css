@@ -103,6 +103,11 @@
   cursor: pointer;
 }
 
+.na {
+  font-size: 14px !important;
+  color: #beaeae;
+}
+
 .yes_no_button:hover {
   font-weight: 500;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
