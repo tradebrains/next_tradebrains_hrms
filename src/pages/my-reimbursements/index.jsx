@@ -14,6 +14,7 @@ import {
 } from "antd";
 import { CloseOutlined, UploadOutlined } from "@ant-design/icons";
 import {
+  deleteEmployeeReimburse,
   deleteReimburse,
   editAdminReimburse,
   editEmployeeReimburse,
@@ -79,7 +80,7 @@ function MyReimbursement({}) {
   };
 
   const submitDelete = async () => {
-    const resp = await deleteReimburse(deleteID);
+    const resp = await deleteEmployeeReimburse(deleteID);
     if (resp.status === 204) {
       message.success("Reimbursement Deleted");
       setDeleteModal(false);
@@ -236,7 +237,7 @@ function MyReimbursement({}) {
                   ) : (
                     <Image
                       alt="image"
-                      // src={record?.receipt_file}
+                      src={record?.receipt_file}
                       width={50}
                       height={40}
                       style={{
@@ -487,16 +488,33 @@ function MyReimbursement({}) {
         closable
         centered
         width={600}
-        closeIcon={<CloseOutlined className={`${"text-white"}`} />}
-        className={`custom-kyc-terms-modal ${"kycmodal-close-dark"}`}
+        closeIcon={<CloseOutlined className="text-white" />}
+        className={`custom-kyc-terms-modal kycmodal-close-dark`}
       >
         <div className={styles.terms_container}>
-          <iframe
-            src={file}
-            width="100%"
-            height="800px"
-            style={{ border: "none" }}
-          />
+          {file?.match(".pdf") ? (
+            // PDF case → use normal iframe
+            <iframe
+              src={file}
+              width="100%"
+              height="400px"
+              style={{ border: "none" }}
+            />
+          ) : (
+            // Image case → use srcDoc with CSS
+            <iframe
+              srcDoc={`
+          <html>
+            <body style="margin:0;display:flex;justify-content:center;align-items:center;height:100%;">
+              <img src="${file}" style="max-width:100%;max-height:100%;object-fit:contain;" />
+            </body>
+          </html>
+        `}
+              width="100%"
+              height="400px"
+              style={{ border: "none" }}
+            />
+          )}
         </div>
       </Modal>
     </>
