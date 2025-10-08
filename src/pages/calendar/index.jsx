@@ -91,6 +91,7 @@ const CalendarPage = () => {
     try {
       const apiMonth = (currentMonth + 1).toString().padStart(2, "0");
       const apiYear = currentYear.toString();
+
       const data = await getAttendance(empCode, apiMonth, apiYear);
 
       setAttendanceData(data?.data?.attendance);
@@ -108,7 +109,7 @@ const CalendarPage = () => {
 
   const yearsList = generateYears(today.getFullYear());
 
-  if (error) return <div className={styles.error}>Error: {error}</div>;
+  // if (error) return <div className={styles.error}>Error: {error}</div>;
 
   const daysOfMonth = getDaysInMonth(currentYear, currentMonth);
   const calendarDays = addEmptyDays(daysOfMonth);

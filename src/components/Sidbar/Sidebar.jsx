@@ -22,6 +22,12 @@ import {
   SprayCan,
   ShieldCheck,
   X,
+  Ship,
+  Calendar,
+  Siren,
+  SquareCode,
+  Flag,
+  Plane,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./sidebar.module.css";
@@ -45,6 +51,12 @@ const ICONS = {
   PaintBucket,
   SprayCan,
   ShieldCheck,
+  Ship,
+  Calendar,
+  Siren,
+  SquareCode,
+  Flag,
+  Plane,
 };
 const Sidebar = ({ onClose }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
@@ -71,7 +83,7 @@ const Sidebar = ({ onClose }) => {
     {
       name: "Attendance",
       href: "/calendar",
-      icon: "PaintBucket",
+      icon: "Calendar",
     },
     user_role == 1 && {
       name: "Leaves (Admin)",
@@ -126,27 +138,27 @@ const Sidebar = ({ onClose }) => {
     {
       name: "Leave Policy",
       href: "/leave-policy",
-      icon: "PaintBucket",
+      icon: "Ship",
     },
     {
       name: "Harassment Policy",
       href: "/harassment-policy",
-      icon: "PaintBucket",
+      icon: "Siren",
     },
     {
       name: "Code of Conduct",
       href: "/code-of-conduct",
-      icon: "PaintBucket",
+      icon: "SquareCode",
     },
     {
       name: "Notice Period Policy",
       href: "/notice",
-      icon: "PaintBucket",
+      icon: "Flag",
     },
     {
       name: "Travel Policy",
       href: "/travel-policy",
-      icon: "PaintBucket",
+      icon: "Plane",
     },
     {
       name: "Performance Review",
