@@ -88,8 +88,6 @@ function MyReimbursement({}) {
 
   const onSubmit = async (values) => {
     const formData = new FormData();
-    formData.append("employee_id", values.employee_id);
-    formData.append("email", values.email);
     formData.append("purpose", values.purpose);
     formData.append("amount", values.amount);
     formData.append("date", values.date.format("YYYY-MM-DD"));
