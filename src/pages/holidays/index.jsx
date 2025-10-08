@@ -361,3 +361,20 @@ function Holidays() {
 }
 
 export default Holidays;
+
+export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  if (!req?.cookies?.hrms_access_token) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
