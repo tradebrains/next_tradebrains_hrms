@@ -28,6 +28,9 @@ function LoginForm() {
         cookie.set("hrms_login_session", "true", { expires: 999 });
         cookie.set("hrms_access_token", resp?.data?.access, {
           expires: 999,
+          path: "/",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
         });
         window.location.href = "/dashboard";
         dispatch(setAuth(resp.data));

@@ -36,7 +36,9 @@ function Profile() {
     getManagerListData();
   }, []);
 
-  // const managerName = managerList.find();
+  const managerName = managerList.find(
+    (manager) => manager.id === profileData?.manager_id
+  )?.manager_name;
 
   const startDate = dayjs(profileData?.date_of_join);
   const now = dayjs();
@@ -85,7 +87,7 @@ function Profile() {
     },
     {
       heading: "Reports to",
-      value: null,
+      value: managerName,
     },
   ];
 

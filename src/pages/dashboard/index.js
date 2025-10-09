@@ -61,6 +61,7 @@ function dashboard() {
   }, []);
 
   const onSubmit = async (values) => {
+    console.log(values, "valuesvalues");
     try {
       const formData = new FormData();
       formData.append("id", values.id);
@@ -72,17 +73,21 @@ function dashboard() {
       formData.append("user_role", values.user_role);
       formData.append("probation_days", values.probation_days);
       formData.append("manager_id", values.manager_id);
-      if (values.photo) {
-        formData.append("profile_pic", values.photo.file);
+      formData.append("emp_code", values.emp_code);
+      if (values.profile_pic) {
+        formData.append("profile_pic", values.profile_pic.file);
       }
       const resp = await validateUser(formData);
       if (resp?.status === 200) {
         message.success("Employee added successfully");
         setAddEmployeeModal(false);
         form.resetFields();
+        window.location.reload();
         getEmployeeDetails();
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error in onSubmit:", error);
+    }
   };
   return (
     <div>
@@ -159,7 +164,7 @@ function dashboard() {
 
                 <Form.Item
                   label="Name"
-                  name="name"
+                  name="full_name"
                   rules={[{ required: true, message: "Please enter name" }]}
                   className={styles.item}
                 >
@@ -195,7 +200,7 @@ function dashboard() {
               <div className={styles.row}>
                 <Form.Item
                   label="Joining Date"
-                  name="doj"
+                  name="date_of_join"
                   rules={[
                     { required: true, message: "Please select Joining Date" },
                   ]}
@@ -271,18 +276,6 @@ function dashboard() {
                     ))}
                   </Select>
                 </Form.Item>
-
-                <Form.Item
-                  label="Photo"
-                  name="profile_pic"
-                  className={styles.item}
-                >
-                  <Upload beforeUpload={() => false}>
-                    <Button icon={<UploadOutlined />}>Upload Photo</Button>
-                  </Upload>
-                </Form.Item>
-              </div>
-              <div className={styles.upload}>
                 <Form.Item
                   label="Employee Code (Attendance)"
                   name="emp_code"
@@ -295,6 +288,17 @@ function dashboard() {
                   className={styles.item}
                 >
                   <Input type="number" placeholder="Employee Code" />
+                </Form.Item>
+              </div>
+              <div className={styles.upload}>
+                <Form.Item
+                  label="Photo"
+                  name="profile_pic"
+                  className={styles.item}
+                >
+                  <Upload beforeUpload={() => false}>
+                    <Button icon={<UploadOutlined />}>Upload Photo</Button>
+                  </Upload>
                 </Form.Item>
               </div>
               <Form.Item>
