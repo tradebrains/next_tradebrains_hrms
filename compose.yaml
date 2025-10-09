@@ -1,6 +1,6 @@
 services:
-  hrms_next_frontent_prod:
-    # container_name: hrms_frontend
+  hrms_next_frontend_prod:
+    container_name: hrms_frontend_prod
     build:
       context: ./
       dockerfile: Dockerfile
@@ -9,6 +9,8 @@ services:
     restart: always
     ports:
       - "3080:3000"
+    environment:
+      - NEXT_APP_BASE_URL=${NEXT_APP_BASE_URL}
     networks:
       - hrms_network
 
