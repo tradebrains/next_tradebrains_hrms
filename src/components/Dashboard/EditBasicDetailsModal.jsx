@@ -48,6 +48,7 @@ function EditBasicDetailsModal({
       formData.append("user_role", values.user_role);
       formData.append("probation_days", values.probation_days);
       formData.append("manager_id", values.manager_id);
+      formData.append("emp_code", values.emp_code);
       if (values.photo) {
         formData.append("profile_pic", values.photo.file);
       }
@@ -57,6 +58,7 @@ function EditBasicDetailsModal({
         message.success("Employee Details Updated successfully");
         setEditBasicModal(false);
         form.resetFields();
+        window.location.reload();
       }
     } catch (error) {}
   };
@@ -198,11 +200,24 @@ function EditBasicDetailsModal({
                 <Form.Item
                   label="Photo"
                   name="profile_pic"
-                  className={styles.upload}
+                  className={styles.item}
                 >
                   <Upload beforeUpload={() => false}>
                     <Button icon={<UploadOutlined />}>Upload Photo</Button>
                   </Upload>
+                </Form.Item>
+                <Form.Item
+                  label="Employee Code (Attendance)"
+                  name="emp_code"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter Employee Code (Attendance)",
+                    },
+                  ]}
+                  className={styles.item}
+                >
+                  <Input type="number" placeholder="Employee Code" />
                 </Form.Item>
               </div>
 
