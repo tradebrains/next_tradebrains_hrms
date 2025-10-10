@@ -61,7 +61,6 @@ function dashboard() {
   }, []);
 
   const onSubmit = async (values) => {
-    console.log(values, "valuesvalues");
     try {
       const formData = new FormData();
       formData.append("id", values.id);
