@@ -150,6 +150,11 @@
   gap: 20px;
 }
 
+.flex_gap {
+  display: flex;
+  gap: 20px;
+}
+
 @media (max-width: 640px) {
   .dropdowns {
     flex-direction: column;
@@ -175,5 +180,9 @@
 
   .month_year {
     width: 100% !important;
+  }
+
+  .flex_gap {
+    flex-direction: column;
   }
 }

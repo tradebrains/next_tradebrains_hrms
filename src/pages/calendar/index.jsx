@@ -2,7 +2,11 @@
 import { useState, useEffect, useCallback } from "react";
 import styles from "./calendar.module.css";
 import CalendarCard from "@/components/Calendar/Calendar";
-import { getAttendance, getEmployeeList } from "../api/fetchClient";
+import {
+  getAttendance,
+  getEmployeeList,
+  getMissedLunchList,
+} from "../api/fetchClient";
 import { Select } from "antd";
 import DotLoader from "@/components/DotLoader/DotLoader";
 import { useSelector } from "react-redux";
@@ -75,12 +79,22 @@ const CalendarPage = () => {
   const userCode = auth?.userData?.user_details?.emp_code;
   const user_role = auth?.userData?.user_details?.user_role;
   const [empCode, setEmpCode] = useState(userCode);
+  const [missedPunchData, setMissedPunchData] = useState([]);
 
   const getEmployee = async () => {
     try {
       const resp = await getEmployeeList();
       if (resp?.status === 200) {
         setEmployeeList(resp?.data);
+      }
+    } catch (error) {}
+  };
+
+  const getMissedPunchData = async () => {
+    try {
+      const resp = await getMissedLunchList();
+      if (resp?.status === 200) {
+        setMissedPunchData(resp?.data);
       }
     } catch (error) {}
   };
@@ -105,6 +119,7 @@ const CalendarPage = () => {
   useEffect(() => {
     fetchData();
     getEmployee();
+    getMissedPunchData();
   }, [currentMonth, currentYear, empCode]);
 
   const yearsList = generateYears(today.getFullYear());
@@ -115,28 +130,50 @@ const CalendarPage = () => {
   const calendarDays = addEmptyDays(daysOfMonth);
   const dayDataMap = createDayDataMap(attendanceData);
 
+  console.log(missedPunchData, "missedPunchData");
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>Attendance Calendar</h2>
         <div className={styles.dropdowns}>
           <div className={styles.month_year}>
-            {user_role == 1 && (
-              <Select
-                showSearch
-                optionFilterProp="children"
-                className={styles.employee_list}
-                value={empCode}
-                onChange={(value) => setEmpCode(value)}
-                aria-label="Select Employee"
-              >
-                {employeeList?.map((email) => (
-                  <Option key={email.id} value={email.emp_code}>
-                    {email.email}
-                  </Option>
-                ))}
-              </Select>
-            )}
+            <div className={styles.flex_gap}>
+              <div>
+                {user_role == 1 && (
+                  <Select
+                    showSearch
+                    optionFilterProp="children"
+                    className={styles.employee_list}
+                    value={empCode}
+                    onChange={(value) => setEmpCode(value)}
+                    aria-label="Select Employee"
+                  >
+                    {employeeList?.map((email) => (
+                      <Option key={email.id} value={email.emp_code}>
+                        {email.email}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </div>
+              <div>
+                {user_role == 1 && (
+                  <Select
+                    showSearch
+                    optionFilterProp="children"
+                    className={styles.employee_list}
+                    placeholder="Check Missed Punch"
+                  >
+                    {missedPunchData?.map((email) => (
+                      <Option key={email.id} value={email.emp_code}>
+                        {email}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className={styles.date_year_gap}>
