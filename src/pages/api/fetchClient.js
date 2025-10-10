@@ -422,3 +422,11 @@ export const deleteHolidays = async (id) => {
   });
   return response;
 };
+
+export const getMissedLunchList = async () => {
+  const response = await get(`employee/missed-punch/
+`).then((resp) => {
+    return resp;
+  });
+  return response;
+};

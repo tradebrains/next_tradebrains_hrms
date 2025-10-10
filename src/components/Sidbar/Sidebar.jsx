@@ -136,29 +136,24 @@ const Sidebar = ({ onClose }) => {
     //   icon: "Activity",
     // },
     {
-      name: "Leave Policy",
-      href: "/leave-policy",
+      name: "Policies",
       icon: "Ship",
-    },
-    {
-      name: "Harassment Policy",
-      href: "/harassment-policy",
-      icon: "Siren",
-    },
-    {
-      name: "Code of Conduct",
-      href: "/code-of-conduct",
-      icon: "SquareCode",
-    },
-    {
-      name: "Notice Period Policy",
-      href: "/notice",
-      icon: "Flag",
-    },
-    {
-      name: "Travel Policy",
-      href: "/travel-policy",
-      icon: "Plane",
+      hasDropdown: true,
+      subItems: [
+        { name: "Leave Policy", href: "/leave-policy", icon: "Flag" },
+        {
+          name: "Harassment Policy",
+          href: "/harassment-policy",
+          icon: "Siren",
+        },
+        {
+          name: "Code of Conduct",
+          href: "/code-of-conduct",
+          icon: "SquareCode",
+        },
+        { name: "Notice Period Policy", href: "/notice", icon: "Flag" },
+        { name: "Travel Policy", href: "/travel-policy", icon: "Plane" },
+      ],
     },
     {
       name: "Performance Review",
@@ -227,24 +222,32 @@ const Sidebar = ({ onClose }) => {
                   openDropdown === item?.name &&
                   isSideBarOpen && (
                     <div className={styles.dropdownContainer}>
-                      {item?.subItems?.map((subItem) => (
-                        <div
-                          key={subItem?.name}
-                          className={`${styles.navItem} ${
-                            pathname === subItem?.href
-                              ? styles.navItemActive
-                              : ""
-                          }`}
-                          onClick={() => router.push(subItem?.href)}
-                        >
-                          <span
-                            className={styles.navText}
-                            style={{ paddingLeft: "30px" }}
+                      {item?.subItems?.map((subItem) => {
+                        const IconSubComponent = ICONS[subItem?.icon];
+                        return (
+                          <div
+                            key={subItem?.name}
+                            className={`${styles.navItem} ${
+                              pathname === subItem?.href
+                                ? styles.navItemActive
+                                : ""
+                            }`}
+                            onClick={() => router.push(subItem?.href)}
                           >
-                            {subItem?.name}
-                          </span>
-                        </div>
-                      ))}
+                            <IconSubComponent
+                              size={20}
+                              style={{
+                                minWidth: "20px",
+                                color: "white",
+                                marginLeft: "20px",
+                              }}
+                            />
+                            <span className={styles.navText}>
+                              {subItem?.name}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
               </div>
