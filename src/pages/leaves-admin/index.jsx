@@ -291,36 +291,24 @@ function AdminLeaves({ employeeIdMail }) {
                 className={styles.select}
                 value={currentStatus}
                 onChange={(value) => handleStatusUpdater(record.id, value)}
-                optionLabelProp="label"
+                optionLabelProp="children"
               >
-                <Option
-                  value="Pending"
-                  label={statusOptions.Pending}
-                  disabled={currentStatus === "Pending"}
-                >
-                  {statusOptions.Pending}
-                </Option>
-                <Option
-                  value="Rejected"
-                  label={statusOptions.Rejected}
-                  disabled={currentStatus === "Rejected"}
-                >
-                  {statusOptions.Rejected}
-                </Option>
-                <Option
-                  value="Approved"
-                  label={statusOptions.Approved}
-                  disabled={currentStatus === "Approved"}
-                >
-                  {statusOptions.Approved}
+                <Option value={currentStatus} disabled>
+                  {statusOptions[currentStatus]}
                 </Option>
 
-                {(currentStatus === "Approved" ||
-                  currentStatus === "Rejected") && (
-                  <Option value="Decline" label={statusOptions.Decline}>
-                    {statusOptions.Decline}
-                  </Option>
+                {currentStatus === "Pending" && (
+                  <>
+                    <Option value="Rejected">{statusOptions.Rejected}</Option>
+                    <Option value="Approved">{statusOptions.Approved}</Option>
+                  </>
                 )}
+
+                {(currentStatus === "Approved" ||
+                  currentStatus === "Rejected") &&
+                  currentStatus !== "Decline" && (
+                    <Option value="Decline">{statusOptions.Decline}</Option>
+                  )}
               </Select>
             </div>
           ),
