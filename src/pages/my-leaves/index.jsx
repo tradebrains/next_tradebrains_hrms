@@ -241,9 +241,10 @@ function EmployeeLeaves({}) {
                   Approved
                 </div>
               )}
-              {text === "Decline" && (
+              {text === "Declined" && (
                 <div className={styles.select}>
-                  <span className="fa fa-dot-circle-o text-info"></span> Decline
+                  <span className="fa fa-dot-circle-o text-info"></span>{" "}
+                  Declined
                 </div>
               )}
             </div>

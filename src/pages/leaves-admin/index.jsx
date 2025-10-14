@@ -272,9 +272,9 @@ function AdminLeaves({ employeeIdMail }) {
               <span className="fa fa-dot-circle-o text-success"></span> Approved
             </>
           ),
-          Decline: (
+          Declined: (
             <>
-              <span className="fa fa-dot-circle-o text-info"></span> Decline
+              <span className="fa fa-dot-circle-o text-info"></span> Declined
             </>
           ),
         };
@@ -306,8 +306,8 @@ function AdminLeaves({ employeeIdMail }) {
 
                 {(currentStatus === "Approved" ||
                   currentStatus === "Rejected") &&
-                  currentStatus !== "Decline" && (
-                    <Option value="Decline">{statusOptions.Decline}</Option>
+                  currentStatus !== "Declined" && (
+                    <Option value="Declined">{statusOptions.Decline}</Option>
                   )}
               </Select>
             </div>
