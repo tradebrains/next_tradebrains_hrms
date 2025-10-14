@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styles from "./Calendar.module.css";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const getStatusText = (status) => {
   switch (status) {
@@ -57,6 +59,8 @@ const CalendarCard = ({ dayData, date }) => {
     "dddd, DD MMM YYYY"
   );
 
+  console.log(dayData, date, "dayData");
+
   return (
     <div
       className={`${styles.card} ${getStatusClass(status)}`}
@@ -74,15 +78,15 @@ const CalendarCard = ({ dayData, date }) => {
           <div className={styles.popupDate}>{formattedDate}</div>
           <div className={styles.popupTime}>
             <span className={styles.timing_text}>Check In:</span>{" "}
-            <span>{dayData.in_time} AM</span>
+            <span>{dayData?.in_time} AM</span>
           </div>
           <div className={styles.popupTime}>
             <span className={styles.timing_text}>Check Out:</span>{" "}
-            <span>{dayData.out_time} PM</span>
+            <span>{dayData?.out_time} PM</span>
           </div>
           <div className={styles.popupTime}>
             <span className={styles.timing_text}>Total Hours:</span>{" "}
-            <span>{dayData.work_time} hr</span>
+            <span>{dayData?.work_time} hr</span>
           </div>
         </div>
       )}
