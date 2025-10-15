@@ -184,7 +184,9 @@ function EmployeeLeaves({}) {
             ? "Privilege Leave"
             : text === "sick_leave"
             ? "Sick Leave"
-            : ""
+            : text === "comp_off"
+            ? "Compensatory Off"
+            : text
         ),
     },
 
@@ -241,9 +243,10 @@ function EmployeeLeaves({}) {
                   Approved
                 </div>
               )}
-              {text === "Decline" && (
+              {text === "Declined" && (
                 <div className={styles.select}>
-                  <span className="fa fa-dot-circle-o text-info"></span> Decline
+                  <span className="fa fa-dot-circle-o text-info"></span>{" "}
+                  Declined
                 </div>
               )}
             </div>
@@ -340,6 +343,10 @@ function EmployeeLeaves({}) {
           <p className={styles.leaves_text}>Sick Leave Left</p>
           <p className={styles.leaves_number}>{leavesLeft?.sick_leaves_left}</p>
         </div>
+        <div className={styles.leaves_left}>
+          <p className={styles.leaves_text}>Comp Off Leave Left</p>
+          <p className={styles.leaves_number}>{leavesLeft?.compensatory_off}</p>
+        </div>
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
@@ -389,6 +396,7 @@ function EmployeeLeaves({}) {
                   <Option value="privilege_leave">Privilege Leave</Option>
                   <Option value="sick_leave">Sick Leave</Option>
                   <Option value="leave_without_pay">Leave without Pay</Option>
+                  <Option value="comp_off">Compensatory Off</Option>
                 </Select>
               </Form.Item>
               <Form.Item

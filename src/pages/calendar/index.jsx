@@ -130,8 +130,6 @@ const CalendarPage = () => {
   const calendarDays = addEmptyDays(daysOfMonth);
   const dayDataMap = createDayDataMap(attendanceData);
 
-  console.log(missedPunchData, "missedPunchData");
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>

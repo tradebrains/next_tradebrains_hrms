@@ -430,3 +430,12 @@ export const getMissedLunchList = async () => {
   });
   return response;
 };
+
+export const postCompOff = async (data) => {
+  const response = await post(`employee/comp-off/admin/apply/`, data).then(
+    (resp) => {
+      return resp;
+    }
+  );
+  return response;
+};
