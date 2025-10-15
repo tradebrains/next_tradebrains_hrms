@@ -160,4 +160,13 @@
     width: 50%;
     margin-top: 20px;
   }
+
+  .leaves_cnt {
+    flex-direction: column;
+    gap: 0px;
+  }
+
+  .leaves_left {
+    width: 100%;
+  }
 }

@@ -59,8 +59,6 @@ const CalendarCard = ({ dayData, date }) => {
     "dddd, DD MMM YYYY"
   );
 
-  console.log(dayData, date, "dayData");
-
   return (
     <div
       className={`${styles.card} ${getStatusClass(status)}`}
