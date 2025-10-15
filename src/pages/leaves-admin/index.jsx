@@ -20,6 +20,7 @@ import {
   getAdminLeaveList,
   getLeftLeaves,
   postAdminLeaves,
+  postCompOff,
   postLeaveStatus,
 } from "../api/fetchClient";
 import dayjs from "dayjs";
@@ -35,6 +36,7 @@ function AdminLeaves({ employeeIdMail }) {
   const [leftLeaves, setLeftLeaves] = useState("");
   const [employeeList, setEmployeeList] = useState([]);
   const [addLeavesModal, setAddLeavesModal] = useState(false);
+  const [addCompModal, setAddCompModal] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState({}); // { id: status }
   const [pendingStatus, setPendingStatus] = useState(null);
   const [pendingId, setPendingId] = useState(null);
@@ -145,6 +147,17 @@ function AdminLeaves({ employeeIdMail }) {
     }
   };
 
+  const onSubmitComp = async (values) => {
+    try {
+      const resp = await postCompOff(values);
+      if (resp.status === 201) {
+        message.success("Comp off leave added Successfully");
+        setAddCompModal(false);
+        form.resetFields();
+      }
+    } catch (error) {}
+  };
+
   const submitDelete = async () => {
     const resp = await deleteLeaves(deleteID);
     if (resp.status === 204) {
@@ -224,7 +237,9 @@ function AdminLeaves({ employeeIdMail }) {
             ? "Privilege Leave"
             : text === "sick_leave"
             ? "Sick Leave"
-            : ""
+            : text === "comp_off"
+            ? "Compensatory Off"
+            : text
         ),
     },
 
@@ -382,15 +397,26 @@ function AdminLeaves({ employeeIdMail }) {
     <div>
       <div className={styles.top_section}>
         <p className={styles.header_text}>Leaves</p>
-        <div
-          className={styles.add_employee}
-          onClick={() => {
-            setId(null);
-            form.resetFields();
-            setAddLeavesModal(true);
-          }}
-        >
-          + Add Leaves
+        <div className={styles.flex_add_button}>
+          <div
+            className={styles.add_comp_off}
+            onClick={() => {
+              form.resetFields();
+              setAddCompModal(true);
+            }}
+          >
+            + Add Comp Off
+          </div>
+          <div
+            className={styles.add_employee}
+            onClick={() => {
+              setId(null);
+              form.resetFields();
+              setAddLeavesModal(true);
+            }}
+          >
+            + Add Leaves
+          </div>
         </div>
       </div>
       <div className={styles.table_container}>
@@ -492,6 +518,7 @@ function AdminLeaves({ employeeIdMail }) {
                   <Option value="privilege_leave">Privilege Leave</Option>
                   <Option value="sick_leave">Sick Leave</Option>
                   <Option value="leave_without_pay">Leave without Pay</Option>
+                  <Option value="comp_off">Compensatory Off</Option>
                 </Select>
               </Form.Item>
               <Form.Item
@@ -517,6 +544,67 @@ function AdminLeaves({ employeeIdMail }) {
                 className={styles.item}
               >
                 <Input.TextArea rows={4} />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className={styles.submit}
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        centered
+        closable={true}
+        width="500px"
+        bodyStyle={{ padding: "0px", minHeight: "200px", borderRadius: "18px" }}
+        visible={addCompModal}
+        footer={null}
+        onCancel={() => setAddCompModal(false)}
+        className="modelClassname"
+        wrapClassName={"modelClassname"}
+      >
+        <div>
+          <p className={styles.heading_text}>Add Comp-off Leave</p>
+          <div className="w-100">
+            <Form
+              form={form}
+              layout="vertical"
+              autoComplete="off"
+              onFinish={onSubmitComp}
+              className={styles.form}
+            >
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[{ required: true, message: "Please select Email ID" }]}
+                className={styles.item}
+              >
+                <Select
+                  placeholder="Select"
+                  showSearch
+                  optionFilterProp="children"
+                >
+                  {employeeIdMail?.map((item) => (
+                    <Option key={item?.employee_id} value={item?.email}>
+                      {item?.email}{" "}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                label="No Of Days"
+                name="no_of_days"
+                rules={[{ required: true, message: "Please enter no of days" }]}
+                className={styles.item}
+              >
+                <Input />
               </Form.Item>
               <Form.Item>
                 <Button
