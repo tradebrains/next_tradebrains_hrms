@@ -86,7 +86,7 @@ export const getProfileDetails = async () => {
 
 export const getAdminLeaveList = async (Page) => {
   const response = await get(
-    `employee/leaves/admin/applications/?page=${Page.page}&per_page=${Page.perPage}`
+    `employee/leaves/managers/applications/?page=${Page.page}&per_page=${Page.perPage}`
   ).then((resp) => {
     return resp;
   });
