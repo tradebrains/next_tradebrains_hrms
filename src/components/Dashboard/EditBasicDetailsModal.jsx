@@ -49,8 +49,9 @@ function EditBasicDetailsModal({
       formData.append("probation_days", values.probation_days);
       formData.append("manager_id", values.manager_id);
       formData.append("emp_code", values.emp_code);
-      if (values.profile_pic) {
+      if (values.profile_pic && values.profile_pic.file) {
         formData.append("profile_pic", values.profile_pic.file);
+      } else {
       }
 
       const resp = await validateUser(formData);
