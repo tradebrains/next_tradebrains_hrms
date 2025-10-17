@@ -35,8 +35,10 @@ function RegisterForm() {
         setApiError("Invalid login credentials.");
       }
     } catch (error) {
-      const errorMsg = error?.response?.data?.detail || error?.message;
-
+      const errorMsg =
+        error.response?.data?.password1?.[0] ||
+        error?.response?.data?.detail ||
+        error?.message;
       setApiError(errorMsg);
     } finally {
       setApiLoader(false);
