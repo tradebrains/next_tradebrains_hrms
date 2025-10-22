@@ -132,6 +132,77 @@ function MyReimbursement({}) {
     setFile(value);
   };
 
+  const renderDocumentCell = (fileUrl, attachModelHandler) => {
+    let content;
+
+    if (!fileUrl) {
+      content = (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: "25px", width: "25px", color: "red" }}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      );
+    } else if (fileUrl.match(".pdf")) {
+      // pdf case
+      content = (
+        <img
+          alt="pdf.file"
+          src="https://firebasestorage.googleapis.com/v0/b/hrms-tradebrains.appspot.com/o/assets%2FattachmentPdf.png?alt=media&token=ba18543b-f1c4-40b5-8a3b-369af165df04"
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: ".5rem",
+          }}
+        />
+      );
+    } else {
+      // image case
+      content = (
+        <Image
+          alt="image"
+          src={fileUrl}
+          width={50}
+          height={40}
+          style={{
+            width: "50px",
+            height: "40px",
+            borderRadius: ".5rem",
+          }}
+        />
+      );
+    }
+
+    return {
+      props: {
+        style: {
+          ...baseCellStyle,
+        },
+      },
+      children: (
+        <div>
+          <span>
+            <div
+              onClick={() => attachModelHandler(fileUrl)}
+              className="dropdown-item"
+            >
+              {content}
+            </div>
+          </span>
+        </div>
+      ),
+    };
+  };
+
   const baseCellStyle = {
     background: "#1e1e1e",
     borderRight: "1px solid #2f2f2f",
@@ -209,50 +280,8 @@ function MyReimbursement({}) {
       title: "Attachment",
       dataIndex: "attachment",
       align: "center",
-      render: (text, record) => {
-        return {
-          props: {
-            style: {
-              ...baseCellStyle,
-            },
-          },
-
-          children: (
-            <div>
-              <span>
-                <div
-                  onClick={() => attachModelHandler(record?.receipt_file)}
-                  className="dropdown-item"
-                >
-                  {record?.receipt_file?.match(".pdf") ? (
-                    <img
-                      alt="pdf.file"
-                      src="https://firebasestorage.googleapis.com/v0/b/hrms-tradebrains.appspot.com/o/assets%2FattachmentPdf.png?alt=media&token=ba18543b-f1c4-40b5-8a3b-369af165df04"
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: ".5rem",
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      alt="image"
-                      src={record?.receipt_file}
-                      width={50}
-                      height={40}
-                      style={{
-                        width: "50px",
-                        height: "40px",
-                        borderRadius: ".5rem",
-                      }}
-                    />
-                  )}
-                </div>
-              </span>
-            </div>
-          ),
-        };
-      },
+      render: (text, record) =>
+        renderDocumentCell(record?.receipt_file, attachModelHandler),
     },
     {
       title: "Status",

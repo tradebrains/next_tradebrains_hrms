@@ -35,7 +35,6 @@ function RegisterForm() {
         setApiError("Invalid login credentials.");
       }
     } catch (error) {
-      console.log("Registration error:", error.response?.data?.password1?.[0]);
       const errorMsg =
         error.response?.data?.password1?.[0] ||
         error?.response?.data?.detail ||
