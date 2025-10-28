@@ -110,6 +110,25 @@ function EmployeeLeaves({}) {
     }
   };
 
+  const leavesList = [
+    {
+      label: "Privilege Leave Left",
+      left: leavesLeft?.privilege_leaves_left,
+    },
+    {
+      label: "Sick Leave Left",
+      left: leavesLeft?.sick_leaves_left,
+    },
+    {
+      label: "Comp Off Leave Left",
+      left: leavesLeft?.compensatory_off,
+    },
+    {
+      label: "Leave Without Pay",
+      left: leavesLeft?.total_lop_taken,
+    },
+  ];
+
   const submitDelete = async () => {
     const resp = await deleteLeaves(deleteID);
     if (resp.status === 204) {
@@ -333,20 +352,14 @@ function EmployeeLeaves({}) {
         </div>
       </div>
       <div className={styles.leaves_cnt}>
-        <div className={styles.leaves_left}>
-          <p className={styles.leaves_text}>Privilege Leave Left</p>
-          <p className={styles.leaves_number}>
-            {leavesLeft?.privilege_leaves_left}
-          </p>
-        </div>
-        <div className={styles.leaves_left}>
-          <p className={styles.leaves_text}>Sick Leave Left</p>
-          <p className={styles.leaves_number}>{leavesLeft?.sick_leaves_left}</p>
-        </div>
-        <div className={styles.leaves_left}>
-          <p className={styles.leaves_text}>Comp Off Leave Left</p>
-          <p className={styles.leaves_number}>{leavesLeft?.compensatory_off}</p>
-        </div>
+        {leavesList?.map((item, index) => {
+          return (
+            <div className={styles.leaves_left}>
+              <p className={styles.leaves_text}>{item.label}</p>
+              <p className={styles.leaves_number}>{item.left}</p>
+            </div>
+          );
+        })}
       </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
