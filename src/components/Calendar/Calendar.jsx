@@ -22,6 +22,8 @@ const getStatusText = (status) => {
       return "LOP";
     case "SL":
       return "Sick Leave";
+    case "COMP":
+      return "Complementary Off";
     default:
       return "N/A";
   }
@@ -38,6 +40,8 @@ const getStatusClass = (status) => {
     case "PL":
       return styles.pl;
     case "SL":
+      return styles.pl;
+    case "COMP":
       return styles.pl;
     case "HL":
       return styles.holiday;
