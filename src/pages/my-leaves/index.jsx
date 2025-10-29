@@ -136,7 +136,7 @@ function EmployeeLeaves({}) {
       setDeleteModal(false);
     }
   };
-
+  
   const onPageChange = (page, perPage) => {
     setPage({ page: page, perPage: perPage });
   };
