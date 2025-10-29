@@ -30,7 +30,7 @@ function index() {
       >
         <div className={styles.terms_container}>
           <iframe
-            src={`https://fingrad-test.s3.ap-south-1.amazonaws.com/hrms-pdf/Sexual+Harassment+Policy+at+Trade+Brains.pdf`}
+            src={`https://tradebrains-fingrad-staging.s3.ap-south-1.amazonaws.com/Policies/Sexual%2BHarassment%2BPolicy%2Bat%2BTrade%2BBrains.pdf`}
             title="PDF Document"
             width="100%"
             height="800px"
