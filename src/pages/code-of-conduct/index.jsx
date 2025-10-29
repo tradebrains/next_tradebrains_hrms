@@ -31,7 +31,7 @@ function index() {
       >
         <div className={styles.terms_container}>
           <iframe
-            src={`https://fingrad-test.s3.ap-south-1.amazonaws.com/hrms-pdf/Code+of+Conduct_Trade+Brains.pdf`}
+            src={`https://tradebrains-fingrad-staging.s3.ap-south-1.amazonaws.com/Policies/Code+of+Conduct+_+Dailyraven+Technologies+Pvt+Ltd.pdf`}
             title="PDF Document"
             width="100%"
             height="800px"
