@@ -17,7 +17,7 @@ const getStatusText = (status) => {
     case "HL":
       return "Holiday";
     case "A":
-      return "Absent";
+      return "LOP";
     case "LOP":
       return "LOP";
     case "SL":
