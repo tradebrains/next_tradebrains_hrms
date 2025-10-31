@@ -322,7 +322,7 @@ function AdminLeaves({ employeeIdMail }) {
                 {(currentStatus === "Approved" ||
                   currentStatus === "Rejected") &&
                   currentStatus !== "Declined" && (
-                    <Option value="Declined">{statusOptions.Decline}</Option>
+                    <Option value="Declined">{statusOptions.Declined}</Option>
                   )}
               </Select>
             </div>
@@ -350,7 +350,7 @@ function AdminLeaves({ employeeIdMail }) {
               }}
             >
               {record?.status === "Approved" ||
-              record?.status === "Decline" ||
+              record?.status === "Declined" ||
               record?.status === "Rejected" ? (
                 "NA"
               ) : (
