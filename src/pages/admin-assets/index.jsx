@@ -13,7 +13,7 @@ import {
   Popover,
   Select,
 } from "antd";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import {
   deleteAsset,
   editAsset,
@@ -23,6 +23,7 @@ import {
 } from "../api/fetchClient";
 import CustomPagination from "@/components/Tables/CustomPagination";
 import dayjs from "dayjs";
+import { set } from "date-fns";
 
 function AdminAssets({ employeeIdMail }) {
   const [form] = Form.useForm();
@@ -40,6 +41,7 @@ function AdminAssets({ employeeIdMail }) {
   const [Page, setPage] = useState({ page: 1, perPage: 10 });
   const [dateModal, setDateModal] = useState(false);
   const [pendingId, setPendingId] = useState("");
+  const [loading , setLoading] = useState(false);
 
   const handleSelectChange = (value) => {
     setSelectedEmployeeId(value);
@@ -80,6 +82,7 @@ function AdminAssets({ employeeIdMail }) {
   }, [id, assetsModal, tableData]);
 
   const onSubmit = async (values) => {
+    setLoading(true);
     const payload = {
       ...values,
       received_date: values.received_date
@@ -92,6 +95,7 @@ function AdminAssets({ employeeIdMail }) {
         if (resp.status === 200) {
           message.success("Assets Edited Successfully");
           setAssetsModal(false);
+          setLoading(false);
           form.resetFields();
         }
       } catch (error) {}
@@ -101,6 +105,7 @@ function AdminAssets({ employeeIdMail }) {
         if (resp.status === 201) {
           message.success("Assets applied Successfully");
           setAssetsModal(false);
+          setLoading(false);
           form.resetFields();
         }
       } catch (error) {}
@@ -481,8 +486,16 @@ function AdminAssets({ employeeIdMail }) {
                   type="primary"
                   htmlType="submit"
                   className={styles.submit}
+                  disabled={loading}
                 >
-                  Submit
+                  {loading ? (
+                    <span className={styles.loader_wrapper}>
+                      <Loader2 className={styles.loader_icon} />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               </Form.Item>
             </Form>

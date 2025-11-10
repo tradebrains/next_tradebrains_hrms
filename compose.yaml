@@ -11,8 +11,4 @@ services:
       - "3080:3000"
     environment:
       - NEXT_APP_BASE_URL=${NEXT_APP_BASE_URL}
-    networks:
-      - hrms_network
 
-networks:
-  hrms_network:
