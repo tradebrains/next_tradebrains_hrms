@@ -9,8 +9,3 @@ services:
     restart: always
     ports:
       - "3070:3000"
-    networks:
-      - hrms_network
-
-networks:
-  hrms_network:
