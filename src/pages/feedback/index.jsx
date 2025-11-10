@@ -6,7 +6,7 @@ import CustomPagination from "@/components/Tables/CustomPagination";
 import { authStore } from "@/redux/reducer/authSlice";
 import { useSelector } from "react-redux";
 import { deleteFeedback, editFeedback, getFeedback, postFeedback } from "../api/fetchClient";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import dayjs from "dayjs";
 
 function Feedback() {
@@ -19,6 +19,8 @@ function Feedback() {
   const [feedback , setFeedback] = useState([])
   const [deleteModal , setDeleteModal] = useState(false);
   const [deleteId , setDeleteId] = useState("")
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
 
     const getAdmin = async () => {
@@ -40,6 +42,7 @@ function Feedback() {
   };
 
     const onSubmit = async (values) => {
+      setLoading(true);
     const payload = {
       ...values,
       date: values.date ? values.date.format("YYYY-MM-DD") : null,
@@ -50,6 +53,7 @@ function Feedback() {
         if (resp.status === 200) {
           message.success("Feedback Edited Successfully");
           setFeedbackModal(false)
+          setLoading(false);
           form.resetFields();
         }
       } catch (error) {}
@@ -59,9 +63,13 @@ function Feedback() {
         if (resp.status === 201) {
           message.success("Feedback added Successfully");
           setFeedbackModal(false)
+          setLoading(false);
           form.resetFields();
         }
-      } catch (error) {}
+      } catch (error) {
+        setErrorMessage(error.response?.data?.message);
+        setLoading(false);
+      }
     }
   };
 
@@ -285,13 +293,24 @@ function Feedback() {
               >
                 <Input.TextArea rows={4} />
               </Form.Item>
+              {errorMessage && (
+                <span className={styles.error_message}>{errorMessage}</span>
+              )}
               <Form.Item>
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className={styles.submit}
+                 className={styles.submit}
+                  disabled={loading}
                 >
-                  Submit
+                  {loading ? (
+                    <span className={styles.loader_wrapper}>
+                      <Loader2 className={styles.loader_icon} />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               </Form.Item>
             </Form>
