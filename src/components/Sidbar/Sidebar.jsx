@@ -130,11 +130,16 @@ const Sidebar = ({ onClose }) => {
       href: "/documents",
       icon: "UserCheck",
     },
-    // {
-    //   name: "Medical Insurance (Admin)",
-    //   href: "/medical-insurance",
-    //   icon: "Activity",
-    // },
+   user_role == 1 && {
+      name: "Feedback(Admin)",
+      href: "/feedback-admin",
+      icon: "Activity",
+    },
+    {
+      name: "Feedback",
+      href: "/feedback",
+      icon: "Activity",
+    },
     {
       name: "Policies",
       icon: "Ship",

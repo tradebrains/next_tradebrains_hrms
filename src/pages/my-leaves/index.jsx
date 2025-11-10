@@ -13,7 +13,7 @@ import {
   Popover,
   Select,
 } from "antd";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import {
   deleteLeaves,
   editLeaves,
@@ -37,6 +37,7 @@ function EmployeeLeaves({}) {
   const { Option } = Select;
   const [totalCount, setTotalCount] = useState();
   const [Page, setPage] = useState({ page: 1, perPage: 10 });
+  const [loading, setLoading] = useState(false);
 
   const auth = useSelector(authStore);
   const employee_id = auth?.userData?.user_details?.employee_id;
@@ -81,6 +82,7 @@ function EmployeeLeaves({}) {
   }, [id, addLeavesModal, leavesTable]);
 
   const onSubmit = async (values) => {
+    setLoading(true);
     const payload = {
       ...values,
       employee: auth?.userData?.user_details?.id,
@@ -95,6 +97,7 @@ function EmployeeLeaves({}) {
         if (resp.status === 200) {
           message.success("Leave Edited Successfully");
           setAddLeavesModal(false);
+          setLoading(false);
           form.resetFields();
         }
       } catch (error) {}
@@ -104,6 +107,7 @@ function EmployeeLeaves({}) {
         if (resp.status === 201) {
           message.success("Leave applied Successfully");
           setAddLeavesModal(false);
+          setLoading(false);
           form.resetFields();
         }
       } catch (error) {}
@@ -136,7 +140,7 @@ function EmployeeLeaves({}) {
       setDeleteModal(false);
     }
   };
-  
+
   const onPageChange = (page, perPage) => {
     setPage({ page: page, perPage: perPage });
   };
@@ -441,8 +445,16 @@ function EmployeeLeaves({}) {
                   type="primary"
                   htmlType="submit"
                   className={styles.submit}
+                  disabled={loading}
                 >
-                  Submit
+                  {loading ? (
+                    <span className={styles.loader_wrapper}>
+                      <Loader2 className={styles.loader_icon} />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               </Form.Item>
             </Form>

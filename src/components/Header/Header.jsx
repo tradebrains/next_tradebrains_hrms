@@ -58,6 +58,10 @@ function Header() {
       ? "Travel Policy"
       : pathname.includes("calendar")
       ? "Attendance"
+      : pathname.includes("feedback-admin")
+      ? "Feedback (Admin)"
+      : pathname.includes("feedback")
+      ? "Feedback"
       : "";
 
   const userData = useSelector(authStore);

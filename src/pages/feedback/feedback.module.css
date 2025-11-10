@@ -6,7 +6,7 @@
   padding: 10px 20px;
   border-radius: 15px;
   cursor: pointer;
-  width: 110px;
+  width: 140px;
   margin-top: 10px;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%);
 }
@@ -53,6 +53,11 @@
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
 }
 
+.edit {
+  color: white;
+  cursor: pointer;
+}
+
 .status_heading {
   font-size: 20px;
   color: #ffffff;
@@ -92,18 +97,14 @@
   cursor: pointer;
 }
 
+.na {
+  font-size: 14px !important;
+  color: #beaeae;
+}
+
 .yes_no_button:hover {
   font-weight: 500;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
-}
-
-.edit {
-  color: white;
-  cursor: pointer;
-}
-
-.select {
-  width: 100%;
 }
 
 .loader_wrapper {
@@ -118,4 +119,11 @@
   width: 18px;
   height: 18px;
   animation: spin 0.9s linear infinite;
+}
+
+
+.error_message{
+  color: #ff4d4f !important;
+  margin-top: 0px;
+  font-size: 14px;
 }

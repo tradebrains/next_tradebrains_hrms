@@ -157,6 +157,20 @@
   margin-top: 10px;
 }
 
+.loader_wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  animation: fadeIn 0.25s ease;
+}
+
+.loader_icon {
+  width: 18px;
+  height: 18px;
+  animation: spin 0.9s linear infinite;
+}
+
 @media (max-width: 640px) {
   .leaves_left {
     width: 50%;

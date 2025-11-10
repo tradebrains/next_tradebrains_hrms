@@ -13,7 +13,7 @@ import {
   Popover,
   Select,
 } from "antd";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import {
   deleteLeaves,
   editLeaves,
@@ -26,6 +26,7 @@ import {
 import dayjs from "dayjs";
 import { itemRender, onShowSizeChange } from "@/utility/PaginationFunction";
 import CustomPagination from "@/components/Tables/CustomPagination";
+import { set } from "date-fns";
 
 function AdminLeaves({ employeeIdMail }) {
   const [statusModal, setStatusModal] = useState(false);
@@ -42,6 +43,7 @@ function AdminLeaves({ employeeIdMail }) {
   const [pendingId, setPendingId] = useState(null);
   const [totalCount, setTotalCount] = useState();
   const [Page, setPage] = useState({ page: 1, perPage: 10 });
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const { Option } = Select;
 
@@ -118,6 +120,7 @@ function AdminLeaves({ employeeIdMail }) {
   };
 
   const onSubmit = async (values) => {
+    setLoading(true);
     const payload = {
       ...values,
       start_date: values.start_date
@@ -132,6 +135,7 @@ function AdminLeaves({ employeeIdMail }) {
         if (resp.status === 200) {
           message.success("Leave Edited Successfully");
           setAddLeavesModal(false);
+          setLoading(false);
           form.resetFields();
         }
       } catch (error) {}
@@ -141,6 +145,7 @@ function AdminLeaves({ employeeIdMail }) {
         if (resp.status === 201) {
           message.success("Leave applied Successfully");
           setAddLeavesModal(false);
+          setLoading(false);
           form.resetFields();
         }
       } catch (error) {}
@@ -550,8 +555,16 @@ function AdminLeaves({ employeeIdMail }) {
                   type="primary"
                   htmlType="submit"
                   className={styles.submit}
+                  disabled={loading}
                 >
-                  Submit
+                  {loading ? (
+                    <span className={styles.loader_wrapper}>
+                      <Loader2 className={styles.loader_icon} />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               </Form.Item>
             </Form>
