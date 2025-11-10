@@ -24,6 +24,7 @@ import CustomPagination from "@/components/Tables/CustomPagination";
 import { Pencil } from "lucide-react";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 function AdminReimbursement({ employeeIdMail }) {
   const [form] = Form.useForm();
@@ -42,6 +43,7 @@ function AdminReimbursement({ employeeIdMail }) {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
   const [modal, setModal] = useState(false);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const getTableData = async () => {
     try {
@@ -112,6 +114,7 @@ function AdminReimbursement({ employeeIdMail }) {
   };
 
   const onSubmit = async (values) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("employee_id", values.employee_id);
     formData.append("email", values.email);
@@ -129,6 +132,7 @@ function AdminReimbursement({ employeeIdMail }) {
         if (resp.status === 200) {
           message.success("Reimbursement Edited Successfully");
           form.resetFields();
+          setLoading(false);
           setReimburseModal(false);
         }
       } catch (error) {}
@@ -138,6 +142,7 @@ function AdminReimbursement({ employeeIdMail }) {
         if (resp.status === 201) {
           message.success("Reimbursement applied Successfully");
           form.resetFields();
+          setLoading(false);
           setReimburseModal(false);
         }
       } catch (error) {}
@@ -541,9 +546,17 @@ function AdminReimbursement({ employeeIdMail }) {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className={styles.submit}
+                 className={styles.submit}
+                  disabled={loading}
                 >
-                  Submit
+                  {loading ? (
+                    <span className={styles.loader_wrapper}>
+                      <Loader2 className={styles.loader_icon} />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               </Form.Item>
             </Form>

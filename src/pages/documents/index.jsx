@@ -12,6 +12,7 @@ import { Button, Form, Input, message, Modal, Popover, Upload } from "antd";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
 import { CloseOutlined, UploadOutlined } from "@ant-design/icons";
+import { Loader2 } from "lucide-react";
 
 function EmployeeDocuments() {
   const [form] = Form.useForm();
@@ -27,6 +28,7 @@ function EmployeeDocuments() {
   const [putId, setPutId] = useState("");
   const [uploadDocumentModal, setUploadDocumentModal] = useState(false);
   const [employeeEmailIds, setEmployeeEmailIds] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getTableData = async () => {
     try {
@@ -67,7 +69,7 @@ function EmployeeDocuments() {
 
   const onSubmit = async (values) => {
     const formdata = new FormData();
-
+    setLoading(true);
     formdata.append("employee_id", values.employee_id);
 
     if (values.offer_letter?.file) {
@@ -120,6 +122,7 @@ function EmployeeDocuments() {
       const resp = await editEmployeeDocuments(id, formdata);
       if (resp.status === 200) {
         form.resetFields();
+        setLoading(false);
         setUploadDocumentModal(false);
       }
     } catch (error) {}
@@ -524,9 +527,9 @@ function EmployeeDocuments() {
                   label="PAN Card"
                   name="pan_card"
                   className={styles.upload}
-                  rules={[
-                    { required: true, message: "Please upload Pan Card" },
-                  ]}
+                  // rules={[
+                  //   { required: true, message: "Please upload Pan Card" },
+                  // ]}
                 >
                   <Upload beforeUpload={() => false}>
                     <Button icon={<UploadOutlined />}>Choose File</Button>
@@ -536,9 +539,9 @@ function EmployeeDocuments() {
                   label="Aadhar Card"
                   name="aadhar_card"
                   className={styles.upload}
-                  rules={[
-                    { required: true, message: "Please upload Aadhar Card" },
-                  ]}
+                  // rules={[
+                  //   { required: true, message: "Please upload Aadhar Card" },
+                  // ]}
                 >
                   <Upload beforeUpload={() => false}>
                     <Button icon={<UploadOutlined />}>Choose File</Button>
@@ -654,13 +657,22 @@ function EmployeeDocuments() {
                   </Upload>
                 </Form.Item>
               </div>
+            
               <Form.Item>
                 <Button
                   type="primary"
                   htmlType="submit"
                   className={styles.submit}
+                  disabled={loading}
                 >
-                  Submit
+                  {loading ? (
+                    <span className={styles.loader_wrapper}>
+                      <Loader2 className={styles.loader_icon} />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               </Form.Item>
             </Form>

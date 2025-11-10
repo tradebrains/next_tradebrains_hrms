@@ -439,3 +439,46 @@ export const postCompOff = async (data) => {
   );
   return response;
 };
+
+export const getFeedback = async () => {
+  const response = await get(`employee/feedbacks/user/
+`).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const getFeedbackAdmin = async () => {
+  const response = await get(`employee/feedbacks/admin/
+`).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const postFeedback = async (data) => {
+  const response = await post(
+    `employee/feedbacks/user/
+`,
+    data
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const editFeedback = async (id , data) => {
+  const response = await put(`employee/feedbacks/user/${id}/
+`, data).then((resp) => {
+    return resp;
+  });
+  return response;
+};
+
+export const deleteFeedback = async (id) => {
+  const response = await del(`employee/feedbacks/user/${id}/
+`).then((resp) => {
+    return resp;
+  });
+  return response;
+};
