@@ -106,3 +106,24 @@
   font-weight: 500;
   background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%) !important;
 }
+
+.loader_wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  animation: fadeIn 0.25s ease;
+}
+
+.loader_icon {
+  width: 18px;
+  height: 18px;
+  animation: spin 0.9s linear infinite;
+}
+
+
+.error_message{
+  color: #ff4d4f !important;
+  margin-top: 0px;
+  font-size: 14px;
+}
