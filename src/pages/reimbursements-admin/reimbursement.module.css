@@ -141,13 +141,17 @@
   animation: spin 0.9s linear infinite;
 }
 
-.dashed{
+.dashed {
   color: #fff;
 }
 
 .date_year_gap {
   display: flex;
   gap: 20px;
+}
+
+.mobile_date_year_gap {
+  display: none;
 }
 
 @media (max-width: 640px) {
@@ -159,5 +163,16 @@
     font-size: 14px;
     padding: 10px 15px;
     width: 160px;
+  }
+
+  .date_year_gap {
+    display: none;
+  }
+
+  .mobile_date_year_gap {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+    margin-top: 20px;
   }
 }
