@@ -62,6 +62,8 @@ function Header() {
       ? "Feedback (Admin)"
       : pathname.includes("feedback")
       ? "Feedback"
+      : pathname.includes("leave-encashment")
+      ? "Leave Encashment Policy"
       : "";
 
   const userData = useSelector(authStore);
