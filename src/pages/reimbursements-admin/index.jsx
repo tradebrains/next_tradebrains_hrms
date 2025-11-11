@@ -505,6 +505,37 @@ function AdminReimbursement({ employeeIdMail }) {
           + Add Reimbursement
         </div>
       </div>
+      <div className={styles.mobile_date_year_gap}>
+          <div className={styles.month_year}>
+            <Select
+              className={styles.monthSelect}
+              value={currentMonth}
+              onChange={(value) => setCurrentMonth(parseInt(value))}
+              aria-label="Select Month"
+            >
+              {MONTHS.map((month) => (
+                <Option key={month.value} value={month.value}>
+                  {month.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+
+          <div className={styles.month_year}>
+            <Select
+              className={styles.yearSelect}
+              value={currentYear}
+              onChange={(value) => setCurrentYear(parseInt(value))}
+              aria-label="Select Year"
+            >
+              {yearsList.map((year) => (
+                <Option key={year} value={year}>
+                  {year}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        </div>
       <div className={styles.table_container}>
         <div className={`custom-antd-head-dark`}>
           <CustomTable columns={columns} data={tableData} pagination={false} />
