@@ -10,9 +10,15 @@ import {
   Modal,
   Popover,
   Select,
+  Table,
   Upload,
 } from "antd";
-import { CloseOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  DownOutlined,
+  RightOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import {
   deleteReimburse,
   editAdminReimburse,
@@ -30,6 +36,9 @@ function AdminReimbursement({ employeeIdMail }) {
   const [form] = Form.useForm();
   const { Option } = Select;
   const [addReimburseModal, setReimburseModal] = useState(false);
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [id, setId] = useState("");
   const [statusModal, setStatusModal] = useState(false);
   const [deleteID, setDeleteID] = useState(null);
@@ -45,9 +54,36 @@ function AdminReimbursement({ employeeIdMail }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const MONTHS = [
+    { value: 0, name: "January" },
+    { value: 1, name: "February" },
+    { value: 2, name: "March" },
+    { value: 3, name: "April" },
+    { value: 4, name: "May" },
+    { value: 5, name: "June" },
+    { value: 6, name: "July" },
+    { value: 7, name: "August" },
+    { value: 8, name: "September" },
+    { value: 9, name: "October" },
+    { value: 10, name: "November" },
+    { value: 11, name: "December" },
+  ];
+
+  const generateYears = (currentYear) => {
+    const years = [];
+    for (let i = currentYear; i <= currentYear; i++) {
+      years.push(i);
+    }
+    return years;
+  };
+
+  const yearsList = generateYears(today.getFullYear());
+
   const getTableData = async () => {
     try {
-      const resp = await getAdminReimburse(Page);
+      const apiMonth = (currentMonth + 1).toString().padStart(2, "0");
+      const apiYear = currentYear.toString();
+      const resp = await getAdminReimburse(Page , apiMonth , apiYear);
       if (resp?.status === 200) {
         setTableData(resp?.data?.results);
         setTotalCount(resp?.data?.count);
@@ -57,7 +93,7 @@ function AdminReimbursement({ employeeIdMail }) {
 
   useEffect(() => {
     getTableData();
-  }, [addReimburseModal, deleteModal, Page, statusModal]);
+  }, [addReimburseModal, deleteModal, Page, statusModal , currentMonth, currentYear]);
 
   useEffect(() => {
     if (addReimburseModal && id && tableData.length > 0) {
@@ -214,7 +250,7 @@ function AdminReimbursement({ employeeIdMail }) {
       title: "Date",
       dataIndex: "date",
       sorter: (a, b) => a.date.length - b.date.length,
-      render: (text, record) => renderCell(text),
+      render: (text, record) => renderCell(text === null ? "---" : text),
     },
     {
       title: "Amount",
@@ -226,7 +262,7 @@ function AdminReimbursement({ employeeIdMail }) {
       title: "Purpose",
       dataIndex: "purpose",
       sorter: (a, b) => a.purpose.length - b.purpose.length,
-      render: (text, record) => renderCell(text),
+      render: (text, record) => renderCell(text === null ? "---" : text),
     },
     {
       title: "Attachment",
@@ -256,6 +292,8 @@ function AdminReimbursement({ employeeIdMail }) {
                         borderRadius: ".5rem",
                       }}
                     />
+                  ) : record?.receipt_file === null ? (
+                    <p className={styles.dashed}>---</p>
                   ) : (
                     <Image
                       alt="image"
@@ -313,43 +351,49 @@ function AdminReimbursement({ employeeIdMail }) {
             },
           },
           children: (
-            <div>
-              <Select
-                className={styles.select}
-                value={currentStatus}
-                onChange={(value) => handleStatusUpdater(record.id, value)}
-                optionLabelProp="label"
-              >
-                <Option
-                  value="Pending"
-                  label={statusOptions.Pending}
-                  disabled={currentStatus === "Pending"}
-                >
-                  {statusOptions.Pending}
-                </Option>
-                <Option
-                  value="Rejected"
-                  label={statusOptions.Rejected}
-                  disabled={currentStatus === "Rejected"}
-                >
-                  {statusOptions.Rejected}
-                </Option>
-                <Option
-                  value="Approved"
-                  label={statusOptions.Approved}
-                  disabled={currentStatus === "Approved"}
-                >
-                  {statusOptions.Approved}
-                </Option>
+            <>
+              {record.status === null ? (
+                <p className={styles.dashed}>---</p>
+              ) : (
+                <div>
+                  <Select
+                    className={styles.select}
+                    value={currentStatus}
+                    onChange={(value) => handleStatusUpdater(record.id, value)}
+                    optionLabelProp="label"
+                  >
+                    <Option
+                      value="Pending"
+                      label={statusOptions.Pending}
+                      disabled={currentStatus === "Pending"}
+                    >
+                      {statusOptions.Pending}
+                    </Option>
+                    <Option
+                      value="Rejected"
+                      label={statusOptions.Rejected}
+                      disabled={currentStatus === "Rejected"}
+                    >
+                      {statusOptions.Rejected}
+                    </Option>
+                    <Option
+                      value="Approved"
+                      label={statusOptions.Approved}
+                      disabled={currentStatus === "Approved"}
+                    >
+                      {statusOptions.Approved}
+                    </Option>
 
-                {(currentStatus === "Approved" ||
-                  currentStatus === "Rejected") && (
-                  <Option value="Decline" label={statusOptions.Decline}>
-                    {statusOptions.Decline}
-                  </Option>
-                )}
-              </Select>
-            </div>
+                    {(currentStatus === "Approved" ||
+                      currentStatus === "Rejected") && (
+                      <Option value="Decline" label={statusOptions.Decline}>
+                        {statusOptions.Decline}
+                      </Option>
+                    )}
+                  </Select>
+                </div>
+              )}
+            </>
           ),
         };
       },
@@ -373,7 +417,7 @@ function AdminReimbursement({ employeeIdMail }) {
                 cursor: "pointer",
               }}
             >
-              {record?.status === "Approved" ? (
+              {record?.status === "Approved" || record?.status === null ? (
                 "NA"
               ) : (
                 <Popover
@@ -419,6 +463,37 @@ function AdminReimbursement({ employeeIdMail }) {
     <>
       <div className={styles.top_section}>
         <p className={styles.header_text}>Reimbursement</p>
+        <div className={styles.date_year_gap}>
+          <div className={styles.month_year}>
+            <Select
+              className={styles.monthSelect}
+              value={currentMonth}
+              onChange={(value) => setCurrentMonth(parseInt(value))}
+              aria-label="Select Month"
+            >
+              {MONTHS.map((month) => (
+                <Option key={month.value} value={month.value}>
+                  {month.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+
+          <div className={styles.month_year}>
+            <Select
+              className={styles.yearSelect}
+              value={currentYear}
+              onChange={(value) => setCurrentYear(parseInt(value))}
+              aria-label="Select Year"
+            >
+              {yearsList.map((year) => (
+                <Option key={year} value={year}>
+                  {year}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        </div>
         <div
           className={styles.add_employee}
           onClick={() => {
@@ -546,7 +621,7 @@ function AdminReimbursement({ employeeIdMail }) {
                 <Button
                   type="primary"
                   htmlType="submit"
-                 className={styles.submit}
+                  className={styles.submit}
                   disabled={loading}
                 >
                   {loading ? (

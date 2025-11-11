@@ -8,7 +8,7 @@ function CustomTable({
   expandableData = null,
   loading = false,
   border,
-  rowSelection = null,
+  rowSelection,
   scrollLimit = null,
   sortDirections = ["ascend", "descend"],
   scrollY = null,

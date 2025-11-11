@@ -141,6 +141,15 @@
   animation: spin 0.9s linear infinite;
 }
 
+.dashed{
+  color: #fff;
+}
+
+.date_year_gap {
+  display: flex;
+  gap: 20px;
+}
+
 @media (max-width: 640px) {
   .header_text {
     font-size: 18px;

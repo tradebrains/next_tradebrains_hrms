@@ -260,9 +260,9 @@ export const postStatusReimburse = async (id, data) => {
   return response;
 };
 
-export const getAdminReimburse = async (Page) => {
+export const getAdminReimburse = async (Page, month, year) => {
   const response = await get(
-    `employee/reimbursements/admin/?page=${Page.page}&page_size=${Page.perPage}`
+    `employee/reimbursements/admin/?page=${Page.page}&page_size=${Page.perPage}&month=${month}&year=${year}`
   ).then((resp) => {
     return resp;
   });
@@ -467,9 +467,12 @@ export const postFeedback = async (data) => {
   return response;
 };
 
-export const editFeedback = async (id , data) => {
-  const response = await put(`employee/feedbacks/user/${id}/
-`, data).then((resp) => {
+export const editFeedback = async (id, data) => {
+  const response = await put(
+    `employee/feedbacks/user/${id}/
+`,
+    data
+  ).then((resp) => {
     return resp;
   });
   return response;

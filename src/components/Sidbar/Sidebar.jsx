@@ -146,6 +146,7 @@ const Sidebar = ({ onClose }) => {
       hasDropdown: true,
       subItems: [
         { name: "Leave Policy", href: "/leave-policy", icon: "Flag" },
+        { name: "Leave Encashment Policy", href: "/leave-encashment", icon: "Flag" },
         {
           name: "Harassment Policy",
           href: "/harassment-policy",
