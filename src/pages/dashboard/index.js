@@ -116,6 +116,7 @@ function dashboard() {
                 : profile?.profile_pic
             }
             user_role={user_role}
+            unknown={unknown}
           />
         ))}
       </div>
