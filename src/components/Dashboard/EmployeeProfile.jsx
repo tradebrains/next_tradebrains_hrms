@@ -16,6 +16,7 @@ function EmployeeProfile({
   managerList,
   employeeEmailIds,
   user_role,
+  unknown
 }) {
   const [editBasicModal, setEditBasicModal] = useState(false);
   const [addPersonalModal, setAddPersonalModal] = useState(false);
@@ -109,6 +110,8 @@ function EmployeeProfile({
     />
   );
 
+  const [imgSrc, setImgSrc] = useState(image);
+
   return (
     <div className={styles.card}>
       {user_role == 1 && (
@@ -121,11 +124,12 @@ function EmployeeProfile({
 
       <div className={styles.imageWrapper}>
         <Image
-          src={image}
+          src={imgSrc}
           alt={name}
           width={200}
           height={200}
           className={styles.image}
+          onError={() => setImgSrc(unknown)}
         />
       </div>
       <div className={styles.content}>
