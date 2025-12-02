@@ -485,3 +485,15 @@ export const deleteFeedback = async (id) => {
   });
   return response;
 };
+
+
+export const postEventPass = async (data) => {
+  const response = await post(
+    `employee/leaves/admin/event-pass/
+`,
+    data
+  ).then((resp) => {
+    return resp;
+  });
+  return response;
+};
