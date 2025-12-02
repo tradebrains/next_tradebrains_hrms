@@ -21,6 +21,7 @@ import {
   getLeftLeaves,
   postAdminLeaves,
   postCompOff,
+  postEventPass,
   postLeaveStatus,
 } from "../api/fetchClient";
 import dayjs from "dayjs";
@@ -37,6 +38,7 @@ function AdminLeaves({ employeeIdMail }) {
   const [leftLeaves, setLeftLeaves] = useState("");
   const [employeeList, setEmployeeList] = useState([]);
   const [addLeavesModal, setAddLeavesModal] = useState(false);
+  const [addEventModal, setAddEventModal] = useState(false);
   const [addCompModal, setAddCompModal] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState({}); // { id: status }
   const [pendingStatus, setPendingStatus] = useState(null);
@@ -158,6 +160,21 @@ function AdminLeaves({ employeeIdMail }) {
       if (resp.status === 201) {
         message.success("Comp off leave added Successfully");
         setAddCompModal(false);
+        form.resetFields();
+      }
+    } catch (error) {}
+  };
+
+  const onSubmitEvent = async (values) => {
+    const payload = {
+      ...values,
+      date: values.date ? values.date.format("YYYY-MM-DD") : null,
+    };
+    try {
+      const resp = await postEventPass(payload);
+      if (resp.status === 201) {
+        message.success("Attendance added Successfully");
+        setAddEventModal(false);
         form.resetFields();
       }
     } catch (error) {}
@@ -404,6 +421,15 @@ function AdminLeaves({ employeeIdMail }) {
         <p className={styles.header_text}>Leaves</p>
         <div className={styles.flex_add_button}>
           <div
+            className={styles.add_employee}
+            onClick={() => {
+              form.resetFields();
+              setAddEventModal(true);
+            }}
+          >
+            + Event Day
+          </div>
+          <div
             className={styles.add_comp_off}
             onClick={() => {
               form.resetFields();
@@ -618,6 +644,67 @@ function AdminLeaves({ employeeIdMail }) {
                 className={styles.item}
               >
                 <Input />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className={styles.submit}
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        centered
+        closable={true}
+        width="500px"
+        bodyStyle={{ padding: "0px", minHeight: "200px", borderRadius: "18px" }}
+        visible={addEventModal}
+        footer={null}
+        onCancel={() => setAddEventModal(false)}
+        className="modelClassname"
+        wrapClassName={"modelClassname"}
+      >
+        <div>
+          <p className={styles.heading_text}>Add Event Day Attendance</p>
+          <div className="w-100">
+            <Form
+              form={form}
+              layout="vertical"
+              autoComplete="off"
+              onFinish={onSubmitEvent}
+              className={styles.form}
+            >
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[{ required: true, message: "Please select Email ID" }]}
+                className={styles.item}
+              >
+                <Select
+                  placeholder="Select"
+                  showSearch
+                  optionFilterProp="children"
+                >
+                  {employeeIdMail?.map((item) => (
+                    <Option key={item?.employee_id} value={item?.email}>
+                      {item?.email}{" "}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                label="Date"
+                name="date"
+                rules={[{ required: true, message: "Please select From" }]}
+                className={styles.item}
+              >
+                <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
               </Form.Item>
               <Form.Item>
                 <Button
