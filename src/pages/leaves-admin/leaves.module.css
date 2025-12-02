@@ -165,4 +165,30 @@
   .flex_add_button {
     margin-top: 0px;
   }
+
+  .add_employee {
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  width: auto;
+  margin-top: 10px;
+  background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%);
+}
+
+.add_comp_off {
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  border: none;
+  padding: 10px 5px;
+  border-radius: 15px;
+  cursor: pointer;
+  width: auto;
+  margin-top: 10px;
+  background: linear-gradient(90deg, #ff9b44 0%, #fc6075 100%);
+}
 }
